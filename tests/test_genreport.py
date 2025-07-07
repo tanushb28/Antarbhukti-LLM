@@ -10,8 +10,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from src.antarbhukti.genreport import GenReport
-from src.antarbhukti.sfc import SFC
+from antarbhukti.genreport import GenReport
+from antarbhukti.sfc import SFC
 
 
 class TestGenReport:

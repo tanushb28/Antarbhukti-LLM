@@ -6,10 +6,10 @@
 # to perform containment analysis and generate reports.
 # """
 
-from src.antarbhukti.genreport import GenReport
-from src.antarbhukti.llm_manager import LLM_Mgr
-from src.antarbhukti.sfc import SFC
-from src.antarbhukti.sfc_verifier import Verifier
+from antarbhukti.genreport import GenReport
+from antarbhukti.llm_manager import LLM_Mgr
+from antarbhukti.sfc import SFC
+from antarbhukti.sfc_verifier import Verifier
 
 
 def check_pn_containment_html(verifier, gen_report, sfc1, pn1, sfc2, pn2):
@@ -50,8 +50,8 @@ def main():
 
     sfc1 = SFC()
     sfc2 = SFC()
-    sfc1.load("data/dec2hex.txt")
-    sfc2.load("data/dec2hex_mod.txt")
+    sfc1.load("../data/dec2hex.txt")
+    sfc2.load("../data/dec2hex_mod.txt")
 
     # Iteration count for iterative prompting
 
@@ -91,14 +91,14 @@ def main():
 
         improved = llm_mng.improve_sfc2(
             sfc1, sfc2, verifier.get_unmatched_paths(),
-            prompt_path=f"prompt_refiner_iter{iter_count+1}.txt",
-            sfc2_path="dec2hex_mod.txt"
+            prompt_path=f"../data/prompt_refiner_iter{iter_count+1}.txt",
+            sfc2_path="../data/dec2hex_mod.txt"
         )
         if not improved:
             print("No further improvement possible or LLM failed.")
             break
         sfc2 = SFC()
-        sfc2.load("data/dec2hex_mod.txt")
+        sfc2.load("../data/dec2hex_mod.txt")
 
 
 if __name__ == "__main__":

@@ -13,10 +13,14 @@ Prerequisites:
 - Install Graphviz for visualization
 """
 
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from benchmarks.Benchmarks import sfc_examples
-from src.antarbhukti.genreport import GenReport
-from src.antarbhukti.sfc import SFC
-from src.antarbhukti.sfc_verifier import Verifier
+from antarbhukti.genreport import GenReport
+from antarbhukti.sfc import SFC
+from antarbhukti.sfc_verifier import Verifier
 
 
 def create_factorial_sfc():
@@ -37,12 +41,12 @@ def create_factorial_sfc():
         {"src": "Check", "tgt": "End", "guard": "i > n"}
     ]
 
-    return SFC(
-        steps=steps,
-        variables=["i", "fact", "n", "init"],
-        transitions=transitions,
-        initial_step="Start"
-    )
+    sfc = SFC()
+    sfc.steps = steps
+    sfc.variables = ["i", "fact", "n", "init"]
+    sfc.transitions = transitions
+    sfc.initial_step = "Start"
+    return sfc
 
 
 def demonstrate_sfc_analysis():
