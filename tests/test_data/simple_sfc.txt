@@ -1,0 +1,14 @@
+steps = [
+    {"name": "Start", "function": "counter := 0"},
+    {"name": "Process", "function": "counter := counter + 1"},
+    {"name": "End", "function": "done := True"}
+]
+
+transitions = [
+    {"src": "Start", "tgt": "Process", "guard": "init"},
+    {"src": "Process", "tgt": "End", "guard": "counter >= 3"}
+]
+
+variables = ["counter", "done", "init"]
+
+initial_step = "Start" 

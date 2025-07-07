@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Setup script for Containment Checker
+Setup script for AntarBhukti
 
 This script helps users install dependencies and set up the environment
-for the Containment Checker tool.
+for the AntarBhukti SFC verification tool.
 """
 
 import os
@@ -68,27 +68,18 @@ def install_graphviz():
 def create_env_file():
     """Create .env file template"""
     print("\nSetting up environment file...")
-    env_content = """# Azure OpenAI Configuration
-# Fill in your actual values
-
-# Your Azure OpenAI API key
-AZURE_OPENAI_API_KEY=your_api_key_here
-
-# Your Azure OpenAI endpoint URL
-AZURE_OPENAI_ENDPOINT=https://your-resource-name.openai.azure.com/
-
-# API version (usually 2023-05-15 or later)
-AZURE_OPENAI_API_VERSION=2023-05-15
-
-# Your deployment name
-AZURE_OPENAI_DEPLOYMENT=your-deployment-name
-"""
     
     if not os.path.exists(".env"):
-        with open(".env", "w") as f:
-            f.write(env_content)
-        print("✓ Created .env file template")
-        print("  Please edit .env file with your Azure OpenAI credentials")
+        if os.path.exists(".env.template"):
+            # Copy the template
+            with open(".env.template", "r") as src:
+                with open(".env", "w") as dst:
+                    dst.write(src.read())
+            print("✓ Created .env file from template")
+            print("  Please edit .env file with your Azure OpenAI credentials")
+        else:
+            print("✗ .env.template file not found")
+            return False
     else:
         print("✓ .env file already exists")
     
@@ -96,7 +87,7 @@ AZURE_OPENAI_DEPLOYMENT=your-deployment-name
 
 def main():
     """Main setup function"""
-    print("=== Containment Checker Setup ===\n")
+    print("=== AntarBhukti Setup ===\n")
     
     success = True
     
@@ -121,8 +112,9 @@ def main():
         print("✓ Setup completed successfully!")
         print("\nNext steps:")
         print("1. Edit .env file with your Azure OpenAI credentials")
-        print("2. Run the example: python example_usage.py")
-        print("3. Try LLM generation: python LLM_Manager.py SFC_FACT.txt")
+        print("2. Run the example: python examples/example_usage.py")
+        print("3. Try the driver: python examples/driver.py")
+        print("4. Explore the benchmarks in the benchmarks/ directory")
     else:
         print("✗ Setup encountered errors")
         print("Please fix the issues above and try again")

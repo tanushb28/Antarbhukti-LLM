@@ -15,15 +15,10 @@ Prerequisites:
 
 import os
 import sys
-from Verifier import (
-    SFC, 
-    sfc_to_dot, 
-    dot_to_png,
-    sfc_to_petrinet,
-    petrinet_to_dot,
-    find_cut_points
-)
-from Benchmarks import sfc_examples
+from src.antarbhukti.sfc import SFC
+from src.antarbhukti.sfc_verifier import Verifier
+from src.antarbhukti.genreport import GenReport
+from benchmarks.Benchmarks import sfc_examples
 
 def create_factorial_sfc():
     """Create a factorial computation SFC example"""
@@ -61,29 +56,33 @@ def demonstrate_sfc_analysis():
     print(f"   Variables: {sfc.variables}")
     print(f"   Initial step: {sfc.initial_step}")
     
+    # Create verifier and report generator
+    verifier = Verifier()
+    gen_report = GenReport()
+    
     # Convert to Petri net
     print("\n2. Converting SFC to Petri net...")
-    pn = sfc_to_petrinet(sfc)
+    pn = verifier.sfc_to_petrinet(sfc)
     print(f"   Places: {pn['places']}")
     print(f"   Transitions: {pn['transitions']}")
     print(f"   Initial marking: {pn['initial_marking']}")
     
     # Find cut points
     print("\n3. Finding cut points...")
-    cut_points = find_cut_points(pn)
+    cut_points = verifier.find_cut_points(pn)
     print(f"   Cut points: {cut_points}")
     
     # Generate visualizations
     print("\n4. Generating visualizations...")
     try:
         # SFC visualization
-        sfc_to_dot(sfc, "factorial_sfc.dot")
-        dot_to_png("factorial_sfc.dot", "factorial_sfc.png")
+        gen_report.sfc_to_dot(sfc, "factorial_sfc.dot")
+        gen_report.dot_to_png("factorial_sfc.dot", "factorial_sfc.png")
         print("   ✓ SFC diagram saved as factorial_sfc.png")
         
         # Petri net visualization
-        petrinet_to_dot(pn, "factorial_pn.dot")
-        dot_to_png("factorial_pn.dot", "factorial_pn.png")
+        gen_report.petrinet_to_dot(pn, "factorial_pn.dot")
+        gen_report.dot_to_png("factorial_pn.dot", "factorial_pn.png")
         print("   ✓ Petri net diagram saved as factorial_pn.png")
         
     except Exception as e:
@@ -103,19 +102,19 @@ def demonstrate_benchmark_examples():
     print(f"\nAnalyzing example 1: Sum of first n natural numbers")
     example = sfc_examples[0]
     
-    sfc = SFC(
-        steps=example["steps"],
-        variables=example["variables"],
-        transitions=example["transitions"],
-        initial_step=example["steps"][0]["name"]
-    )
+    sfc = SFC()
+    sfc.steps = example["steps"]
+    sfc.variables = example["variables"]
+    sfc.transitions = example["transitions"]
+    sfc.initial_step = example["steps"][0]["name"]
     
     print(f"Steps: {sfc.step_names()}")
     print(f"Initial step: {sfc.initial_step}")
     
     # Convert to Petri net and analyze
-    pn = sfc_to_petrinet(sfc)
-    cut_points = find_cut_points(pn)
+    verifier = Verifier()
+    pn = verifier.sfc_to_petrinet(sfc)
+    cut_points = verifier.find_cut_points(pn)
     print(f"Cut points: {cut_points}")
 
 def main():

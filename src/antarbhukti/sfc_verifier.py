@@ -4,7 +4,7 @@ import os
 import z3
 import re
 import ast
-from sfc import SFC
+from .sfc import SFC
 
 class Verifier:
     """Petri Net Model Containment Verifier"""

@@ -9,39 +9,163 @@ AntarBhukti is a verification tool for evolving software, designed to verify cha
 - **Compare SFCs:** Verifies the correctness of software evolution using textual SFC representations.
 - **Easy to Use:** Simple command line interface for fast verification tasks.
 - **Benchmark Suite:** Works on all 80 OSCAT benchmark applications.  
-  - `Benchmrak-Source-OSCAT.py` contains the source/original SFCs.  
-  - `Benchmarks-Upgrade-OSCAT.py` contains the upgraded/target SFCs.
+  - `benchmarks/Benchmark-Source-OSCAT.py` contains the source/original SFCs.  
+  - `benchmarks/Benchmarks-Upgrade-OSCAT.py` contains the upgraded/target SFCs.
 - **Superior Performance:** Outperforms [verifaps](https://formal.kastel.kit.edu/~weigl/verifaps/index.html) in coverage and flexibility.
 - **Open ST Reference:** Reference ST code for the OSCAT library is available in the [SamaTulyata4PLC](https://github.com/soumyadipcsis/SamaTulyata4PLC) repository.
 
 ---
 
+## Quick Start
+
+Get up and running in 3 steps:
+
+```sh
+# 1. Clone and enter directory
+git clone https://github.com/your-username/Antarbhukti-LLM.git
+cd Antarbhukti-LLM
+
+# 2. Set up environment (choose conda or pip)
+conda env create -f environment.yml && conda activate antarbhukti
+# OR: pip install -r requirements.txt
+
+# 3. Install package and run tests
+pip install -e .
+pytest
+```
+
 ## Getting Started
 
-**Dependency files:**  
-- `driver.py`  
-- `sfc.py`  
-- `sfc_verifier.py`
-- `genreport.py`
-- `setup.py`
+**Core files:**  
+- `src/antarbhukti/` - Main library code
+- `examples/driver.py` - Example driver script  
+- `examples/example_usage.py` - Usage examples
+- `benchmarks/` - Benchmark suite
+- `data/` - Sample SFC data files
+- `setup.py` - Installation script
 
 ### Prerequisites
 
-- Python 3.x
+- Python 3.8+
 - [Z3 SMT solver](https://github.com/Z3Prover/z3) (Python bindings)
+- Azure OpenAI credentials (for LLM features)
+- Conda (recommended) or pip for environment management
+
+### Installation
+
+#### Option 1: Using Conda (Recommended)
+
+1. Clone the repository:
+```sh
+git clone https://github.com/your-username/Antarbhukti-LLM.git
+cd Antarbhukti-LLM
+```
+
+2. Create and activate conda environment:
+```sh
+conda env create -f environment.yml
+conda activate antarbhukti
+```
+
+3. Install the package in development mode:
+```sh
+pip install -e .
+```
+
+4. Set up environment variables:
+```sh
+cp .env.template .env
+# Edit .env with your Azure OpenAI credentials
+```
+
+#### Option 2: Using pip
+
+1. Clone the repository:
+```sh
+git clone https://github.com/your-username/Antarbhukti-LLM.git
+cd Antarbhukti-LLM
+```
+
+2. Create a virtual environment (optional but recommended):
+```sh
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
+```sh
+pip install -r requirements.txt
+pip install -e .
+```
+
+4. Set up environment variables:
+```sh
+cp .env.template .env
+# Edit .env with your Azure OpenAI credentials
+```
+
+### Environment Management
+
+If you used conda to install:
+
+```sh
+# Activate the environment
+conda activate antarbhukti
+
+# Deactivate the environment
+conda deactivate
+
+# Update environment from file
+conda env update -f environment.yml
+
+# Remove environment
+conda env remove -n antarbhukti
+```
+
+### Local Development & Testing
+
+After installation, you can run the test suite locally:
+
+```sh
+# Run all tests
+pytest
+
+# Run tests with coverage
+pytest --cov=src --cov-report=term-missing
+
+# Run specific test files
+pytest tests/test_sfc.py
+
+# Run with verbose output
+pytest -v
+
+# Run linting checks
+flake8 src/ tests/
+black --check src/ tests/
+isort --check-only src/ tests/
+
+# Auto-format code
+black src/ tests/
+isort src/ tests/
+```
 
 ### Usage
 
+**Basic verification:**
 ```sh
-python3 driver.py <source_SFC.txt> <upgraded_SFC.txt>
+cd examples
+python driver.py
 ```
-- `<source_SFC.txt>`: Path to the source SFC file.
-- `<upgraded_SFC.txt>`: Path to the upgraded (evolved) SFC file.
 
-### Example
-
+**Example with custom SFC files:**
 ```sh
-python3 driver.py sfc_old.txt sfc_new.txt
+python examples/driver.py
+# Edit the driver.py file to specify your SFC files
+```
+
+**Run example usage:**
+```sh
+python examples/example_usage.py
 ```
 
 ---
