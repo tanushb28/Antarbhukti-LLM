@@ -1,52 +1,394 @@
-``` Given the following SFC code stored in a text file, create a python code that reads this text file and generate a Python class
+# SFC Text File to Python Class Generator
 
-***Sample SFC code*** taken from a text file:
+## Mission Statement
+Create robust, production-ready Python code that reads Sequential Function Chart (SFC) definitions from text files and generates well-structured Python classes with comprehensive functionality and error handling.
 
+## Project Overview
+**Domain**: SFC File Processing and Python Class Generation  
+**Task**: Transform SFC text file content into executable Python classes  
+**Goal**: Generate clean, maintainable Python code with proper class structure and methods  
+
+## Core Requirements
+
+### Input Processing
+- **File Reading**: Safely read and parse SFC text files
+- **Data Extraction**: Extract steps, transitions, variables, and initial_step
+- **Validation**: Ensure data integrity and completeness
+- **Error Handling**: Gracefully handle malformed or missing data
+
+### Output Generation
+- **Class Structure**: Create well-organized SFC Python class
+- **Method Implementation**: Include essential SFC manipulation methods
+- **Code Quality**: Generate clean, readable, and maintainable code
+- **Documentation**: Include appropriate docstrings and comments
+
+## SFC Data Structure Reference
+
+### Sample SFC Input Format
+```python
 steps1 = [
-        {"name": "Start", "function": "i := 1; fact := 1"},
-        {"name": "Check", "function": ""},
-        {"name": "Multiply", "function": "fact := fact * i"},
-        {"name": "Increment", "function": "i := i + 1"},
-        {"name": "End", "function": ""}
-    ]
-    transitions1 = [
-        {"src": "Start", "tgt": "Check", "guard": "init"},
-        {"src": "Check", "tgt": "Multiply", "guard": "i <= n"},
-        {"src": "Multiply", "tgt": "Increment", "guard": "True"},
-        {"src": "Increment", "tgt": "Check", "guard": "True"},
-        {"src": "Check", "tgt": "End", "guard": "i > n"}
-    ]
-    sfc1 = SFC(
-        steps=steps1, 
-        variables=["i", "fact", "n", "init"],
-        transitions=transitions1,
-        initial_step="Start"
-    )
-
-***Structure of the Python Code*** to be created from the text file
-steps = [
-    { name: StepName1, function: FunctionOrAssignment1 },
-    { name: StepName2, function: FunctionOrAssignment2 },
-    ...
+    {"name": "Start", "function": "i := 1; fact := 1"},
+    {"name": "Check", "function": ""},
+    {"name": "Multiply", "function": "fact := fact * i"},
+    {"name": "Increment", "function": "i := i + 1"},
+    {"name": "End", "function": ""}
 ]
 
-transitions = [
-    { src: StepNameX, tgt: StepNameY, guard: GuardCondition1 },
-    { src: StepNameY, tgt: StepNameZ, guard: GuardCondition2 },
-    ...
+transitions1 = [
+    {"src": "Start", "tgt": "Check", "guard": "init"},
+    {"src": "Check", "tgt": "Multiply", "guard": "i <= n"},
+    {"src": "Multiply", "tgt": "Increment", "guard": "True"},
+    {"src": "Increment", "tgt": "Check", "guard": "True"},
+    {"src": "Check", "tgt": "End", "guard": "i > n"}
 ]
 
-variables = [ var1, var2, var3, ... ]
-initial_step = StepName1
+sfc1 = SFC(
+    steps=steps1, 
+    variables=["i", "fact", "n", "init"],
+    transitions=transitions1,
+    initial_step="Start"
+)
+```
+
+## Implementation Requirements
+
+### 1. File Processing Module
+- **Safe File Reading**: Handle file not found, permission errors
+- **Content Parsing**: Extract SFC components from text content
+- **Data Validation**: Verify structure integrity and completeness
+- **Error Reporting**: Provide clear error messages for debugging
+
+### 2. SFC Class Structure
+- **Complete Constructor**: Initialize all SFC components properly
+- **Essential Methods**: Implement core SFC manipulation functions
+- **Data Access**: Provide convenient access to SFC elements
+- **Validation Methods**: Include data integrity checking
+
+### 3. Code Quality Standards
+- **PEP 8 Compliance**: Follow Python coding standards
+- **Type Hints**: Include appropriate type annotations
+- **Documentation**: Add comprehensive docstrings
+- **Error Handling**: Implement robust exception handling
+
+## Expected Output Structure
+
+### Python Code Template
+```python
+#!/usr/bin/env python3
+"""
+SFC (Sequential Function Chart) Class Generator
+==============================================
+
+This module provides functionality to read SFC definitions from text files
+and create Python class instances for SFC manipulation and execution.
+"""
+
+import re
+import json
+from typing import List, Dict, Any, Optional
+
+
+class SFCParseError(Exception):
+    """Custom exception for SFC parsing errors"""
+    pass
 
 
 class SFC:
-    def __init__(self, steps, variables, transitions, initial_step):
+    """
+    Sequential Function Chart (SFC) class for representing and manipulating
+    SFC structures with steps, transitions, variables, and execution logic.
+    """
+    
+    def __init__(self, steps: List[Dict[str, str]], 
+                 variables: List[str], 
+                 transitions: List[Dict[str, str]], 
+                 initial_step: str):
+        """
+        Initialize SFC instance with all required components.
+        
+        Args:
+            steps: List of step dictionaries with name and function
+            variables: List of variable names used in the SFC
+            transitions: List of transition dictionaries with src, tgt, guard
+            initial_step: Name of the initial step
+        """
         self.steps = steps
         self.variables = variables
         self.transitions = transitions
         self.initial_step = initial_step
-    def step_names(self):
+        
+        # Validate SFC structure
+        self._validate_sfc()
+    
+    def _validate_sfc(self) -> None:
+        """Validate SFC structure and relationships"""
+        # Implementation details for validation
+        pass
+    
+    def step_names(self) -> List[str]:
+        """Return list of all step names"""
         return [step["name"] for step in self.steps]
-    def step_functions(self):
+    
+    def step_functions(self) -> Dict[str, str]:
+        """Return dictionary mapping step names to their functions"""
         return {step["name"]: step["function"] for step in self.steps}
+    
+    def get_transitions_from_step(self, step_name: str) -> List[Dict[str, str]]:
+        """Get all transitions originating from a specific step"""
+        return [t for t in self.transitions if t["src"] == step_name]
+    
+    def get_transitions_to_step(self, step_name: str) -> List[Dict[str, str]]:
+        """Get all transitions targeting a specific step"""
+        return [t for t in self.transitions if t["tgt"] == step_name]
+    
+    def validate_connectivity(self) -> bool:
+        """Validate that all steps are properly connected"""
+        # Implementation for connectivity validation
+        pass
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert SFC to dictionary representation"""
+        return {
+            "steps": self.steps,
+            "variables": self.variables,
+            "transitions": self.transitions,
+            "initial_step": self.initial_step
+        }
+    
+    def __str__(self) -> str:
+        """String representation of SFC"""
+        return f"SFC(steps={len(self.steps)}, transitions={len(self.transitions)}, initial='{self.initial_step}')"
+    
+    def __repr__(self) -> str:
+        """Detailed representation of SFC"""
+        return f"SFC(steps={self.steps}, variables={self.variables}, transitions={self.transitions}, initial_step='{self.initial_step}')"
+
+
+class SFCFileReader:
+    """
+    Utility class for reading and parsing SFC definitions from text files.
+    """
+    
+    def __init__(self, file_path: str):
+        """
+        Initialize SFC file reader with file path.
+        
+        Args:
+            file_path: Path to the SFC text file
+        """
+        self.file_path = file_path
+        self.raw_content = ""
+        self.parsed_data = {}
+    
+    def read_file(self) -> str:
+        """
+        Read SFC file content safely.
+        
+        Returns:
+            Raw file content as string
+            
+        Raises:
+            SFCParseError: If file cannot be read
+        """
+        try:
+            with open(self.file_path, 'r', encoding='utf-8') as f:
+                self.raw_content = f.read()
+            return self.raw_content
+        except FileNotFoundError:
+            raise SFCParseError(f"SFC file not found: {self.file_path}")
+        except PermissionError:
+            raise SFCParseError(f"Permission denied reading file: {self.file_path}")
+        except Exception as e:
+            raise SFCParseError(f"Error reading SFC file: {e}")
+    
+    def parse_sfc_content(self) -> Dict[str, Any]:
+        """
+        Parse SFC content to extract components.
+        
+        Returns:
+            Dictionary containing parsed SFC components
+            
+        Raises:
+            SFCParseError: If parsing fails
+        """
+        if not self.raw_content:
+            self.read_file()
+        
+        try:
+            # Extract steps
+            steps_match = re.search(r'steps\d*\s*=\s*(\[.*?\])', self.raw_content, re.DOTALL)
+            if not steps_match:
+                raise SFCParseError("Could not find steps definition")
+            
+            # Extract transitions
+            transitions_match = re.search(r'transitions\d*\s*=\s*(\[.*?\])', self.raw_content, re.DOTALL)
+            if not transitions_match:
+                raise SFCParseError("Could not find transitions definition")
+            
+            # Extract variables
+            variables_match = re.search(r'variables\s*=\s*(\[.*?\])', self.raw_content, re.DOTALL)
+            
+            # Extract initial step
+            initial_step_match = re.search(r'initial_step\s*=\s*["\']([^"\']+)["\']', self.raw_content)
+            
+            # Parse extracted components
+            steps = eval(steps_match.group(1))
+            transitions = eval(transitions_match.group(1))
+            variables = eval(variables_match.group(1)) if variables_match else []
+            initial_step = initial_step_match.group(1) if initial_step_match else steps[0]["name"]
+            
+            self.parsed_data = {
+                "steps": steps,
+                "transitions": transitions,
+                "variables": variables,
+                "initial_step": initial_step
+            }
+            
+            return self.parsed_data
+            
+        except Exception as e:
+            raise SFCParseError(f"Error parsing SFC content: {e}")
+    
+    def create_sfc_instance(self) -> SFC:
+        """
+        Create SFC instance from parsed data.
+        
+        Returns:
+            SFC instance
+            
+        Raises:
+            SFCParseError: If SFC creation fails
+        """
+        if not self.parsed_data:
+            self.parse_sfc_content()
+        
+        try:
+            return SFC(
+                steps=self.parsed_data["steps"],
+                variables=self.parsed_data["variables"],
+                transitions=self.parsed_data["transitions"],
+                initial_step=self.parsed_data["initial_step"]
+            )
+        except Exception as e:
+            raise SFCParseError(f"Error creating SFC instance: {e}")
+
+
+def load_sfc_from_file(file_path: str) -> SFC:
+    """
+    Convenience function to load SFC from file.
+    
+    Args:
+        file_path: Path to SFC text file
+        
+    Returns:
+        SFC instance
+        
+    Raises:
+        SFCParseError: If loading fails
+    """
+    reader = SFCFileReader(file_path)
+    return reader.create_sfc_instance()
+
+
+# Example usage
+if __name__ == "__main__":
+    try:
+        # Load SFC from file
+        sfc = load_sfc_from_file("sample_sfc.txt")
+        
+        # Access SFC components
+        print(f"SFC loaded successfully: {sfc}")
+        print(f"Steps: {sfc.step_names()}")
+        print(f"Variables: {sfc.variables}")
+        print(f"Initial step: {sfc.initial_step}")
+        
+        # Validate SFC
+        if sfc.validate_connectivity():
+            print("SFC structure is valid")
+        else:
+            print("SFC structure has issues")
+            
+    except SFCParseError as e:
+        print(f"SFC Error: {e}")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+```
+
+## Implementation Guidelines
+
+### 1. File Processing Best Practices
+- **Encoding Handling**: Always specify UTF-8 encoding
+- **Exception Management**: Catch and handle specific exceptions
+- **Resource Management**: Use context managers for file operations
+- **Path Validation**: Validate file paths before processing
+
+### 2. Parsing Strategy
+- **Regex Patterns**: Use robust regex for content extraction
+- **Safe Evaluation**: Consider security implications of eval()
+- **Fallback Values**: Provide sensible defaults for missing data
+- **Validation**: Verify parsed data integrity
+
+### 3. Class Design Principles
+- **Single Responsibility**: Each class has a clear purpose
+- **Encapsulation**: Hide internal implementation details
+- **Extensibility**: Design for future enhancements
+- **Documentation**: Include comprehensive docstrings
+
+### 4. Error Handling Strategy
+- **Custom Exceptions**: Create specific exception types
+- **Informative Messages**: Provide clear error descriptions
+- **Graceful Degradation**: Handle partial data scenarios
+- **Logging**: Include appropriate logging for debugging
+
+## Validation Criteria
+
+### Code Quality Checklist
+- [ ] PEP 8 compliance (formatting, naming conventions)
+- [ ] Type hints for all method parameters and returns
+- [ ] Comprehensive docstrings for all classes and methods
+- [ ] Proper exception handling with specific error types
+- [ ] Resource management (file handling) with context managers
+
+### Functionality Checklist
+- [ ] Safe file reading with error handling
+- [ ] Robust content parsing with validation
+- [ ] Complete SFC class with all required methods
+- [ ] Data integrity validation
+- [ ] Convenient utility functions for common operations
+
+### Testing Requirements
+- [ ] Handle malformed input files gracefully
+- [ ] Validate SFC structure and relationships
+- [ ] Test with various SFC configurations
+- [ ] Verify error messages are informative
+- [ ] Ensure memory-efficient processing
+
+## Expected Deliverables
+
+### Primary Output
+1. **Complete Python Module**: Full implementation with all classes and functions
+2. **Error Handling**: Robust exception management throughout
+3. **Documentation**: Comprehensive docstrings and comments
+4. **Usage Examples**: Clear examples of how to use the generated code
+
+### Code Structure
+- **Main SFC Class**: Core functionality for SFC manipulation
+- **File Reader Class**: Specialized file processing capabilities
+- **Utility Functions**: Convenience functions for common operations
+- **Example Usage**: Demonstration of typical usage patterns
+
+## Success Metrics
+
+### Technical Quality
+- **Code Coverage**: All major code paths tested
+- **Error Handling**: Graceful handling of edge cases
+- **Performance**: Efficient processing of large SFC files
+- **Maintainability**: Clean, readable, and extensible code
+
+### User Experience
+- **Ease of Use**: Simple API for common operations
+- **Clear Documentation**: Well-documented methods and classes
+- **Informative Errors**: Helpful error messages for debugging
+- **Flexibility**: Adaptable to various SFC formats and requirements
+
+**Generate production-ready Python code that provides a robust, user-friendly interface for working with SFC definitions from text files.**
