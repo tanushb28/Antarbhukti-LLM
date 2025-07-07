@@ -5,12 +5,11 @@ steps = [
         {"name": "CheckRange", "function": ""},
         {"name": "SetError", "function": "HexValue := -1; Convert := 0"},
         {"name": "ConvertLoop", "function": ""},
-        {"name": "BuildHex", "function": "TempHex := TempDecValue mod 15; HexValue := HexValue * 16 + TempHex; TempDecValue := TempDecValue / 16"},
+        {"name": "BuildHex", "function": "TempHex := TempDecValue mod 16; HexValue := HexValue * 16 + TempHex; TempDecValue := TempDecValue / 16"},
         {"name": "CheckExit", "function": ""},
         {"name": "SetSuccess", "function": "Convert := 1"},
         {"name": "End", "function": ""}
     ]
-
 transitions = [
         {"src": "Init", "tgt": "CheckZero", "guard": "init"},
         {"src": "CheckZero", "tgt": "SetZero", "guard": "DecValue = 0"},
@@ -23,9 +22,8 @@ transitions = [
         {"src": "BuildHex", "tgt": "CheckExit", "guard": "1"},
         {"src": "CheckExit", "tgt": "SetSuccess", "guard": "TempDecValue = 0"},
         {"src": "SetSuccess", "tgt": "End", "guard": "1"},
-        {"src": "CheckExit", "tgt": "ConvertLoop", "guard": "TempDecValue <> 0; i := i - 1"}
+        {"src": "CheckExit", "tgt": "ConvertLoop", "guard": "TempDecValue <> 0; i := i - 1"},
+        {"src": "ConvertLoop", "tgt": "BuildHex", "guard": "(>= i 0)"}
     ]
-        
-variables=["DecValue", "HexValue", "TempDecValue", "TempHex", "HexChars", "i", "Convert"],
-        
-initial_step="Init"
+variables = ["DecValue", "HexValue", "TempDecValue", "TempHex", "HexChars", "i", "Convert"]
+initial_step = "Init"

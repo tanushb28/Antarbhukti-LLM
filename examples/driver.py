@@ -91,6 +91,7 @@ def main():
 
         improved = llm_mng.improve_sfc2(
             sfc1, sfc2, verifier.get_unmatched_paths(),
+            prompt_template_path="../data/iterative_prompting.txt",
             prompt_path=f"../data/prompt_refiner_iter{iter_count+1}.txt",
             sfc2_path="../data/dec2hex_mod.txt"
         )
