@@ -1,12 +1,12 @@
-# AntarBhukti
+# AntarBhukti-LLM
 
-AntarBhukti is a verification tool for evolving software, designed to verify changes between two versions of SFCs (Sequential Function Charts) — a source and a target. It includes enhanced LLM prompts for superior SFC generation quality.
+AntarBhukti is a verification tool for evolving software, designed to verify changes between two versions of SFCs (Sequential Function Charts). It includes enhanced LLM prompts for superior SFC generation quality with **proven 240% quality improvements**.
 
 ## Features
 
 - **Compare SFCs:** Verify software evolution using textual SFC representations
 - **OSCAT Benchmarks:** Works on all 80 OSCAT benchmark applications  
-- **Enhanced LLM Prompts:** Production-ready GPT-4 prompts with proven 240% quality improvements
+- **Enhanced LLM Prompts:** Production-ready GPT-4 prompts with proven effectiveness
 - **Comprehensive Testing:** Automated validation framework for prompt effectiveness
 - **Superior Performance:** Outperforms verifaps in coverage and flexibility
 
@@ -24,9 +24,10 @@ conda env create -f environment.yml && conda activate antarbhukti
 # 3. Install package
 pip install -e .
 
-# 4. Configure environment
-cp .env.template .env
-nano .env  # Add your Azure OpenAI credentials
+# 4. Configure environment variables
+export AZURE_OPENAI_ENDPOINT=your-endpoint
+export AZURE_OPENAI_API_KEY=your-api-key
+export AZURE_OPENAI_API_VERSION=2023-12-01-preview
 
 # 5. Test enhanced prompts
 python prompt_evaluation/verification/run_prompt_verification.py
@@ -65,40 +66,8 @@ prompt_evaluation/
 └── docs/              # Documentation and guides
 ```
 
-### Usage
+### Quick Commands
 
-```bash
-# Quick quality verification
-python prompt_evaluation/verification/run_prompt_verification.py
-
-# Comprehensive analysis
-python prompt_evaluation/verification/verify_prompt_improvements.py
-
-# A/B testing demonstration
-python prompt_evaluation/testing/ab_test_example.py
-
-# Framework effectiveness demo
-python prompt_evaluation/testing/demonstrate_framework_effectiveness.py
-
-# Complete testing suite
-python prompt_evaluation/testing/sfc_prompt_tester.py
-```
-
-### Proven Results
-
-**A/B Test Results:**
-- Original prompts: 25/100 quality score
-- Enhanced prompts: 85/100 quality score  
-- **+240% improvement** with 100% success rate
-- Critical bugs prevented (e.g., mod 16 vs mod 15 fix)
-
-## Framework Usage Commands & Effectiveness Results 📊
-
-### Comprehensive Framework Testing
-
-Our prompt evaluation framework has been rigorously tested and validated with concrete evidence of effectiveness:
-
-#### Quick Commands
 ```bash
 # Verify all enhanced prompts (30 seconds)
 python prompt_evaluation/verification/run_prompt_verification.py
@@ -116,7 +85,8 @@ python prompt_evaluation/testing/ab_test_example.py
 python prompt_evaluation/testing/sfc_prompt_tester.py
 ```
 
-#### View Results
+### View Results
+
 ```bash
 # Check A/B test results
 cat prompt_evaluation/results/ab_test_results.json
@@ -128,101 +98,26 @@ cat prompt_evaluation/results/framework_evidence_report.md
 cat prompt_evaluation/docs/PROMPT_TESTING_GUIDE.md
 ```
 
-### 🎯 Proven Effectiveness Results
+## Proven Effectiveness 📊
 
-#### **Quantitative Improvements**
-- **Quality Score**: 25 → 85 (+240% improvement)
-- **Error Reduction**: 5-6 errors → 0 errors (100% reduction)
-- **Task Completion**: 40% → 95% (+137% improvement)
-- **Processing Speed**: 45s → 30s (33% faster)
-- **Enhancement Factor**: 13.8x content size vs original prompts
+### A/B Test Results
+- **Original prompts:** 25/100 quality score
+- **Enhanced prompts:** 85/100 quality score  
+- **Improvement:** +240% with 100% success rate
+- **Critical bugs prevented:** e.g., mod 16 vs mod 15 fix
 
-#### **A/B Testing Evidence**
-- **Success Rate**: 100% (all tests showed improvement)
-- **Average Enhancement**: 13.8x content size vs original
-- **Critical Bug Fixes**: mod 15 → mod 16 correction automatically caught
-- **Path Coverage**: 100% of missing SFC paths now covered
+### Quantitative Improvements
+- **Quality Score:** 25 → 85 (+240% improvement)
+- **Error Reduction:** 5-6 errors → 0 errors (100% reduction)
+- **Task Completion:** 40% → 95% (+137% improvement)
+- **Processing Speed:** 45s → 30s (33% faster)
 
-#### **Validation Metrics**
-- **Files Enhanced**: 5/5 successfully validated
-- **Average Quality Score**: 99.0/100
-- **Production Ready**: ✅ YES - Zero issues found
-- **Framework Status**: ✅ PROVEN EFFECTIVE
+### Framework Status
+- **Files Enhanced:** 5/5 successfully validated
+- **Production Ready:** ✅ YES - Zero issues found
+- **Framework Status:** ✅ PROVEN EFFECTIVE
 
-### 🚀 Real-World Impact
-
-#### **Before Enhancement**
-- Basic prompt templates (~0.5KB each)
-- Limited structure and guidance
-- High error rates (40% syntax errors)
-- Inconsistent results (±30% quality variance)
-
-#### **After Enhancement**
-- Comprehensive frameworks (3-14KB each)
-- Professional structure with validation
-- Minimal errors (8% syntax errors)
-- Consistent high-quality results (±10% variance)
-
-### 📈 Expected Benefits in Production
-
-When using enhanced prompts with GPT-4:
-- **80% reduction** in syntax errors
-- **42% improvement** in task completion rates
-- **67% improvement** in output consistency
-- **Professional-grade** code generation with proper error handling
-
-### 🏆 Framework Components
-
-#### **Testing Framework** (`prompt_evaluation/testing/`)
-- **ab_test_example.py** - A/B testing with real SFC data
-- **demonstrate_framework_effectiveness.py** - Quantitative improvements demo
-- **sfc_prompt_tester.py** - Complete testing suite
-
-#### **Verification Tools** (`prompt_evaluation/verification/`)
-- **run_prompt_verification.py** - Quick quality assessment
-- **verify_prompt_improvements.py** - Comprehensive analysis
-
-#### **Evidence & Results** (`prompt_evaluation/results/`)
-- **ab_test_results.json** - A/B testing data
-- **framework_effectiveness_results.json** - Quantitative metrics
-- **framework_evidence_report.md** - Executive summary
-
-### 💡 Usage Examples
-
-#### Basic Verification
-```bash
-# Get quick status of all prompts
-python prompt_evaluation/verification/run_prompt_verification.py
-
-# Output: 
-# ✅ Files Analyzed: 5/5
-# ✅ Average Quality Score: 99.0/100
-# ✅ Status: EXCELLENT
-```
-
-#### A/B Testing
-```bash
-# Compare original vs enhanced prompts
-python prompt_evaluation/testing/ab_test_example.py
-
-# Shows concrete improvements:
-# - Original: 25/100 quality score
-# - Enhanced: 85/100 quality score
-# - Result: +240% improvement
-```
-
-#### Framework Effectiveness
-```bash
-# Demonstrate quantitative improvements
-python prompt_evaluation/testing/demonstrate_framework_effectiveness.py
-
-# Shows measurable results:
-# - Size Factor: 6.5x-15.1x larger prompts
-# - Quality Jump: 1320%-1400% improvement
-# - Error Reduction: 80%-100% fewer errors
-```
-
-## Core Application
+## Basic Usage
 
 ### Installation
 
@@ -239,7 +134,7 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-### Basic Usage
+### Core Application
 
 ```python
 from antarbhukti.llm_manager import LLMManager
@@ -267,12 +162,12 @@ pytest
 
 ## Environment Variables
 
-**⚠️ Required:** Configure Azure OpenAI credentials in `.env`:
+**⚠️ Required:** Configure Azure OpenAI credentials:
 
 ```bash
-AZURE_OPENAI_ENDPOINT=your-endpoint
-AZURE_OPENAI_API_KEY=your-api-key
-AZURE_OPENAI_API_VERSION=2023-12-01-preview
+export AZURE_OPENAI_ENDPOINT=your-endpoint
+export AZURE_OPENAI_API_KEY=your-api-key
+export AZURE_OPENAI_API_VERSION=2023-12-01-preview
 ```
 
 ## Directory Structure
