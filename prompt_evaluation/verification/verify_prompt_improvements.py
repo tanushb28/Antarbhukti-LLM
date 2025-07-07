@@ -15,8 +15,14 @@ import argparse
 from typing import Dict, List, Tuple, Any
 from dataclasses import dataclass
 from pathlib import Path
-import matplotlib.pyplot as plt
 from datetime import datetime
+
+# Optional matplotlib for visualization
+try:
+    import matplotlib.pyplot as plt
+    MATPLOTLIB_AVAILABLE = True
+except ImportError:
+    MATPLOTLIB_AVAILABLE = False
 
 
 @dataclass
@@ -38,7 +44,7 @@ class PromptAnalysis:
 class PromptQualityAnalyzer:
     """Comprehensive analyzer for prompt quality and improvements"""
     
-    def __init__(self, data_dir: str = "data"):
+    def __init__(self, data_dir: str = "../../data"):
         self.data_dir = Path(data_dir)
         self.enhanced_prompts = [
             "iterative_prompting.txt",

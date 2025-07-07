@@ -92,18 +92,18 @@ def main():
     
     # Enhanced prompt files to check
     enhanced_prompts = [
-        "data/iterative_prompting.txt",
-        "data/prompt_refiner.txt", 
-        "data/prompt_refiner_iter1.txt",
-        "data/PromptForUpgrade.txt",
-        "data/PythonCodePrompt.txt"
+        "../../data/iterative_prompting.txt",
+        "../../data/prompt_refiner.txt", 
+        "../../data/prompt_refiner_iter1.txt",
+        "../../data/PromptForUpgrade.txt",
+        "../../data/PythonCodePrompt.txt"
     ]
     
     framework_files = [
-        "data/prompt_evaluation_framework.txt",
-        "sfc_prompt_tester.py",
+        "../framework/prompt_evaluation_framework.txt",
+        "../testing/sfc_prompt_tester.py",
         "verify_prompt_improvements.py",
-        "PROMPT_TESTING_GUIDE.md"
+        "../docs/PROMPT_TESTING_GUIDE.md"
     ]
     
     total_score = 0

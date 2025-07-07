@@ -399,15 +399,15 @@ def main():
     
     # Define prompt files to compare
     original_prompts = [
-        "data/iterative_prompting_original.txt",  # You'd need to save original versions
-        "data/prompt_refiner_original.txt",
-        "data/PromptForUpgrade_original.txt"
+        "../../data/iterative_prompting_original.txt",  # You'd need to save original versions
+        "../../data/prompt_refiner_original.txt",
+        "../../data/PromptForUpgrade_original.txt"
     ]
     
     improved_prompts = [
-        "data/iterative_prompting.txt",
-        "data/prompt_refiner.txt", 
-        "data/PromptForUpgrade.txt"
+        "../../data/iterative_prompting.txt",
+        "../../data/prompt_refiner.txt", 
+        "../../data/PromptForUpgrade.txt"
     ]
     
     # Run comparison for each prompt type
