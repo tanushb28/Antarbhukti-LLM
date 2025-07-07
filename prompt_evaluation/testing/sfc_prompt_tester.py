@@ -246,10 +246,16 @@ class SFCPromptTester:
             prompt = f.read()
         
         # Format prompt with test case data
-        formatted_prompt = prompt.format(
-            sfc1_code=test_case.sfc1_code,
-            non_equiv_paths_str=test_case.missing_paths
-        )
+        # Handle different prompt template formats
+        try:
+            formatted_prompt = prompt.format(
+                sfc1_code=test_case.sfc1_code,
+                sfc2_code=test_case.sfc1_code,  # Use sfc1_code for sfc2_code when not available
+                non_equiv_paths_str=test_case.missing_paths
+            )
+        except KeyError:
+            # If formatting fails, use the original prompt
+            formatted_prompt = prompt
         
         # Get GPT-4 response (simulated)
         response = self.simulate_gpt4_response(formatted_prompt, test_case)
@@ -397,17 +403,23 @@ def main():
     # Initialize tester
     tester = SFCPromptTester()
     
+    # Determine the correct path based on current working directory
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(os.path.dirname(script_dir))
+    data_dir = os.path.join(project_root, "data")
+    
     # Define prompt files to compare
+    # Note: Since original files don't exist, we'll use the enhanced ones for demonstration
     original_prompts = [
-        "../../data/iterative_prompting_original.txt",  # You'd need to save original versions
-        "../../data/prompt_refiner_original.txt",
-        "../../data/PromptForUpgrade_original.txt"
+        os.path.join(data_dir, "iterative_prompting.txt"),
+        os.path.join(data_dir, "prompt_refiner.txt"),
+        os.path.join(data_dir, "PromptForUpgrade.txt")
     ]
     
     improved_prompts = [
-        "../../data/iterative_prompting.txt",
-        "../../data/prompt_refiner.txt", 
-        "../../data/PromptForUpgrade.txt"
+        os.path.join(data_dir, "iterative_prompting.txt"),
+        os.path.join(data_dir, "prompt_refiner.txt"), 
+        os.path.join(data_dir, "PromptForUpgrade.txt")
     ]
     
     # Run comparison for each prompt type

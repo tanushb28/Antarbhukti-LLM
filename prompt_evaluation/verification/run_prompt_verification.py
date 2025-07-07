@@ -90,20 +90,24 @@ def main():
     print("🚀 Running Prompt Verification Suite")
     print("=" * 50)
     
+    # Get the directory of this script
+    script_dir = Path(__file__).parent
+    project_root = script_dir.parent.parent
+    
     # Enhanced prompt files to check
     enhanced_prompts = [
-        "../../data/iterative_prompting.txt",
-        "../../data/prompt_refiner.txt", 
-        "../../data/prompt_refiner_iter1.txt",
-        "../../data/PromptForUpgrade.txt",
-        "../../data/PythonCodePrompt.txt"
+        str(project_root / "data" / "iterative_prompting.txt"),
+        str(project_root / "data" / "prompt_refiner.txt"), 
+        str(project_root / "data" / "PromptForUpgrade.txt"),
+        str(project_root / "data" / "PythonCodePrompt.txt"),
+        str(project_root / "data" / "prompt_evaluation_framework.txt")
     ]
     
     framework_files = [
-        "../framework/prompt_evaluation_framework.txt",
-        "../testing/sfc_prompt_tester.py",
-        "verify_prompt_improvements.py",
-        "../docs/PROMPT_TESTING_GUIDE.md"
+        str(script_dir.parent / "framework" / "prompt_evaluation_framework.txt"),
+        str(script_dir.parent / "testing" / "sfc_prompt_tester.py"),
+        str(script_dir / "verify_prompt_improvements.py"),
+        str(script_dir.parent / "docs" / "PROMPT_TESTING_GUIDE.md")
     ]
     
     total_score = 0

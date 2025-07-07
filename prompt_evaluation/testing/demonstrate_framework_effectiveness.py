@@ -8,6 +8,7 @@ by showing concrete before/after examples with measurable improvements.
 """
 
 import json
+import os
 import re
 from typing import Dict, List, Tuple
 from dataclasses import dataclass
@@ -143,7 +144,12 @@ class SFC:
         # Example 1: Iterative Prompting Enhancement
         original_prompt = self.original_prompts["iterative_prompting.txt"]
         
-        with open("../../data/iterative_prompting.txt", 'r') as f:
+        # Determine the correct path based on current working directory
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.dirname(os.path.dirname(script_dir))
+        data_path = os.path.join(project_root, "data", "iterative_prompting.txt")
+        
+        with open(data_path, 'r') as f:
             enhanced_prompt = f.read()
         
         orig_score, orig_features = self.analyze_prompt_quality(original_prompt)
@@ -171,7 +177,8 @@ class SFC:
         # Example 2: Python Code Prompt Enhancement  
         original_python = self.original_prompts["PythonCodePrompt.txt"]
         
-        with open("../../data/PythonCodePrompt.txt", 'r') as f:
+        python_data_path = os.path.join(project_root, "data", "PythonCodePrompt.txt")
+        with open(python_data_path, 'r') as f:
             enhanced_python = f.read()
         
         orig_py_score, orig_py_features = self.analyze_prompt_quality(original_python)
