@@ -11,7 +11,7 @@ AntarBhukti is a verification tool for evolving software, designed to verify cha
 - **Benchmark Suite:** Works on all 80 OSCAT benchmark applications.  
   - `benchmarks/Benchmark-Source-OSCAT.py` contains the source/original SFCs.  
   - `benchmarks/Benchmarks-Upgrade-OSCAT.py` contains the upgraded/target SFCs.
-- **Superior Performance:** Outperforms [verifaps](https://formal.kastel.kit.edu/~weigl/verifaps/index.html) in coverage and flexibility.
+- **Superior Performance:** Outperforms [verifaps](https://formal.kastel.kit.edu/verifaps/index.html) in coverage and flexibility.
 - **Open ST Reference:** Reference ST code for the OSCAT library is available in the [SamaTulyata4PLC](https://github.com/soumyadipcsis/SamaTulyata4PLC) repository.
 
 ---
@@ -29,9 +29,11 @@ cd Antarbhukti-LLM
 conda env create -f environment.yml && conda activate antarbhukti
 # OR: pip install -r requirements.txt
 
-# 3. Install package and run tests
+# 3. Install package
 pip install -e .
-pytest
+
+# 4. (Optional) Set up environment variables and system dependencies
+python setup_helper.py
 ```
 
 ## Getting Started
@@ -42,7 +44,8 @@ pytest
 - `examples/example_usage.py` - Usage examples
 - `benchmarks/` - Benchmark suite
 - `data/` - Sample SFC data files
-- `setup.py` - Installation script
+- `setup.py` - Package configuration and installation
+- `setup_helper.py` - Environment setup helper script
 
 ### Prerequisites
 
@@ -50,6 +53,7 @@ pytest
 - [Z3 SMT solver](https://github.com/Z3Prover/z3) (Python bindings)
 - Azure OpenAI credentials (for LLM features)
 - Conda (recommended) or pip for environment management
+- Graphviz (optional, for visualization features)
 
 ### Installation
 
@@ -72,10 +76,19 @@ conda activate antarbhukti
 pip install -e .
 ```
 
-4. Set up environment variables:
+4. (Optional) Set up environment variables and system dependencies:
 ```sh
-cp .env.template .env
+python setup_helper.py
+```
+This will:
+- Create `.env` file from template (if not exists)
+- Install Graphviz system dependency (if needed)
+- Verify Python version compatibility
+
+5. Configure your Azure OpenAI credentials:
+```sh
 # Edit .env with your Azure OpenAI credentials
+nano .env  # or use your preferred editor
 ```
 
 #### Option 2: Using pip
@@ -92,16 +105,46 @@ python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-3. Install dependencies:
+3. Install dependencies and package:
 ```sh
 pip install -r requirements.txt
 pip install -e .
 ```
 
-4. Set up environment variables:
+4. (Optional) Set up environment variables and system dependencies:
+```sh
+python setup_helper.py
+```
+
+5. Configure your Azure OpenAI credentials:
+```sh
+# Edit .env with your Azure OpenAI credentials
+nano .env  # or use your preferred editor
+```
+
+### Manual Setup (Alternative)
+
+If you prefer to set up manually without using `setup_helper.py`:
+
+1. Create environment file:
 ```sh
 cp .env.template .env
 # Edit .env with your Azure OpenAI credentials
+```
+
+2. Install Graphviz (for visualization features):
+```sh
+# macOS
+brew install graphviz
+
+# Ubuntu/Debian
+sudo apt-get install graphviz
+
+# CentOS/RHEL
+sudo yum install graphviz
+
+# Windows
+# Download and install from https://graphviz.org/download/
 ```
 
 ### Environment Management

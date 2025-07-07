@@ -2,124 +2,72 @@
 """
 Setup script for AntarBhukti
 
-This script helps users install dependencies and set up the environment
-for the AntarBhukti SFC verification tool.
+This script configures the AntarBhukti SFC verification tool for installation.
 """
 
+from setuptools import setup, find_packages
 import os
-import sys
-import subprocess
-import platform
 
-def run_command(command, description):
-    """Run a command and handle errors"""
-    print(f"Running: {description}")
-    try:
-        result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
-        print(f"✓ {description} completed successfully")
-        return True
-    except subprocess.CalledProcessError as e:
-        print(f"✗ {description} failed: {e}")
-        if e.stdout:
-            print(f"stdout: {e.stdout}")
-        if e.stderr:
-            print(f"stderr: {e.stderr}")
-        return False
+# Read the contents of your README file
+this_directory = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
-def check_python_version():
-    """Check if Python version is compatible"""
-    print("Checking Python version...")
-    version = sys.version_info
-    if version.major < 3 or (version.major == 3 and version.minor < 8):
-        print(f"✗ Python 3.8+ required, but you have {version.major}.{version.minor}")
-        return False
-    print(f"✓ Python {version.major}.{version.minor}.{version.micro} is compatible")
-    return True
+# Read requirements from requirements.txt
+def parse_requirements(filename):
+    """Parse requirements from requirements.txt file."""
+    with open(filename, 'r') as f:
+        return [line.strip() for line in f 
+                if line.strip() and not line.startswith('#')]
 
-def install_dependencies():
-    """Install Python dependencies"""
-    print("\nInstalling Python dependencies...")
-    return run_command(
-        f"{sys.executable} -m pip install -r requirements.txt",
-        "Installing Python packages"
-    )
+requirements = parse_requirements('requirements.txt')
 
-def install_graphviz():
-    """Install Graphviz for visualization"""
-    print("\nInstalling Graphviz...")
-    system = platform.system().lower()
-    
-    if system == "darwin":  # macOS
-        return run_command("brew install graphviz", "Installing Graphviz (macOS)")
-    elif system == "linux":
-        # Try different package managers
-        for cmd in ["apt-get install -y graphviz", "yum install -y graphviz", "pacman -S graphviz"]:
-            if run_command(f"sudo {cmd}", "Installing Graphviz (Linux)"):
-                return True
-        return False
-    elif system == "windows":
-        print("Please install Graphviz manually from https://graphviz.org/download/")
-        print("Make sure to add it to your PATH")
-        return True
-    else:
-        print(f"Unknown system: {system}")
-        return False
-
-def create_env_file():
-    """Create .env file template"""
-    print("\nSetting up environment file...")
-    
-    if not os.path.exists(".env"):
-        if os.path.exists(".env.template"):
-            # Copy the template
-            with open(".env.template", "r") as src:
-                with open(".env", "w") as dst:
-                    dst.write(src.read())
-            print("✓ Created .env file from template")
-            print("  Please edit .env file with your Azure OpenAI credentials")
-        else:
-            print("✗ .env.template file not found")
-            return False
-    else:
-        print("✓ .env file already exists")
-    
-    return True
-
-def main():
-    """Main setup function"""
-    print("=== AntarBhukti Setup ===\n")
-    
-    success = True
-    
-    # Check Python version
-    if not check_python_version():
-        success = False
-    
-    # Install Python dependencies
-    if success and not install_dependencies():
-        success = False
-    
-    # Install Graphviz
-    if success and not install_graphviz():
-        print("⚠ Graphviz installation failed, but you can install it manually")
-    
-    # Create .env file
-    if success and not create_env_file():
-        success = False
-    
-    print("\n=== Setup Summary ===")
-    if success:
-        print("✓ Setup completed successfully!")
-        print("\nNext steps:")
-        print("1. Edit .env file with your Azure OpenAI credentials")
-        print("2. Run the example: python examples/example_usage.py")
-        print("3. Try the driver: python examples/driver.py")
-        print("4. Explore the benchmarks in the benchmarks/ directory")
-    else:
-        print("✗ Setup encountered errors")
-        print("Please fix the issues above and try again")
-    
-    return 0 if success else 1
-
-if __name__ == "__main__":
-    sys.exit(main()) 
+setup(
+    name="antarbhukti",
+    version="1.0.0",
+    author="AntarBhukti Team",
+    author_email="your-email@example.com",
+    description="SFC verification tool using LLM for sequential function charts",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/your-username/Antarbhukti-LLM",
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+    ],
+    python_requires=">=3.8",
+    install_requires=requirements,
+    extras_require={
+        "dev": [
+            "pytest>=7.0.0",
+            "pytest-cov>=4.0.0",
+            "pytest-mock>=3.10.0",
+            "flake8>=6.0.0",
+            "black>=23.0.0",
+            "isort>=5.12.0",
+            "mypy>=1.0.0",
+        ],
+        "security": [
+            "bandit>=1.7.0",
+            "safety>=2.3.0",
+        ],
+    },
+    entry_points={
+        "console_scripts": [
+            "antarbhukti=antarbhukti.sfc:main",
+        ],
+    },
+    include_package_data=True,
+    zip_safe=False,
+) 
