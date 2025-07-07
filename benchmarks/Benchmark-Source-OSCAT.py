@@ -89,7 +89,8 @@ oscat_examples = [
             {"src": "Set", "tgt": "Check", "guard": "True"},
             {"src": "Check", "tgt": "Count", "guard": "input == 0 and timer < delay"},
             {"src": "Count", "tgt": "Check", "guard": "True"},
-            {"src": "Check", "tgt": "Reset", "guard": "input == 0 and timer >= delay"},
+            {"src": "Check", "tgt": "Reset",
+                "guard": "input == 0 and timer >= delay"},
             {"src": "Reset", "tgt": "Check", "guard": "True"}
         ],
         "variables": ["input", "timer", "delay", "output", "init"]
@@ -335,7 +336,8 @@ oscat_examples = [
         "transitions": [
             {"src": "Init", "tgt": "Check", "guard": "init"},
             {"src": "Check", "tgt": "Pass", "guard": "input > upper or input < lower"},
-            {"src": "Check", "tgt": "Block", "guard": "input <= upper and input >= lower"},
+            {"src": "Check", "tgt": "Block",
+                "guard": "input <= upper and input >= lower"},
             {"src": "Pass", "tgt": "End", "guard": "True"},
             {"src": "Block", "tgt": "End", "guard": "True"}
         ],
@@ -846,8 +848,10 @@ oscat_examples = [
         ],
         "transitions": [
             {"src": "Init", "tgt": "Check", "guard": "init"},
-            {"src": "Check", "tgt": "Reset", "guard": "input < minval or input > maxval"},
-            {"src": "Check", "tgt": "End", "guard": "input >= minval and input <= maxval"},
+            {"src": "Check", "tgt": "Reset",
+                "guard": "input < minval or input > maxval"},
+            {"src": "Check", "tgt": "End",
+                "guard": "input >= minval and input <= maxval"},
             {"src": "Reset", "tgt": "End", "guard": "True"}
         ],
         "variables": ["input", "minval", "maxval", "out", "init"]

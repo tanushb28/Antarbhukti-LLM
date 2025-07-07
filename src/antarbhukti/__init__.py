@@ -9,15 +9,15 @@ __version__ = "1.0.0"
 __author__ = "soumyadipcsis"
 __email__ = "soumyadip.csis@gmail.com"
 
+from .genreport import GenReport
+from .llm_manager import LLM_Mgr
 # Main exports
 from .sfc import SFC
 from .sfc_verifier import Verifier
-from .genreport import GenReport
-from .llm_manager import LLM_Mgr
 
 __all__ = [
     "SFC",
-    "Verifier", 
+    "Verifier",
     "GenReport",
     "LLM_Mgr",
 ]

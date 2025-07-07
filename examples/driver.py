@@ -6,10 +6,11 @@
 # to perform containment analysis and generate reports.
 # """
 
-from src.antarbhukti.sfc import SFC
-from src.antarbhukti.sfc_verifier import Verifier
 from src.antarbhukti.genreport import GenReport
 from src.antarbhukti.llm_manager import LLM_Mgr
+from src.antarbhukti.sfc import SFC
+from src.antarbhukti.sfc_verifier import Verifier
+
 
 def check_pn_containment_html(verifier, gen_report, sfc1, pn1, sfc2, pn2):
     gen_report.sfc_to_dot(sfc1, "sfc1.dot")
@@ -21,7 +22,7 @@ def check_pn_containment_html(verifier, gen_report, sfc1, pn1, sfc2, pn2):
     gen_report.petrinet_to_dot(pn2, "pn2.dot")
     gen_report.dot_to_png("pn2.dot", "pn2.png")
 
-     # Prepare image paths for report
+    # Prepare image paths for report
 
     img_paths = {
         "sfc1": gen_report.img_to_base64("sfc1.png"),
@@ -30,12 +31,13 @@ def check_pn_containment_html(verifier, gen_report, sfc1, pn1, sfc2, pn2):
         "pn2": gen_report.img_to_base64("pn2.png")
     }
 
-     # Use GenReport instance to generate HTML report
+    # Use GenReport instance to generate HTML report
 
     return gen_report.generate_containment_html_report(
-        verifier.cutpoints1, verifier.cutpoints2, verifier.paths1, verifier.paths2, 
+        verifier.cutpoints1, verifier.cutpoints2, verifier.paths1, verifier.paths2,
         verifier.matches1, verifier.unmatched1, verifier.contained, img_paths
     )
+
 
 def main():
     """Main driver function for Petri Net containment analysis."""
@@ -43,15 +45,15 @@ def main():
     verifier = Verifier()
     gen_report = GenReport()
     llm_mng = LLM_Mgr()
-    
+
     # Load SFC models
-    
+
     sfc1 = SFC()
     sfc2 = SFC()
     sfc1.load("data/dec2hex.txt")
     sfc2.load("data/dec2hex_mod.txt")
 
-    # Iteration count for iterative prompting 
+    # Iteration count for iterative prompting
 
     for iter_count in range(10):
         print(f"\n--- Containment Iteration {iter_count + 1} ---")
@@ -66,8 +68,9 @@ def main():
 
         # Generate HTML report
 
-        html_report = check_pn_containment_html(verifier, gen_report, sfc1, pn1, sfc2, pn2)
-        
+        html_report = check_pn_containment_html(
+            verifier, gen_report, sfc1, pn1, sfc2, pn2)
+
         # Write report to file
 
         with open("pn_containment_report.html", "w") as f:
@@ -77,14 +80,15 @@ def main():
         # Demonstrate access to analysis results
 
         print(f"Model 1 contained in Model 2: {verifier.is_contained()}")
-        print(f"Number of unmatched paths: {len(verifier.get_unmatched_paths())}")
+        print(
+            f"Number of unmatched paths: {len(verifier.get_unmatched_paths())}")
         print(f"Number of matched paths: {len(verifier.get_matched_paths())}")
         if verifier.is_contained():
             print("Containment achieved.")
             break
-        
+
         # Call LLM to improve SFC2 if needed
-        
+
         improved = llm_mng.improve_sfc2(
             sfc1, sfc2, verifier.get_unmatched_paths(),
             prompt_path=f"prompt_refiner_iter{iter_count+1}.txt",
@@ -95,6 +99,7 @@ def main():
             break
         sfc2 = SFC()
         sfc2.load("data/dec2hex_mod.txt")
+
 
 if __name__ == "__main__":
     main()
