@@ -36,6 +36,28 @@ pip install -e .
 python setup_helper.py
 ```
 
+## Environment Variables Setup
+
+**⚠️ Important:** Before using AntarBhukti, you must configure environment variables with your API credentials.
+
+1. Copy the template file:
+   ```sh
+   cp .env.template .env
+   ```
+
+2. Edit the `.env` file with your actual values:
+   ```sh
+   nano .env  # or use your preferred editor
+   ```
+
+3. Update the following variables in `.env`:
+   - `AZURE_OPENAI_ENDPOINT` - Your Azure OpenAI service endpoint
+   - `AZURE_OPENAI_API_KEY` - Your Azure OpenAI API key
+   - `AZURE_OPENAI_API_VERSION` - API version (e.g., "2023-12-01-preview")
+   - Any other required environment variables as specified in the template
+
+The application will not function properly without these environment variables configured.
+
 ## Getting Started
 
 **Core files:**  
