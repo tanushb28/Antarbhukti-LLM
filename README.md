@@ -1,6 +1,6 @@
 # AntarBhukti-LLM
 
-AntarBhukti is a verification tool for evolving software, designed to verify changes between two versions of SFCs (Sequential Function Charts). It includes enhanced LLM prompts for superior SFC generation quality with **proven 240% quality improvements**.
+AntarBhukti is a verification tool for evolving software, designed to verify changes between two versions of SFCs (Sequential Function Charts). It includes enhanced LLM prompts for superior SFC generation quality.
 
 ## Features
 
