@@ -1,17 +1,84 @@
-Add the following logic to SFC2.
+# Sequential Function Chart (SFC) Equivalence Enhancement Task
 
-Input Format: 
+## Objective
+You are tasked with modifying SFC2 (Sequential Function Chart 2) to achieve behavioral equivalence with SFC1. This involves adding missing execution paths from SFC1 to SFC2's `steps2` and `transitions2` data structures.
 
-Paths in Model 1 with NO equivalent path in Model 2
-From	      To	        Transitions	    Z3 Condition	   Z3 Data Transformation
+## Context
+- **SFC (Sequential Function Chart)**: A programming model that defines states (steps) and transitions between them
+- **Equivalence Goal**: SFC2 should be able to execute all the same logical paths as SFC1
+- **Missing Paths**: The paths listed below exist in SFC1 but have no equivalent execution path in SFC2
 
+## Input Data
+
+### Non-Equivalent Paths (SFC1 → SFC2)
+```
+From Step    To Step      Transitions       Z3 Condition            Z3 Data Transformation
 {non_equiv_paths_str}
+```
 
-Here is the current SFC2 Python code:
+### Current SFC2 Implementation
+```python
 {sfc2_code}
+```
 
-Here is the SFC1 Python code for reference:
+### Reference SFC1 Implementation
+```python
 {sfc1_code}
+```
 
-Please modify steps2 and transitions2 so that all above paths are covered and equivalence will hold. 
-Only output valid Python code for steps2 and transitions2, nothing else.
+## Task Requirements
+
+### 1. Code Modifications
+- **Primary Target**: Modify `steps2` and `transitions2` data structures
+- **Preserve Existing Logic**: Do not remove or break existing functionality in SFC2
+- **Add Missing Paths**: Ensure all non-equivalent paths from the table above are covered
+
+### 2. Implementation Guidelines
+- **Data Structure Consistency**: Maintain the same format and structure as existing entries
+- **Variable Naming**: Use consistent naming conventions with the existing codebase
+- **Z3 Integration**: Properly implement Z3 conditions and data transformations as specified
+- **Error Handling**: Consider edge cases and potential conflicts
+
+### 3. Code Quality Standards
+- **Python Best Practices**: Follow PEP 8 and Python coding standards
+- **Clear Comments**: Add brief comments for complex logic or non-obvious additions
+- **Maintainability**: Write code that integrates cleanly with the existing structure
+
+## Expected Output Format
+
+Please provide:
+
+1. **Modified `steps2`**: The complete updated steps2 data structure
+2. **Modified `transitions2`**: The complete updated transitions2 data structure
+3. **Brief Explanation**: A concise explanation of key changes made (2-3 sentences)
+
+### Example Output Format:
+```python
+# Modified steps2
+steps2 = {
+    # ... existing entries ...
+    # New entries added for equivalence
+}
+
+# Modified transitions2
+transitions2 = {
+    # ... existing entries ...
+    # New entries added for equivalence
+}
+```
+
+**Key Changes Made**: [Brief explanation of the modifications and how they address the missing paths]
+
+## Success Criteria
+- All paths from the non-equivalent paths table are now executable in SFC2
+- No existing functionality in SFC2 is broken or removed
+- Code follows the established patterns and conventions
+- Z3 conditions and transformations are correctly implemented
+
+## Important Notes
+- Focus on **functional equivalence** rather than identical implementation
+- If there are conflicts between paths, prioritize maintaining existing SFC2 behavior
+- Ensure all new transitions have proper conditions and data transformations
+- Test your logic mentally to ensure the paths flow correctly
+
+Please implement the necessary changes to achieve SFC equivalence.
