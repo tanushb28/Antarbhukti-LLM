@@ -1,0 +1,56 @@
+```
+Given the following SFC1, modify it to create a new SFC (SFC2).
+
+***Upgraded*** Feature: 
+
+Upgrade rules for Factorial :
+
+    - adds the ability to track the number of loop iterations 
+      using the auxiliary variable temp and introduces a cleanup mechanism 
+      for resetting temp. (For Factorial) 
+
+
+   Upgrade rules-R1 for DEC TO HEX :
+
+
+    -  Uses only integers/arithmetic, ready for direct 
+       use in hardware/PLCs. (DEC TO HEX)
+  
+  
+    Upgrade rules-R2 for DEC TO HEX :
+
+    -   The HexValue should be a string, not a number 
+
+    -   Error handling should output "Error" instead of -1
+
+    -  The conversion should accumulate hexadecimal characters as a string
+
+
+****Use*** the following guidelines to construct SFC2:
+
+
+steps = [
+    { name: StepName1, function: FunctionOrAssignment1 },
+    { name: StepName2, function: FunctionOrAssignment2 },
+    ...
+]
+
+transitions = [
+    { src: StepNameX, tgt: StepNameY, guard: GuardCondition1 },
+    { src: StepNameY, tgt: StepNameZ, guard: GuardCondition2 },
+    ...
+]
+
+variables = [ var1, var2, var3, ... ]
+initial_step = StepName1
+
+
+****************************************************************
+
+
+Input SFC1: ***Paste the code ******
+
+
+
+
+*******No explanation is required************```

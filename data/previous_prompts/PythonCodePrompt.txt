@@ -1,0 +1,52 @@
+``` Given the following SFC code stored in a text file, create a python code that reads this text file and generate a Python class
+
+***Sample SFC code*** taken from a text file:
+
+steps1 = [
+        {"name": "Start", "function": "i := 1; fact := 1"},
+        {"name": "Check", "function": ""},
+        {"name": "Multiply", "function": "fact := fact * i"},
+        {"name": "Increment", "function": "i := i + 1"},
+        {"name": "End", "function": ""}
+    ]
+    transitions1 = [
+        {"src": "Start", "tgt": "Check", "guard": "init"},
+        {"src": "Check", "tgt": "Multiply", "guard": "i <= n"},
+        {"src": "Multiply", "tgt": "Increment", "guard": "True"},
+        {"src": "Increment", "tgt": "Check", "guard": "True"},
+        {"src": "Check", "tgt": "End", "guard": "i > n"}
+    ]
+    sfc1 = SFC(
+        steps=steps1, 
+        variables=["i", "fact", "n", "init"],
+        transitions=transitions1,
+        initial_step="Start"
+    )
+
+***Structure of the Python Code*** to be created from the text file
+steps = [
+    { name: StepName1, function: FunctionOrAssignment1 },
+    { name: StepName2, function: FunctionOrAssignment2 },
+    ...
+]
+
+transitions = [
+    { src: StepNameX, tgt: StepNameY, guard: GuardCondition1 },
+    { src: StepNameY, tgt: StepNameZ, guard: GuardCondition2 },
+    ...
+]
+
+variables = [ var1, var2, var3, ... ]
+initial_step = StepName1
+
+
+class SFC:
+    def __init__(self, steps, variables, transitions, initial_step):
+        self.steps = steps
+        self.variables = variables
+        self.transitions = transitions
+        self.initial_step = initial_step
+    def step_names(self):
+        return [step["name"] for step in self.steps]
+    def step_functions(self):
+        return {step["name"]: step["function"] for step in self.steps}
