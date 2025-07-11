@@ -1,0 +1,249 @@
+{
+  "analysis_timestamp": "2025-07-11T14:08:39.114964",
+  "strategies": [],
+  "comparisons": [
+    {
+      "prompt_type": "PythonCodePrompt.txt",
+      "best_quality": {
+        "strategy": "Accuracy-Effective",
+        "score": 100,
+        "cost": 0.003996
+      },
+      "most_cost_effective": {
+        "strategy": "Cost-Effective",
+        "cost": 0.000378,
+        "quality": 55
+      },
+      "best_efficiency": {
+        "strategy": "Cost-Effective",
+        "efficiency": 0.291005291005291,
+        "quality": 55,
+        "cost": 0.000378
+      },
+      "strategy_results": [
+        {
+          "strategy": "Cost-Effective",
+          "prompt_type": "PythonCodePrompt.txt",
+          "metrics": {
+            "word_count": 142,
+            "line_count": 42,
+            "char_count": 1117,
+            "token_count": 189,
+            "cost_estimate": 0.000378,
+            "quality_score": 55,
+            "quality_per_token": 0.291005291005291,
+            "cost_efficiency": 55000.0,
+            "features": {
+              "has_headers": true,
+              "has_examples": false,
+              "has_requirements": true,
+              "has_guidelines": false,
+              "has_error_handling": true,
+              "has_validation": false,
+              "has_documentation": false,
+              "has_code_blocks": true
+            }
+          },
+          "strategy_info": {
+            "description": "Minimal tokens, essential functionality only",
+            "target_use_case": "High-volume, cost-sensitive applications",
+            "file_path": "prompts/strategies/cost_effective/PythonCodePrompt.txt"
+          }
+        },
+        {
+          "strategy": "Sweet Spot",
+          "prompt_type": "PythonCodePrompt.txt",
+          "metrics": {
+            "word_count": 294,
+            "line_count": 76,
+            "char_count": 2323,
+            "token_count": 392,
+            "cost_estimate": 0.0007840000000000001,
+            "quality_score": 80,
+            "quality_per_token": 0.20408163265306123,
+            "cost_efficiency": 80000.0,
+            "features": {
+              "has_headers": true,
+              "has_examples": false,
+              "has_requirements": true,
+              "has_guidelines": false,
+              "has_error_handling": true,
+              "has_validation": true,
+              "has_documentation": true,
+              "has_code_blocks": true
+            }
+          },
+          "strategy_info": {
+            "description": "Balanced approach with key quality features",
+            "target_use_case": "General production use with moderate quality needs",
+            "file_path": "prompts/strategies/sweet_spot/PythonCodePrompt.txt"
+          }
+        },
+        {
+          "strategy": "Accuracy-Effective",
+          "prompt_type": "PythonCodePrompt.txt",
+          "metrics": {
+            "word_count": 1499,
+            "line_count": 394,
+            "char_count": 13979,
+            "token_count": 1998,
+            "cost_estimate": 0.003996,
+            "quality_score": 100,
+            "quality_per_token": 0.055055055055055056,
+            "cost_efficiency": 27527.527527527523,
+            "features": {
+              "has_headers": true,
+              "has_examples": true,
+              "has_requirements": true,
+              "has_guidelines": true,
+              "has_error_handling": true,
+              "has_validation": true,
+              "has_documentation": true,
+              "has_code_blocks": true
+            }
+          },
+          "strategy_info": {
+            "description": "Comprehensive, maximum quality approach",
+            "target_use_case": "Critical applications requiring highest quality",
+            "file_path": "prompts/strategies/accuracy_effective/PythonCodePrompt.txt"
+          }
+        }
+      ]
+    },
+    {
+      "prompt_type": "PromptForUpgrade.txt",
+      "best_quality": {
+        "strategy": "Sweet Spot",
+        "score": 85,
+        "cost": 0.0007520000000000001
+      },
+      "most_cost_effective": {
+        "strategy": "Cost-Effective",
+        "cost": 0.000372,
+        "quality": 55
+      },
+      "best_efficiency": {
+        "strategy": "Cost-Effective",
+        "efficiency": 0.2956989247311828,
+        "quality": 55,
+        "cost": 0.000372
+      },
+      "strategy_results": [
+        {
+          "strategy": "Cost-Effective",
+          "prompt_type": "PromptForUpgrade.txt",
+          "metrics": {
+            "word_count": 140,
+            "line_count": 42,
+            "char_count": 1005,
+            "token_count": 186,
+            "cost_estimate": 0.000372,
+            "quality_score": 55,
+            "quality_per_token": 0.2956989247311828,
+            "cost_efficiency": 55000.0,
+            "features": {
+              "has_headers": true,
+              "has_examples": false,
+              "has_requirements": false,
+              "has_guidelines": true,
+              "has_error_handling": true,
+              "has_validation": false,
+              "has_documentation": false,
+              "has_code_blocks": true
+            }
+          },
+          "strategy_info": {
+            "description": "Minimal tokens, essential functionality only",
+            "target_use_case": "High-volume, cost-sensitive applications",
+            "file_path": "prompts/strategies/cost_effective/PromptForUpgrade.txt"
+          }
+        },
+        {
+          "strategy": "Sweet Spot",
+          "prompt_type": "PromptForUpgrade.txt",
+          "metrics": {
+            "word_count": 282,
+            "line_count": 61,
+            "char_count": 2242,
+            "token_count": 376,
+            "cost_estimate": 0.0007520000000000001,
+            "quality_score": 85,
+            "quality_per_token": 0.22606382978723405,
+            "cost_efficiency": 85000.0,
+            "features": {
+              "has_headers": true,
+              "has_examples": false,
+              "has_requirements": true,
+              "has_guidelines": true,
+              "has_error_handling": true,
+              "has_validation": true,
+              "has_documentation": false,
+              "has_code_blocks": true
+            }
+          },
+          "strategy_info": {
+            "description": "Balanced approach with key quality features",
+            "target_use_case": "General production use with moderate quality needs",
+            "file_path": "prompts/strategies/sweet_spot/PromptForUpgrade.txt"
+          }
+        },
+        {
+          "strategy": "Accuracy-Effective",
+          "prompt_type": "PromptForUpgrade.txt",
+          "metrics": {
+            "word_count": 950,
+            "line_count": 185,
+            "char_count": 7382,
+            "token_count": 1266,
+            "cost_estimate": 0.002532,
+            "quality_score": 80,
+            "quality_per_token": 0.0631911532385466,
+            "cost_efficiency": 31595.576619273303,
+            "features": {
+              "has_headers": true,
+              "has_examples": false,
+              "has_requirements": true,
+              "has_guidelines": true,
+              "has_error_handling": true,
+              "has_validation": true,
+              "has_documentation": false,
+              "has_code_blocks": true
+            }
+          },
+          "strategy_info": {
+            "description": "Comprehensive, maximum quality approach",
+            "target_use_case": "Critical applications requiring highest quality",
+            "file_path": "prompts/strategies/accuracy_effective/PromptForUpgrade.txt"
+          }
+        }
+      ]
+    }
+  ],
+  "recommendations": {
+    "High-Volume Production": {
+      "recommended_strategy": "Cost-Effective",
+      "reasoning": "Minimizes token costs for large-scale operations",
+      "expected_outcome": "70-80% cost reduction with acceptable quality"
+    },
+    "General Production Use": {
+      "recommended_strategy": "Sweet Spot",
+      "reasoning": "Balances quality and cost for most use cases",
+      "expected_outcome": "Good quality with moderate cost increase"
+    },
+    "Critical Applications": {
+      "recommended_strategy": "Accuracy-Effective",
+      "reasoning": "Maximizes quality for high-stakes applications",
+      "expected_outcome": "Highest quality output regardless of cost"
+    },
+    "Development/Testing": {
+      "recommended_strategy": "Cost-Effective",
+      "reasoning": "Reduces costs during iterative development",
+      "expected_outcome": "Fast iteration with minimal expense"
+    },
+    "Client-Facing Applications": {
+      "recommended_strategy": "Sweet Spot",
+      "reasoning": "Professional quality without excessive costs",
+      "expected_outcome": "Reliable results with cost control"
+    }
+  }
+}

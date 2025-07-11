@@ -1,0 +1,76 @@
+# SFC Text File to Python Class - Sweet Spot Version
+
+## Mission
+Create robust Python code that reads SFC text files and generates well-structured Python classes with error handling and validation.
+
+## Input Format
+```python
+steps1 = [
+    {"name": "Start", "function": "i := 1; fact := 1"},
+    {"name": "Check", "function": ""},
+    {"name": "Multiply", "function": "fact := fact * i"},
+    {"name": "End", "function": ""}
+]
+
+transitions1 = [
+    {"src": "Start", "tgt": "Check", "guard": "init"},
+    {"src": "Check", "tgt": "Multiply", "guard": "i <= n"},
+    {"src": "Multiply", "tgt": "Check", "guard": "True"},
+    {"src": "Check", "tgt": "End", "guard": "i > n"}
+]
+```
+
+## Required Implementation
+
+### 1. SFC Class Structure
+```python
+class SFC:
+    def __init__(self, steps, variables, transitions, initial_step):
+        self.steps = steps
+        self.variables = variables
+        self.transitions = transitions
+        self.initial_step = initial_step
+        self._validate_sfc()
+    
+    def _validate_sfc(self):
+        """Validate SFC structure"""
+        # Check required fields exist
+        pass
+    
+    def step_names(self):
+        return [step["name"] for step in self.steps]
+    
+    def step_functions(self):
+        return {step["name"]: step["function"] for step in self.steps}
+```
+
+### 2. File Processing
+```python
+def read_sfc_file(filepath):
+    """Read and parse SFC file with error handling"""
+    try:
+        with open(filepath, 'r') as f:
+            content = f.read()
+        # Parse content and extract SFC components
+        return sfc_instance
+    except FileNotFoundError:
+        raise Exception(f"File not found: {filepath}")
+    except Exception as e:
+        raise Exception(f"Error reading file: {str(e)}")
+```
+
+## Quality Requirements
+- **Error Handling**: File I/O exceptions, malformed data
+- **Validation**: Check SFC structure integrity
+- **Clean Code**: PEP 8 compliance, clear naming
+- **Documentation**: Brief docstrings for main functions
+- **Type Safety**: Basic type checking where critical
+
+## Success Criteria
+- [ ] Reads SFC files safely
+- [ ] Parses all SFC components correctly
+- [ ] Generates valid SFC class
+- [ ] Includes proper error handling
+- [ ] Validates data integrity
+
+Generate complete, production-ready Python code with essential quality features. 

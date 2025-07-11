@@ -1,0 +1,42 @@
+# SFC Upgrade Task - Cost-Effective Version
+
+## Task
+Upgrade SFC1 to SFC2 by applying specific enhancement rules.
+
+## Upgrade Rules
+
+### Factorial Enhancement
+- Add loop iteration tracking with `temp` variable
+- Include cleanup mechanism for `temp`
+
+### Decimal-to-Hex Enhancement (R1)
+- Use only integer arithmetic (no floating point)
+- Hardware/PLC ready implementation
+
+### Decimal-to-Hex Enhancement (R2)
+- Change HexValue to string type
+- Replace error value -1 with "Error" string
+- Build hex string character by character
+
+## Required Format
+```python
+steps = [
+    {"name": "StepName1", "function": "assignment1"},
+    {"name": "StepName2", "function": "assignment2"},
+    # ... more steps
+]
+
+transitions = [
+    {"src": "StepNameX", "tgt": "StepNameY", "guard": "condition1"},
+    # ... more transitions
+]
+
+variables = ["var1", "var2", "var3"]
+initial_step = "StepName1"
+```
+
+## Input
+[Paste SFC1 code here]
+
+## Output
+Provide upgraded SFC2 with applied enhancement rules. No explanation needed. 

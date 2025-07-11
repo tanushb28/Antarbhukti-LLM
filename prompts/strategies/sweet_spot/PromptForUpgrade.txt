@@ -1,0 +1,61 @@
+# SFC System Upgrade Framework - Sweet Spot Version
+
+## Mission
+Transform SFC1 to enhanced SFC2 by applying domain-specific upgrade rules while maintaining functionality and adding new capabilities.
+
+## Domain-Specific Upgrade Rules
+
+### Factorial Enhancement
+**Upgrade**: Advanced Loop Tracking with Cleanup
+- **Add Tracking**: Implement auxiliary variable `temp` for loop iteration monitoring
+- **Cleanup Mechanism**: Add proper reset functionality for auxiliary variables
+- **State Management**: Enhanced state tracking throughout computation
+
+### Decimal-to-Hex Enhancement (R1)
+**Upgrade**: Hardware/PLC Optimization
+- **Integer Only**: Use only integer arithmetic (eliminate floating-point)
+- **PLC Ready**: Implement logic suitable for industrial controllers
+- **Hardware Compatible**: Ensure compatibility with constrained environments
+
+### Decimal-to-Hex Enhancement (R2) 
+**Upgrade**: String-Based Output with Error Handling
+- **String HexValue**: Change output from integer to string type
+- **Enhanced Errors**: Replace -1 with "Error" string for better UX
+- **Character Building**: Accumulate hex characters as string
+
+## Implementation Guidelines
+
+### Required Structure
+```python
+steps = [
+    {"name": "StepName1", "function": "assignment1"},
+    {"name": "StepName2", "function": "assignment2"},
+    # ... additional steps
+]
+
+transitions = [
+    {"src": "StepNameX", "tgt": "StepNameY", "guard": "condition1"},
+    {"src": "StepNameY", "tgt": "StepNameZ", "guard": "condition2"},
+    # ... additional transitions
+]
+
+variables = ["var1", "var2", "var3", ...]
+initial_step = "StepName1"
+```
+
+### Quality Requirements
+- **Preserve Functionality**: Maintain all original SFC1 capabilities
+- **Apply Upgrades**: Implement all applicable enhancement rules
+- **Clean Structure**: Use consistent naming and formatting
+- **Error Handling**: Consider edge cases and validation
+
+## Process
+1. **Analyze**: Identify which upgrade rules apply to input SFC1
+2. **Enhance**: Apply specific improvements systematically
+3. **Validate**: Ensure proper SFC format and logic flow
+
+## Input SFC1
+[Paste the complete SFC1 code here]
+
+## Expected Output
+Complete SFC2 implementation with applied upgrades and brief summary of key enhancements made. 

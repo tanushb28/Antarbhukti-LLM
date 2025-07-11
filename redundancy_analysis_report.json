@@ -1,0 +1,188 @@
+{
+  "analysis_summary": {
+    "total_redundancies_found": 15,
+    "categories": 5,
+    "total_savings_mb": 1.82,
+    "files_to_remove": 25,
+    "directories_to_clean": 3
+  },
+  "priority_actions": [
+    {
+      "priority": "HIGH",
+      "action": "Remove duplicate JSON reports",
+      "files": [
+        "report_iterative_prompting.txt.json",
+        "report_prompt_refiner.txt.json"
+      ],
+      "savings": "11KB",
+      "impact": "Low risk - duplicates with identical content"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Move results to proper location",
+      "files": [
+        "ab_test_results.json",
+        "framework_effectiveness_results.json",
+        "framework_evidence_report.md"
+      ],
+      "destination": "evaluation/results/",
+      "savings": "14.3KB",
+      "impact": "Low risk - just moving to correct location"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Archive reorganization scripts",
+      "files": [
+        "reorganize_codebase.py",
+        "execute_reorganization.py"
+      ],
+      "destination": "Move to archive/ or delete",
+      "savings": "18.7KB",
+      "impact": "Low risk - one-time use scripts"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Clean up generated files",
+      "files": [
+        "*.png",
+        "*.dot",
+        "*.html"
+      ],
+      "destination": "generated/ folder or delete",
+      "savings": "1.76MB",
+      "impact": "Medium risk - can be regenerated"
+    },
+    {
+      "priority": "LOW",
+      "action": "Merge cost summaries",
+      "files": [
+        "cost_accuracy_summary.md",
+        "cost_benefit_analysis_report.md"
+      ],
+      "destination": "Single comprehensive file",
+      "savings": "1.8KB + reduced confusion",
+      "impact": "Low risk - content consolidation"
+    }
+  ],
+  "detailed_analysis": {
+    "duplicate_json_reports": [
+      {
+        "type": "Nearly Identical Report Files",
+        "files": [
+          "report_PromptForUpgrade.txt.json",
+          "report_iterative_prompting.txt.json",
+          "report_prompt_refiner.txt.json"
+        ],
+        "issue": "All contain same test results with same scores (66.67) and same errors",
+        "size_total": "16.5KB",
+        "recommendation": "Keep one representative report, archive others",
+        "savings": "11KB"
+      }
+    ],
+    "duplicate_results": [
+      {
+        "type": "Duplicate Results Files",
+        "root_files": [
+          "ab_test_results.json (7.5KB)",
+          "framework_effectiveness_results.json (4.3KB)"
+        ],
+        "evaluation_files": [
+          "evaluation/results/ab_test_results.json (5.3KB)",
+          "evaluation/results/framework_effectiveness_results.json (4.3KB)"
+        ],
+        "issue": "Same results stored in two locations",
+        "recommendation": "Keep only in evaluation/results/, remove from root",
+        "savings": "12KB"
+      },
+      {
+        "type": "Duplicate Evidence Reports",
+        "root_files": [
+          "framework_evidence_report.md (2.3KB)"
+        ],
+        "evaluation_files": [
+          "evaluation/results/framework_evidence_report.md (1.3KB)"
+        ],
+        "issue": "Similar evidence reports in different locations",
+        "recommendation": "Consolidate into evaluation/results/",
+        "savings": "2.3KB"
+      }
+    ],
+    "overlapping_functionality": [
+      {
+        "type": "Prompt Demonstration Overlap",
+        "scripts": [
+          "demonstrate_prompt_strategies.py (3.9KB)",
+          "evaluation/testing/demonstrate_framework_effectiveness.py (15KB)"
+        ],
+        "overlap": "Both demonstrate prompt improvements with cost analysis",
+        "differences": [
+          "demonstrate_prompt_strategies.py: Focuses on cost-accuracy strategies",
+          "demonstrate_framework_effectiveness.py: Shows before/after improvements"
+        ],
+        "recommendation": "Keep both - serve different purposes, but consider merging demos",
+        "potential_savings": "Minimal - different focus areas"
+      },
+      {
+        "type": "Cost Analysis Overlap",
+        "scripts": [
+          "evaluation/testing/cost_accuracy_analysis.py",
+          "demonstrate_prompt_strategies.py"
+        ],
+        "overlap": "Both calculate token costs and show strategy comparisons",
+        "recommendation": "Extract common cost calculation logic to shared utility",
+        "potential_savings": "Code deduplication, not file removal"
+      }
+    ],
+    "obsolete_files": [
+      {
+        "type": "One-time Reorganization Scripts",
+        "files": [
+          "reorganize_codebase.py (8.8KB)",
+          "execute_reorganization.py (9.9KB)"
+        ],
+        "reason": "Reorganization completed successfully, scripts no longer needed",
+        "recommendation": "Archive or delete - reorganization complete",
+        "savings": "18.7KB"
+      },
+      {
+        "type": "Generated Visualization Files",
+        "files": [
+          "pn1.dot (2.2KB)",
+          "pn1.png (320KB)",
+          "pn2.dot (2.2KB)",
+          "pn2.png (279KB)",
+          "sfc1.dot (2.4KB)",
+          "sfc1.png (80KB)",
+          "sfc2.dot (2.4KB)",
+          "sfc2.png (77KB)",
+          "pn_containment_report.html (1MB)"
+        ],
+        "reason": "Generated visualization files, can be regenerated if needed",
+        "recommendation": "Move to generated/ folder or archive",
+        "savings": "1.76MB"
+      },
+      {
+        "type": "System Generated Files",
+        "files": [
+          ".DS_Store (6KB)",
+          ".coverage (52KB)"
+        ],
+        "reason": "macOS and testing artifacts, should be in .gitignore",
+        "recommendation": "Delete and add to .gitignore",
+        "savings": "58KB"
+      }
+    ],
+    "redundant_summaries": [
+      {
+        "type": "Multiple Cost Analysis Summaries",
+        "files": [
+          "cost_accuracy_summary.md (3.0KB)",
+          "cost_benefit_analysis_report.md (1.8KB)"
+        ],
+        "overlap": "Both provide cost-accuracy analysis summaries",
+        "recommendation": "Merge into single comprehensive summary",
+        "savings": "1.8KB + reduced confusion"
+      }
+    ]
+  }
+}
