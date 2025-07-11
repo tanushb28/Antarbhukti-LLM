@@ -170,3 +170,5 @@ prompt_refiner_iter*.txt
 *_Generated.txt
 extracted_sfc_data.py
 pn_containment_report.html
+.DS_Store
+generated/
