@@ -40,7 +40,8 @@ def demonstrate_strategies():
     strategies = [
         ("Cost-Effective", "prompts/strategies/cost_effective/PythonCodePrompt.txt"),
         ("Sweet Spot", "prompts/strategies/sweet_spot/PythonCodePrompt.txt"),
-        ("Accuracy-Effective", "prompts/strategies/accuracy_effective/PythonCodePrompt.txt")
+        ("Accuracy-Effective", "prompts/strategies/accuracy_effective/PythonCodePrompt.txt"),
+        ("Semantic-View", "prompts/strategies/semantic_view/PythonCodePrompt.txt")
     ]
     
     use_cases = [
@@ -66,8 +67,10 @@ def demonstrate_strategies():
             print(f"  ⚡ Best for: High-volume, cost-sensitive applications")
         elif strategy_name == "Sweet Spot":
             print(f"  ⭐ Best for: General production use (RECOMMENDED)")
-        else:
+        elif strategy_name == "Accuracy-Effective":
             print(f"  🎯 Best for: Critical applications requiring maximum quality")
+        elif strategy_name == "Semantic-View":
+            print(f"  🧠 Best for: Advanced applications requiring semantic reasoning & domain knowledge")
     
     print(f"\n\n💰 COST COMPARISON BY USE CASE:")
     print("=" * 35)

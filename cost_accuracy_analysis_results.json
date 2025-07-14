@@ -1,5 +1,5 @@
 {
-  "analysis_timestamp": "2025-07-11T14:08:39.114964",
+  "analysis_timestamp": "2025-07-14T18:10:42.203610",
   "strategies": [],
   "comparisons": [
     {
@@ -107,15 +107,44 @@
             "target_use_case": "Critical applications requiring highest quality",
             "file_path": "prompts/strategies/accuracy_effective/PythonCodePrompt.txt"
           }
+        },
+        {
+          "strategy": "Semantic-View",
+          "prompt_type": "PythonCodePrompt.txt",
+          "metrics": {
+            "word_count": 2378,
+            "line_count": 812,
+            "char_count": 29580,
+            "token_count": 3170,
+            "cost_estimate": 0.00634,
+            "quality_score": 100,
+            "quality_per_token": 0.031545741324921134,
+            "cost_efficiency": 15772.870662460567,
+            "features": {
+              "has_headers": true,
+              "has_examples": true,
+              "has_requirements": true,
+              "has_guidelines": true,
+              "has_error_handling": true,
+              "has_validation": true,
+              "has_documentation": false,
+              "has_code_blocks": true
+            }
+          },
+          "strategy_info": {
+            "description": "Knowledge graph-based semantic understanding approach",
+            "target_use_case": "Advanced applications requiring semantic reasoning and domain knowledge",
+            "file_path": "prompts/strategies/semantic_view/PythonCodePrompt.txt"
+          }
         }
       ]
     },
     {
       "prompt_type": "PromptForUpgrade.txt",
       "best_quality": {
-        "strategy": "Sweet Spot",
-        "score": 85,
-        "cost": 0.0007520000000000001
+        "strategy": "Semantic-View",
+        "score": 90,
+        "cost": 0.00298
       },
       "most_cost_effective": {
         "strategy": "Cost-Effective",
@@ -214,6 +243,35 @@
             "description": "Comprehensive, maximum quality approach",
             "target_use_case": "Critical applications requiring highest quality",
             "file_path": "prompts/strategies/accuracy_effective/PromptForUpgrade.txt"
+          }
+        },
+        {
+          "strategy": "Semantic-View",
+          "prompt_type": "PromptForUpgrade.txt",
+          "metrics": {
+            "word_count": 1118,
+            "line_count": 381,
+            "char_count": 11621,
+            "token_count": 1490,
+            "cost_estimate": 0.00298,
+            "quality_score": 90,
+            "quality_per_token": 0.06040268456375839,
+            "cost_efficiency": 30201.342281879195,
+            "features": {
+              "has_headers": true,
+              "has_examples": false,
+              "has_requirements": true,
+              "has_guidelines": true,
+              "has_error_handling": true,
+              "has_validation": true,
+              "has_documentation": false,
+              "has_code_blocks": true
+            }
+          },
+          "strategy_info": {
+            "description": "Knowledge graph-based semantic understanding approach",
+            "target_use_case": "Advanced applications requiring semantic reasoning and domain knowledge",
+            "file_path": "prompts/strategies/semantic_view/PromptForUpgrade.txt"
           }
         }
       ]

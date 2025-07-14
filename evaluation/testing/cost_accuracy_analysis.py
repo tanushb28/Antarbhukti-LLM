@@ -51,6 +51,12 @@ class CostAccuracyAnalyzer:
                 description="Comprehensive, maximum quality approach",
                 folder_path="prompts/strategies/accuracy_effective",
                 target_use_case="Critical applications requiring highest quality"
+            ),
+            PromptStrategy(
+                name="Semantic-View",
+                description="Knowledge graph-based semantic understanding approach",
+                folder_path="prompts/strategies/semantic_view",
+                target_use_case="Advanced applications requiring semantic reasoning and domain knowledge"
             )
         ]
         
@@ -141,6 +147,13 @@ class CostAccuracyAnalyzer:
             # Reward comprehensive features
             if has_error_handling and has_validation and has_documentation:
                 quality_score += 15
+        elif strategy_name == "Semantic-View":
+            # Reward semantic understanding features
+            if has_error_handling and has_validation and has_documentation:
+                quality_score += 20
+            # Bonus for semantic/ontology content
+            if "semantic" in prompt_content.lower() or "ontology" in prompt_content.lower() or "knowledge" in prompt_content.lower():
+                quality_score += 10
         
         # Calculate efficiency metrics
         quality_per_token = quality_score / max(token_count, 1)

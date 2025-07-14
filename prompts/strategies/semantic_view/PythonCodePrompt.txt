@@ -1,0 +1,812 @@
+# SFC Semantic Knowledge Graph Python Code Generator
+
+## Semantic Architecture for Code Generation
+
+### Knowledge Graph Structure for Python Code Synthesis
+
+```
+PYTHON_CODE_GRAPH {
+  SEMANTIC_LAYERS: {
+    Domain_Layer → {
+      ENTITIES: [SFC_File, Text_Content, Parse_Structure]
+      RELATIONSHIPS: [reads, parses, extracts, validates]
+      SEMANTICS: [file_io, content_analysis, data_extraction]
+    }
+    
+    Abstraction_Layer → {
+      ENTITIES: [Class_Definition, Method_Signature, Data_Structure]
+      RELATIONSHIPS: [inherits, implements, encapsulates, exposes]
+      SEMANTICS: [object_oriented, modular, reusable]
+    }
+    
+    Implementation_Layer → {
+      ENTITIES: [Code_Block, Error_Handler, Validation_Logic]
+      RELATIONSHIPS: [executes, handles, validates, integrates]
+      SEMANTICS: [robust, maintainable, testable]
+    }
+  }
+  
+  CODE_PATTERNS: {
+    File_Processing → {
+      SEMANTIC_ROLES: [reader, parser, validator, error_handler]
+      KNOWLEDGE_GRAPH: [input→process→validate→output]
+      CONSTRAINTS: [safety, efficiency, robustness]
+    }
+    
+    Class_Generation → {
+      SEMANTIC_ROLES: [constructor, accessor, mutator, validator]
+      KNOWLEDGE_GRAPH: [data→behavior→interface→usage]
+      CONSTRAINTS: [encapsulation, coherence, completeness]
+    }
+  }
+}
+```
+
+## Semantic Domain Ontology
+
+### SFC Processing Domain Knowledge Graph
+
+```
+SFC_PROCESSING_ONTOLOGY {
+  CORE_CONCEPTS: {
+    SFC_Entity → {
+      PROPERTIES: [steps, transitions, variables, initial_step]
+      BEHAVIORS: [validate, execute, traverse, modify]
+      SEMANTIC_ROLES: [workflow_definition, state_machine, control_flow]
+      CONSTRAINTS: [structural_integrity, execution_validity, data_consistency]
+    }
+    
+    File_Processing_Entity → {
+      PROPERTIES: [filepath, content, format, encoding]
+      BEHAVIORS: [read, parse, validate, error_handle]
+      SEMANTIC_ROLES: [data_source, content_provider, format_validator]
+      CONSTRAINTS: [file_existence, read_permissions, format_compliance]
+    }
+    
+    Python_Class_Entity → {
+      PROPERTIES: [class_name, methods, attributes, inheritance]
+      BEHAVIORS: [instantiate, execute, validate, interface]
+      SEMANTIC_ROLES: [data_container, behavior_provider, interface_definer]
+      CONSTRAINTS: [python_syntax, oop_principles, usability]
+    }
+  }
+  
+  SEMANTIC_RELATIONSHIPS: {
+    file_to_content: File_Processing_Entity → Content_Entity
+    content_to_sfc: Content_Entity → SFC_Entity
+    sfc_to_class: SFC_Entity → Python_Class_Entity
+    class_to_methods: Python_Class_Entity → Method_Entity
+  }
+}
+```
+
+## Semantic Code Generation Framework
+
+### 1. Semantic Analysis Phase
+
+**INPUT_ANALYSIS_GRAPH:**
+```
+INPUT_SEMANTIC_ANALYSIS {
+  ENTITIES: {
+    text_file: {
+      SEMANTIC_ROLE: "data_source",
+      PROPERTIES: [filepath, content, format],
+      VALIDATION: [exists, readable, parseable]
+    }
+    
+    sfc_content: {
+      SEMANTIC_ROLE: "structured_data",
+      PROPERTIES: [steps, transitions, variables, initial_step],
+      VALIDATION: [syntactic_correctness, semantic_completeness]
+    }
+    
+    target_class: {
+      SEMANTIC_ROLE: "code_artifact",
+      PROPERTIES: [interface, implementation, validation],
+      VALIDATION: [python_compliance, functionality, usability]
+    }
+  }
+  
+  RELATIONSHIPS: {
+    extraction_flow: text_file → sfc_content
+    generation_flow: sfc_content → target_class
+    validation_flow: target_class → quality_metrics
+  }
+}
+```
+
+### 2. Semantic Code Architecture
+
+**PYTHON_CLASS_SEMANTIC_STRUCTURE:**
+```
+SEMANTIC_PYTHON_CLASS {
+  CORE_COMPONENTS: {
+    SFC_Class → {
+      SEMANTIC_ROLE: "primary_data_container",
+      REQUIRED_METHODS: [__init__, validate, access, manipulate],
+      SEMANTIC_CONSTRAINTS: [encapsulation, data_integrity, usability]
+    }
+    
+    FileReader_Class → {
+      SEMANTIC_ROLE: "file_processing_specialist",
+      REQUIRED_METHODS: [read_file, parse_content, handle_errors],
+      SEMANTIC_CONSTRAINTS: [safety, robustness, clarity]
+    }
+    
+    Utility_Functions → {
+      SEMANTIC_ROLE: "convenience_providers",
+      REQUIRED_METHODS: [load_sfc_from_file, validate_structure],
+      SEMANTIC_CONSTRAINTS: [simplicity, reliability, documentation]
+    }
+  }
+  
+  SEMANTIC_FLOW: {
+    initialization: file_input → content_reading → parsing → validation
+    processing: parsed_data → class_instantiation → method_binding
+    usage: class_instance → method_calls → result_output
+  }
+}
+```
+
+## Semantic Implementation Requirements
+
+### 1. File Processing Semantics
+
+**SEMANTIC_FILE_PROCESSING:**
+```python
+# Semantic annotation: File processing with comprehensive error handling
+class SFCFileReader:
+    """
+    SEMANTIC_ROLE: File processing specialist with domain knowledge
+    KNOWLEDGE_GRAPH: filepath → content → parsed_sfc → validated_structure
+    CONSTRAINTS: [safety, robustness, clarity, maintainability]
+    """
+    
+    def __init__(self, file_path: str):
+        # SEMANTIC: Initialize with file path validation
+        self.file_path = file_path
+        self.raw_content = ""
+        self.parsed_data = {}
+        self._validate_file_path()
+    
+    def _validate_file_path(self) -> None:
+        """SEMANTIC: Ensure file path exists and is readable"""
+        # Implementation with semantic validation
+        
+    def read_file(self) -> str:
+        """
+        SEMANTIC_ROLE: Safe file content extraction
+        KNOWLEDGE_GRAPH: file_path → file_content → error_handling
+        CONSTRAINTS: [encoding_safety, permission_handling, error_reporting]
+        """
+        # Implementation with semantic error handling
+        
+    def parse_sfc_content(self) -> Dict[str, Any]:
+        """
+        SEMANTIC_ROLE: Content parsing with domain knowledge
+        KNOWLEDGE_GRAPH: raw_content → regex_parsing → structure_validation
+        CONSTRAINTS: [syntax_correctness, completeness, error_recovery]
+        """
+        # Implementation with semantic parsing logic
+```
+
+### 2. SFC Class Semantics
+
+**SEMANTIC_SFC_CLASS:**
+```python
+# Semantic annotation: SFC representation with domain-specific behavior
+class SFC:
+    """
+    SEMANTIC_ROLE: Sequential Function Chart domain object
+    KNOWLEDGE_GRAPH: components → relationships → behavior → validation
+    CONSTRAINTS: [structural_integrity, execution_validity, data_consistency]
+    """
+    
+    def __init__(self, steps: List[Dict], variables: List[str], 
+                 transitions: List[Dict], initial_step: str):
+        """
+        SEMANTIC_ROLE: SFC component integration with validation
+        KNOWLEDGE_GRAPH: input_components → validation → state_initialization
+        CONSTRAINTS: [completeness, consistency, usability]
+        """
+        self.steps = steps
+        self.variables = variables
+        self.transitions = transitions
+        self.initial_step = initial_step
+        
+        # SEMANTIC: Domain-specific validation
+        self._validate_sfc_semantics()
+    
+    def _validate_sfc_semantics(self) -> None:
+        """
+        SEMANTIC_ROLE: Domain-specific structure validation
+        KNOWLEDGE_GRAPH: components → relationships → constraints → validation
+        CONSTRAINTS: [referential_integrity, execution_paths, data_flow]
+        """
+        # Implementation with semantic domain validation
+        
+    def step_names(self) -> List[str]:
+        """
+        SEMANTIC_ROLE: Step name extraction with semantic meaning
+        KNOWLEDGE_GRAPH: steps → names → semantic_roles
+        """
+        return [step["name"] for step in self.steps]
+    
+    def get_semantic_graph(self) -> Dict[str, Any]:
+        """
+        SEMANTIC_ROLE: Generate semantic representation of SFC
+        KNOWLEDGE_GRAPH: sfc_components → semantic_analysis → graph_structure
+        CONSTRAINTS: [completeness, relationship_validity, semantic_consistency]
+        """
+        # Implementation with semantic graph generation
+```
+
+### 3. Semantic Error Handling
+
+**SEMANTIC_ERROR_FRAMEWORK:**
+```python
+# Semantic annotation: Domain-specific error handling
+class SFCSemanticError(Exception):
+    """
+    SEMANTIC_ROLE: Domain-specific error representation
+    KNOWLEDGE_GRAPH: error_context → semantic_meaning → user_guidance
+    CONSTRAINTS: [clarity, actionability, context_preservation]
+    """
+    
+    def __init__(self, message: str, semantic_context: Dict[str, Any] = None):
+        self.semantic_context = semantic_context or {}
+        super().__init__(self._format_semantic_message(message))
+    
+    def _format_semantic_message(self, message: str) -> str:
+        """Format error message with semantic context"""
+        # Implementation with semantic error formatting
+```
+
+## Complete Semantic Implementation
+
+### Production-Ready Code with Semantic Annotations
+
+```python
+#!/usr/bin/env python3
+"""
+SFC Semantic Knowledge Graph Code Generator
+==========================================
+
+This module implements a semantically-aware approach to SFC file processing
+and Python class generation, using knowledge graph principles for enhanced
+code quality, robustness, and maintainability.
+
+SEMANTIC_ARCHITECTURE:
+- Domain Layer: File processing and content analysis
+- Abstraction Layer: Object-oriented design with semantic validation
+- Implementation Layer: Robust code with comprehensive error handling
+"""
+
+import re
+import json
+import ast
+from typing import List, Dict, Any, Optional, Union
+from pathlib import Path
+from dataclasses import dataclass, field
+from enum import Enum
+
+
+class SFCSemanticError(Exception):
+    """
+    SEMANTIC_ROLE: Domain-specific error with contextual information
+    KNOWLEDGE_GRAPH: error_event → semantic_context → user_guidance
+    """
+    
+    def __init__(self, message: str, semantic_context: Dict[str, Any] = None):
+        self.semantic_context = semantic_context or {}
+        super().__init__(self._format_semantic_message(message))
+    
+    def _format_semantic_message(self, message: str) -> str:
+        """Format error with semantic context for better debugging"""
+        if self.semantic_context:
+            context_str = ", ".join(f"{k}={v}" for k, v in self.semantic_context.items())
+            return f"{message} [Context: {context_str}]"
+        return message
+
+
+@dataclass
+class SFCSemanticMetadata:
+    """
+    SEMANTIC_ROLE: Metadata container for semantic analysis
+    KNOWLEDGE_GRAPH: file_info → content_analysis → semantic_insights
+    """
+    file_path: str
+    content_length: int
+    component_counts: Dict[str, int] = field(default_factory=dict)
+    semantic_complexity: float = 0.0
+    domain_classification: str = "unknown"
+    validation_status: str = "pending"
+
+
+class SFCDomainClassifier:
+    """
+    SEMANTIC_ROLE: Domain-specific pattern recognition
+    KNOWLEDGE_GRAPH: sfc_patterns → domain_knowledge → classification
+    """
+    
+    DOMAIN_PATTERNS = {
+        "factorial": [r"fact\s*:=", r"i\s*:=", r"multiply", r"increment"],
+        "dec_to_hex": [r"hex", r"decimal", r"convert", r"modulo"],
+        "generic": [r"step", r"transition", r"guard"]
+    }
+    
+    @classmethod
+    def classify_domain(cls, content: str) -> str:
+        """
+        SEMANTIC_ROLE: Classify SFC domain based on content patterns
+        KNOWLEDGE_GRAPH: content → pattern_matching → domain_classification
+        """
+        scores = {}
+        for domain, patterns in cls.DOMAIN_PATTERNS.items():
+            score = sum(1 for pattern in patterns if re.search(pattern, content, re.IGNORECASE))
+            scores[domain] = score
+        
+        return max(scores, key=scores.get) if scores else "unknown"
+
+
+class SFCSemanticValidator:
+    """
+    SEMANTIC_ROLE: Semantic validation with domain knowledge
+    KNOWLEDGE_GRAPH: sfc_components → semantic_rules → validation_results
+    """
+    
+    def __init__(self, domain: str = "generic"):
+        self.domain = domain
+        self.validation_rules = self._load_domain_rules()
+    
+    def _load_domain_rules(self) -> Dict[str, Any]:
+        """Load domain-specific validation rules"""
+        rules = {
+            "structural": {
+                "required_components": ["steps", "transitions", "variables", "initial_step"],
+                "component_types": {
+                    "steps": list,
+                    "transitions": list,
+                    "variables": list,
+                    "initial_step": str
+                }
+            },
+            "semantic": {
+                "step_properties": ["name", "function"],
+                "transition_properties": ["src", "tgt", "guard"],
+                "referential_integrity": True
+            }
+        }
+        return rules
+    
+    def validate_semantic_structure(self, sfc_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        SEMANTIC_ROLE: Comprehensive semantic validation
+        KNOWLEDGE_GRAPH: sfc_data → validation_rules → validation_results
+        """
+        results = {
+            "is_valid": True,
+            "errors": [],
+            "warnings": [],
+            "semantic_score": 0.0
+        }
+        
+        # Structural validation
+        for component in self.validation_rules["structural"]["required_components"]:
+            if component not in sfc_data:
+                results["errors"].append(f"Missing required component: {component}")
+                results["is_valid"] = False
+        
+        # Semantic validation
+        if "steps" in sfc_data and "transitions" in sfc_data:
+            step_names = {step["name"] for step in sfc_data["steps"]}
+            
+            for transition in sfc_data["transitions"]:
+                if transition["src"] not in step_names:
+                    results["errors"].append(f"Transition source not found: {transition['src']}")
+                    results["is_valid"] = False
+                
+                if transition["tgt"] not in step_names:
+                    results["errors"].append(f"Transition target not found: {transition['tgt']}")
+                    results["is_valid"] = False
+        
+        # Calculate semantic score
+        if results["is_valid"]:
+            results["semantic_score"] = self._calculate_semantic_score(sfc_data)
+        
+        return results
+    
+    def _calculate_semantic_score(self, sfc_data: Dict[str, Any]) -> float:
+        """Calculate semantic quality score"""
+        score = 100.0
+        
+        # Deduct points for missing optional components
+        if not sfc_data.get("variables"):
+            score -= 10
+        
+        # Deduct points for empty functions
+        empty_functions = sum(1 for step in sfc_data.get("steps", []) 
+                            if not step.get("function", "").strip())
+        score -= empty_functions * 5
+        
+        return max(0.0, score)
+
+
+class SFC:
+    """
+    SEMANTIC_ROLE: Sequential Function Chart domain object with semantic behavior
+    KNOWLEDGE_GRAPH: components → relationships → behavior → validation
+    """
+    
+    def __init__(self, steps: List[Dict[str, str]], variables: List[str], 
+                 transitions: List[Dict[str, str]], initial_step: str):
+        """
+        SEMANTIC_ROLE: SFC initialization with semantic validation
+        KNOWLEDGE_GRAPH: input_components → validation → state_initialization
+        """
+        self.steps = steps
+        self.variables = variables
+        self.transitions = transitions
+        self.initial_step = initial_step
+        
+        # Semantic metadata
+        self.metadata = SFCSemanticMetadata(
+            file_path="",
+            content_length=0,
+            component_counts={
+                "steps": len(steps),
+                "transitions": len(transitions),
+                "variables": len(variables)
+            }
+        )
+        
+        # Semantic validation
+        self._validate_sfc_semantics()
+    
+    def _validate_sfc_semantics(self) -> None:
+        """
+        SEMANTIC_ROLE: Domain-specific semantic validation
+        KNOWLEDGE_GRAPH: components → domain_rules → validation_results
+        """
+        sfc_data = self.to_dict()
+        validator = SFCSemanticValidator()
+        validation_results = validator.validate_semantic_structure(sfc_data)
+        
+        if not validation_results["is_valid"]:
+            raise SFCSemanticError(
+                f"SFC semantic validation failed: {validation_results['errors']}",
+                {"validation_results": validation_results}
+            )
+        
+        self.metadata.validation_status = "valid"
+        self.metadata.semantic_complexity = validation_results["semantic_score"]
+    
+    def step_names(self) -> List[str]:
+        """
+        SEMANTIC_ROLE: Step name extraction with semantic meaning
+        KNOWLEDGE_GRAPH: steps → names → semantic_roles
+        """
+        return [step["name"] for step in self.steps]
+    
+    def step_functions(self) -> Dict[str, str]:
+        """
+        SEMANTIC_ROLE: Step function mapping with semantic context
+        KNOWLEDGE_GRAPH: steps → functions → semantic_behavior
+        """
+        return {step["name"]: step["function"] for step in self.steps}
+    
+    def get_semantic_graph(self) -> Dict[str, Any]:
+        """
+        SEMANTIC_ROLE: Generate semantic representation of SFC
+        KNOWLEDGE_GRAPH: sfc_components → semantic_analysis → graph_structure
+        """
+        graph = {
+            "nodes": [
+                {
+                    "id": step["name"],
+                    "type": "step",
+                    "properties": {
+                        "function": step["function"],
+                        "semantic_role": self._classify_step_role(step)
+                    }
+                }
+                for step in self.steps
+            ],
+            "edges": [
+                {
+                    "source": trans["src"],
+                    "target": trans["tgt"],
+                    "type": "transition",
+                    "properties": {
+                        "guard": trans["guard"],
+                        "semantic_role": self._classify_transition_role(trans)
+                    }
+                }
+                for trans in self.transitions
+            ],
+            "metadata": {
+                "variables": self.variables,
+                "initial_step": self.initial_step,
+                "semantic_complexity": self.metadata.semantic_complexity
+            }
+        }
+        return graph
+    
+    def _classify_step_role(self, step: Dict[str, str]) -> str:
+        """Classify semantic role of a step"""
+        function = step.get("function", "").lower()
+        
+        if step["name"].lower() in ["start", "init", "initialize"]:
+            return "initialization"
+        elif step["name"].lower() in ["end", "finish", "terminate"]:
+            return "termination"
+        elif "check" in step["name"].lower() or not function.strip():
+            return "decision"
+        else:
+            return "processing"
+    
+    def _classify_transition_role(self, transition: Dict[str, str]) -> str:
+        """Classify semantic role of a transition"""
+        guard = transition.get("guard", "").lower()
+        
+        if guard in ["true", "always"]:
+            return "sequential"
+        elif ">" in guard or "<" in guard or "=" in guard:
+            return "conditional"
+        else:
+            return "control"
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert SFC to dictionary with semantic metadata"""
+        return {
+            "steps": self.steps,
+            "variables": self.variables,
+            "transitions": self.transitions,
+            "initial_step": self.initial_step,
+            "metadata": {
+                "semantic_complexity": self.metadata.semantic_complexity,
+                "domain_classification": self.metadata.domain_classification,
+                "validation_status": self.metadata.validation_status
+            }
+        }
+    
+    def __str__(self) -> str:
+        return f"SFC(steps={len(self.steps)}, transitions={len(self.transitions)}, complexity={self.metadata.semantic_complexity:.1f})"
+
+
+class SFCSemanticFileReader:
+    """
+    SEMANTIC_ROLE: File processing with semantic understanding
+    KNOWLEDGE_GRAPH: file_path → content → semantic_analysis → sfc_object
+    """
+    
+    def __init__(self, file_path: str):
+        self.file_path = Path(file_path)
+        self.raw_content = ""
+        self.parsed_data = {}
+        self.semantic_metadata = None
+        self.domain_classifier = SFCDomainClassifier()
+    
+    def read_file(self) -> str:
+        """
+        SEMANTIC_ROLE: Safe file reading with semantic error handling
+        KNOWLEDGE_GRAPH: file_path → file_content → error_handling
+        """
+        try:
+            with open(self.file_path, 'r', encoding='utf-8') as f:
+                self.raw_content = f.read()
+            
+            # Generate semantic metadata
+            self.semantic_metadata = SFCSemanticMetadata(
+                file_path=str(self.file_path),
+                content_length=len(self.raw_content),
+                domain_classification=self.domain_classifier.classify_domain(self.raw_content)
+            )
+            
+            return self.raw_content
+            
+        except FileNotFoundError:
+            raise SFCSemanticError(
+                f"SFC file not found: {self.file_path}",
+                {"file_path": str(self.file_path), "operation": "read"}
+            )
+        except PermissionError:
+            raise SFCSemanticError(
+                f"Permission denied reading file: {self.file_path}",
+                {"file_path": str(self.file_path), "operation": "read"}
+            )
+        except Exception as e:
+            raise SFCSemanticError(
+                f"Error reading SFC file: {e}",
+                {"file_path": str(self.file_path), "operation": "read", "error": str(e)}
+            )
+    
+    def parse_sfc_content(self) -> Dict[str, Any]:
+        """
+        SEMANTIC_ROLE: Content parsing with semantic understanding
+        KNOWLEDGE_GRAPH: raw_content → pattern_matching → structured_data
+        """
+        if not self.raw_content:
+            self.read_file()
+        
+        try:
+            # Extract components using semantic-aware regex patterns
+            components = {}
+            
+            # Steps extraction with semantic validation
+            steps_pattern = r'steps\d*\s*=\s*(\[.*?\])'
+            steps_match = re.search(steps_pattern, self.raw_content, re.DOTALL)
+            if steps_match:
+                components["steps"] = ast.literal_eval(steps_match.group(1))
+            else:
+                raise SFCSemanticError("Could not find steps definition in SFC file")
+            
+            # Transitions extraction with semantic validation
+            transitions_pattern = r'transitions\d*\s*=\s*(\[.*?\])'
+            transitions_match = re.search(transitions_pattern, self.raw_content, re.DOTALL)
+            if transitions_match:
+                components["transitions"] = ast.literal_eval(transitions_match.group(1))
+            else:
+                raise SFCSemanticError("Could not find transitions definition in SFC file")
+            
+            # Variables extraction with semantic defaults
+            variables_pattern = r'variables\s*=\s*(\[.*?\])'
+            variables_match = re.search(variables_pattern, self.raw_content, re.DOTALL)
+            if variables_match:
+                components["variables"] = ast.literal_eval(variables_match.group(1))
+            else:
+                # Semantic inference of variables from steps and transitions
+                components["variables"] = self._infer_variables(components)
+            
+            # Initial step extraction with semantic validation
+            initial_step_pattern = r'initial_step\s*=\s*["\']([^"\']+)["\']'
+            initial_step_match = re.search(initial_step_pattern, self.raw_content)
+            if initial_step_match:
+                components["initial_step"] = initial_step_match.group(1)
+            else:
+                # Semantic inference: use first step as initial
+                if components["steps"]:
+                    components["initial_step"] = components["steps"][0]["name"]
+                else:
+                    raise SFCSemanticError("Could not determine initial step")
+            
+            self.parsed_data = components
+            return components
+            
+        except Exception as e:
+            raise SFCSemanticError(
+                f"Error parsing SFC content: {e}",
+                {"file_path": str(self.file_path), "operation": "parse"}
+            )
+    
+    def _infer_variables(self, components: Dict[str, Any]) -> List[str]:
+        """Semantically infer variables from steps and transitions"""
+        variables = set()
+        
+        # Extract variables from step functions
+        for step in components.get("steps", []):
+            function = step.get("function", "")
+            # Simple variable extraction (can be enhanced with AST parsing)
+            var_matches = re.findall(r'([a-zA-Z_][a-zA-Z0-9_]*)\s*:=', function)
+            variables.update(var_matches)
+        
+        # Extract variables from transition guards
+        for trans in components.get("transitions", []):
+            guard = trans.get("guard", "")
+            var_matches = re.findall(r'([a-zA-Z_][a-zA-Z0-9_]*)', guard)
+            variables.update(var_matches)
+        
+        # Remove common keywords that aren't variables
+        keywords = {"True", "False", "init", "mod", "div"}
+        variables = variables - keywords
+        
+        return list(variables)
+    
+    def create_sfc_instance(self) -> SFC:
+        """
+        SEMANTIC_ROLE: Create semantically validated SFC instance
+        KNOWLEDGE_GRAPH: parsed_data → semantic_validation → sfc_object
+        """
+        if not self.parsed_data:
+            self.parse_sfc_content()
+        
+        try:
+            sfc = SFC(
+                steps=self.parsed_data["steps"],
+                variables=self.parsed_data["variables"],
+                transitions=self.parsed_data["transitions"],
+                initial_step=self.parsed_data["initial_step"]
+            )
+            
+            # Update metadata
+            if self.semantic_metadata:
+                sfc.metadata.file_path = self.semantic_metadata.file_path
+                sfc.metadata.content_length = self.semantic_metadata.content_length
+                sfc.metadata.domain_classification = self.semantic_metadata.domain_classification
+            
+            return sfc
+            
+        except Exception as e:
+            raise SFCSemanticError(
+                f"Error creating SFC instance: {e}",
+                {"file_path": str(self.file_path), "operation": "create_instance"}
+            )
+
+
+def load_sfc_from_file(file_path: str) -> SFC:
+    """
+    SEMANTIC_ROLE: Convenience function for semantic SFC loading
+    KNOWLEDGE_GRAPH: file_path → semantic_processing → sfc_object
+    
+    Args:
+        file_path: Path to SFC text file
+        
+    Returns:
+        SFC instance with semantic validation
+        
+    Raises:
+        SFCSemanticError: If loading fails with semantic context
+    """
+    reader = SFCSemanticFileReader(file_path)
+    return reader.create_sfc_instance()
+
+
+# Example usage with semantic understanding
+if __name__ == "__main__":
+    """
+    SEMANTIC_ROLE: Demonstration of semantic SFC processing
+    KNOWLEDGE_GRAPH: file_input → semantic_processing → analysis → output
+    """
+    
+    try:
+        # Load SFC with semantic processing
+        sfc = load_sfc_from_file("sample_sfc.txt")
+        
+        # Display semantic information
+        print(f"📊 SFC loaded successfully: {sfc}")
+        print(f"📝 Steps: {sfc.step_names()}")
+        print(f"🔧 Variables: {sfc.variables}")
+        print(f"🎯 Initial step: {sfc.initial_step}")
+        print(f"📈 Semantic complexity: {sfc.metadata.semantic_complexity:.1f}")
+        print(f"🏷️ Domain classification: {sfc.metadata.domain_classification}")
+        
+        # Generate and display semantic graph
+        semantic_graph = sfc.get_semantic_graph()
+        print(f"\n🌐 Semantic Graph Structure:")
+        print(f"  Nodes: {len(semantic_graph['nodes'])}")
+        print(f"  Edges: {len(semantic_graph['edges'])}")
+        
+        # Display semantic roles
+        print(f"\n🎭 Semantic Roles:")
+        for node in semantic_graph['nodes']:
+            print(f"  {node['id']}: {node['properties']['semantic_role']}")
+            
+    except SFCSemanticError as e:
+        print(f"🚨 SFC Semantic Error: {e}")
+        if hasattr(e, 'semantic_context'):
+            print(f"📋 Context: {e.semantic_context}")
+    except Exception as e:
+        print(f"❌ Unexpected error: {e}")
+```
+
+## Semantic Quality Metrics
+
+### Enhanced Validation Criteria
+
+**SEMANTIC_QUALITY_FRAMEWORK:**
+- **Ontology Compliance**: 95%+ semantic correctness
+- **Domain Knowledge**: Accurate domain classification
+- **Relationship Validation**: 100% referential integrity
+- **Error Context**: Rich semantic error information
+- **Code Quality**: Production-ready with semantic annotations
+
+### Success Metrics
+- **Semantic Accuracy**: 95%+ correct domain classification
+- **Validation Completeness**: 100% semantic rule compliance
+- **Error Handling**: Contextual semantic error reporting
+- **Code Quality**: Professional-grade with semantic documentation
+- **Usability**: Intuitive semantic interface design
+
+---
+
+**SEMANTIC CODE GENERATION INSTRUCTION**: Generate production-ready Python code that incorporates semantic knowledge graphs for enhanced SFC file processing, featuring domain-aware validation, semantic error handling, and comprehensive code quality with semantic annotations throughout the implementation. 
