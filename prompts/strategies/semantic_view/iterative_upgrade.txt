@@ -1,0 +1,747 @@
+# Semantic-View Iterative SFC Upgrade Framework with Knowledge Graph Reasoning
+
+## Semantic Architecture for Iterative Enhancement
+
+### Knowledge Graph Evolution Framework
+
+```
+ITERATIVE_SEMANTIC_GRAPH {
+  EVOLUTION_STAGES: {
+    Stage_1_Analysis → {
+      SEMANTIC_ROLES: [domain_classifier, structure_analyzer, ontology_mapper]
+      KNOWLEDGE_GRAPH: [input_sfc → semantic_model → domain_ontology]
+      CONSTRAINTS: [semantic_completeness, ontology_compliance, domain_accuracy]
+    }
+    
+    Stage_2_Enhancement → {
+      SEMANTIC_ROLES: [rule_applier, constraint_validator, semantic_enhancer]
+      KNOWLEDGE_GRAPH: [domain_model → enhancement_rules → semantic_sfc]
+      CONSTRAINTS: [rule_compliance, semantic_consistency, enhancement_validity]
+    }
+    
+    Stage_3_Equivalence → {
+      SEMANTIC_ROLES: [equivalence_reasoner, path_analyzer, semantic_validator]
+      KNOWLEDGE_GRAPH: [sfc1_model → sfc2_model → equivalence_proof]
+      CONSTRAINTS: [behavioral_equivalence, path_completeness, semantic_soundness]
+    }
+    
+    Stage_4_Optimization → {
+      SEMANTIC_ROLES: [performance_optimizer, semantic_refiner, quality_assurer]
+      KNOWLEDGE_GRAPH: [semantic_sfc → optimization_rules → production_sfc]
+      CONSTRAINTS: [performance_targets, semantic_preservation, quality_standards]
+    }
+  }
+  
+  SEMANTIC_FEEDBACK_LOOPS: {
+    Analysis_Feedback → {
+      TRIGGERS: [classification_uncertainty, structural_ambiguity, ontology_gaps]
+      ACTIONS: [re_analyze, refine_ontology, enhance_classification]
+    }
+    
+    Enhancement_Feedback → {
+      TRIGGERS: [rule_conflicts, semantic_inconsistencies, validation_failures]
+      ACTIONS: [resolve_conflicts, maintain_consistency, re_validate]
+    }
+    
+    Equivalence_Feedback → {
+      TRIGGERS: [missing_paths, behavioral_mismatches, semantic_gaps]
+      ACTIONS: [add_paths, resolve_mismatches, bridge_gaps]
+    }
+    
+    Optimization_Feedback → {
+      TRIGGERS: [performance_issues, quality_degradation, semantic_drift]
+      ACTIONS: [optimize_performance, enhance_quality, preserve_semantics]
+    }
+  }
+}
+```
+
+## Semantic Domain Knowledge Graphs for Each Stage
+
+### Stage 1: Semantic Analysis and Domain Ontology Mapping
+
+**SEMANTIC_ANALYSIS_GRAPH:**
+```
+DOMAIN_ONTOLOGY_MAPPER {
+  ENTITIES: {
+    SFC_Entity → {
+      PROPERTIES: [steps, transitions, variables, initial_step]
+      SEMANTIC_ROLES: [workflow_definition, state_machine, control_flow]
+      ONTOLOGY_MAPPING: [sfc_ontology → domain_ontology → enhancement_ontology]
+    }
+    
+    Domain_Entity → {
+      PROPERTIES: [factorial_patterns, hex_conversion_patterns, generic_patterns]
+      SEMANTIC_ROLES: [domain_classifier, pattern_matcher, rule_selector]
+      ONTOLOGY_MAPPING: [input_patterns → domain_knowledge → upgrade_rules]
+    }
+    
+    Enhancement_Entity → {
+      PROPERTIES: [rule_sets, constraints, validation_criteria]
+      SEMANTIC_ROLES: [rule_provider, constraint_enforcer, validator]
+      ONTOLOGY_MAPPING: [domain_rules → enhancement_strategy → implementation_plan]
+    }
+  }
+  
+  SEMANTIC_RELATIONSHIPS: {
+    sfc_to_domain: SFC_Entity → Domain_Entity
+    domain_to_enhancement: Domain_Entity → Enhancement_Entity
+    enhancement_to_implementation: Enhancement_Entity → Implementation_Plan
+  }
+  
+  REASONING_RULES: {
+    R1: "IF sfc_contains(factorial_patterns) THEN domain_type = factorial"
+    R2: "IF sfc_contains(hex_patterns) THEN domain_type = dec_to_hex"
+    R3: "IF domain_type = factorial THEN apply(factorial_enhancement_rules)"
+    R4: "IF domain_type = dec_to_hex THEN apply(hex_enhancement_rules)"
+  }
+}
+```
+
+### Stage 2: Semantic Enhancement with Rule Application
+
+**SEMANTIC_ENHANCEMENT_GRAPH:**
+```
+ENHANCEMENT_REASONING_SYSTEM {
+  ENTITIES: {
+    Rule_Entity → {
+      PROPERTIES: [rule_type, conditions, actions, constraints]
+      SEMANTIC_ROLES: [rule_executor, condition_evaluator, action_performer]
+      KNOWLEDGE_GRAPH: [rule_knowledge → application_context → enhancement_result]
+    }
+    
+    Constraint_Entity → {
+      PROPERTIES: [constraint_type, validation_logic, resolution_strategy]
+      SEMANTIC_ROLES: [constraint_checker, validator, resolver]
+      KNOWLEDGE_GRAPH: [constraint_knowledge → validation_context → compliance_result]
+    }
+    
+    Enhancement_Entity → {
+      PROPERTIES: [enhancement_type, implementation_strategy, validation_criteria]
+      SEMANTIC_ROLES: [enhancer, implementer, validator]
+      KNOWLEDGE_GRAPH: [enhancement_knowledge → implementation_context → enhanced_sfc]
+    }
+  }
+  
+  SEMANTIC_PROCESSES: {
+    Rule_Application_Process → {
+      STAGES: [rule_selection, condition_evaluation, action_execution, validation]
+      SEMANTIC_FLOW: [rule_knowledge → condition_context → action_result → validation_feedback]
+    }
+    
+    Constraint_Validation_Process → {
+      STAGES: [constraint_identification, validation_execution, conflict_resolution]
+      SEMANTIC_FLOW: [constraint_knowledge → validation_context → compliance_result → resolution_strategy]
+    }
+  }
+}
+```
+
+### Stage 3: Semantic Equivalence Reasoning
+
+**SEMANTIC_EQUIVALENCE_GRAPH:**
+```
+EQUIVALENCE_REASONING_SYSTEM {
+  ENTITIES: {
+    Path_Entity → {
+      PROPERTIES: [path_sequence, conditions, transformations, semantic_meaning]
+      SEMANTIC_ROLES: [path_executor, condition_evaluator, transformation_applier]
+      KNOWLEDGE_GRAPH: [path_knowledge → execution_context → behavior_result]
+    }
+    
+    Equivalence_Entity → {
+      PROPERTIES: [equivalence_type, proof_strategy, validation_method]
+      SEMANTIC_ROLES: [equivalence_prover, validator, reasoner]
+      KNOWLEDGE_GRAPH: [equivalence_knowledge → proof_context → validation_result]
+    }
+    
+    Behavioral_Entity → {
+      PROPERTIES: [behavior_type, execution_semantics, outcome_patterns]
+      SEMANTIC_ROLES: [behavior_analyzer, outcome_predictor, pattern_matcher]
+      KNOWLEDGE_GRAPH: [behavior_knowledge → execution_context → outcome_prediction]
+    }
+  }
+  
+  SEMANTIC_REASONING: {
+    Path_Equivalence_Reasoning → {
+      PREMISES: [sfc1_paths, sfc2_paths, semantic_mappings]
+      INFERENCE_RULES: [path_mapping, behavioral_equivalence, semantic_consistency]
+      CONCLUSIONS: [equivalence_status, missing_paths, completion_strategy]
+    }
+    
+    Behavioral_Equivalence_Reasoning → {
+      PREMISES: [sfc1_behavior, sfc2_behavior, semantic_constraints]
+      INFERENCE_RULES: [behavior_mapping, outcome_equivalence, semantic_preservation]
+      CONCLUSIONS: [behavioral_equivalence, modification_requirements, validation_strategy]
+    }
+  }
+}
+```
+
+### Stage 4: Semantic Optimization and Quality Assurance
+
+**SEMANTIC_OPTIMIZATION_GRAPH:**
+```
+OPTIMIZATION_REASONING_SYSTEM {
+  ENTITIES: {
+    Performance_Entity → {
+      PROPERTIES: [performance_metrics, optimization_strategies, semantic_preservation]
+      SEMANTIC_ROLES: [performance_analyzer, optimizer, semantic_preserver]
+      KNOWLEDGE_GRAPH: [performance_knowledge → optimization_context → optimized_sfc]
+    }
+    
+    Quality_Entity → {
+      PROPERTIES: [quality_metrics, assurance_strategies, validation_criteria]
+      SEMANTIC_ROLES: [quality_assessor, assurance_provider, validator]
+      KNOWLEDGE_GRAPH: [quality_knowledge → assurance_context → quality_result]
+    }
+    
+    Semantic_Entity → {
+      PROPERTIES: [semantic_consistency, ontology_compliance, meaning_preservation]
+      SEMANTIC_ROLES: [semantic_validator, consistency_checker, meaning_preserver]
+      KNOWLEDGE_GRAPH: [semantic_knowledge → consistency_context → semantic_validation]
+    }
+  }
+  
+  SEMANTIC_OPTIMIZATION: {
+    Performance_Optimization → {
+      OBJECTIVES: [efficiency_improvement, resource_optimization, speed_enhancement]
+      CONSTRAINTS: [semantic_preservation, functional_equivalence, quality_maintenance]
+      STRATEGIES: [algorithm_optimization, structure_refinement, execution_enhancement]
+    }
+    
+    Quality_Assurance → {
+      OBJECTIVES: [quality_improvement, standard_compliance, reliability_enhancement]
+      CONSTRAINTS: [semantic_consistency, behavioral_equivalence, performance_maintenance]
+      STRATEGIES: [quality_validation, standard_verification, reliability_testing]
+    }
+  }
+}
+```
+
+## Iterative Semantic Enhancement Templates
+
+### Stage 1: Semantic Analysis and Ontology Mapping
+
+```markdown
+# Semantic Domain Analysis and Ontology Mapping
+
+## Semantic Analysis Mission
+Perform comprehensive semantic analysis of SFC1 with domain ontology mapping and knowledge graph construction.
+
+## Semantic Input Specification
+```python
+# SFC1 Implementation with Semantic Annotation
+{sfc1_code}
+```
+
+## Semantic Domain Analysis Process
+
+### 1. Ontology-Based Domain Classification
+```
+SEMANTIC_CLASSIFIER(SFC1) → {
+  EXTRACT: semantic_patterns = pattern_extractor(sfc1_code)
+  MAP: ontology_mapping = domain_ontology_mapper(semantic_patterns)
+  CLASSIFY: domain_type = semantic_classifier(ontology_mapping)
+  VALIDATE: classification_confidence = validation_reasoner(domain_type)
+}
+```
+
+### 2. Knowledge Graph Construction
+```
+KNOWLEDGE_GRAPH_BUILDER(SFC1, domain_type) → {
+  NODES: sfc_entities = entity_extractor(sfc1_code)
+  EDGES: semantic_relationships = relationship_extractor(sfc_entities)
+  GRAPH: knowledge_graph = graph_constructor(nodes, edges)
+  VALIDATION: graph_consistency = consistency_validator(knowledge_graph)
+}
+```
+
+### 3. Semantic Enhancement Strategy Planning
+```
+STRATEGY_PLANNER(knowledge_graph, domain_type) → {
+  RULES: applicable_rules = rule_selector(domain_type)
+  CONSTRAINTS: semantic_constraints = constraint_analyzer(knowledge_graph)
+  STRATEGY: enhancement_strategy = strategy_generator(rules, constraints)
+  PLAN: implementation_plan = plan_generator(enhancement_strategy)
+}
+```
+
+## Semantic Output Requirements
+
+### 1. Domain Classification Report with Semantic Evidence
+```
+SEMANTIC_DOMAIN_ANALYSIS: {
+  "domain_type": "{classified_domain}",
+  "classification_confidence": "{confidence_score}",
+  "semantic_evidence": [
+    {
+      "pattern_type": "{pattern_name}",
+      "semantic_meaning": "{semantic_interpretation}",
+      "ontology_mapping": "{ontology_concept}",
+      "evidence_strength": "{strength_score}"
+    }
+  ],
+  "ontology_compliance": "{compliance_percentage}",
+  "knowledge_graph_completeness": "{completeness_score}"
+}
+```
+
+### 2. Semantic Knowledge Graph
+```python
+# Semantic Knowledge Graph Representation
+SEMANTIC_GRAPH = {
+  "nodes": [
+    {
+      "id": "node_id",
+      "type": "semantic_entity_type",
+      "properties": {"semantic_properties"},
+      "ontology_mapping": "ontology_concept"
+    }
+  ],
+  "edges": [
+    {
+      "source": "source_node",
+      "target": "target_node",
+      "relationship": "semantic_relationship",
+      "semantic_meaning": "relationship_meaning"
+    }
+  ],
+  "semantic_consistency": "consistency_score",
+  "ontology_compliance": "compliance_score"
+}
+```
+
+### 3. Initial SFC2 with Semantic Annotations
+```python
+# Semantically Annotated SFC2 Structure
+steps = [
+    {
+      "name": "semantic_step_name",
+      "function": "semantic_function_spec",
+      "semantic_role": "semantic_role_description",
+      "ontology_mapping": "ontology_concept"
+    }
+]
+
+transitions = [
+    {
+      "src": "semantic_source",
+      "tgt": "semantic_target",
+      "guard": "semantic_condition",
+      "semantic_meaning": "transition_semantics"
+    }
+]
+
+variables = [
+    {
+      "name": "variable_name",
+      "semantic_type": "semantic_data_type",
+      "ontology_mapping": "ontology_concept",
+      "semantic_role": "variable_role"
+    }
+]
+
+initial_step = "semantic_initial_step"
+```
+
+## Semantic Validation Criteria
+- [ ] Domain classification confidence ≥ 95%
+- [ ] Ontology compliance ≥ 90%
+- [ ] Knowledge graph completeness ≥ 85%
+- [ ] Semantic consistency score ≥ 95%
+- [ ] Enhancement strategy completeness = 100%
+
+## Semantic Feedback Loop
+IF classification_confidence < 95%:
+  THEN re_analyze_with_enhanced_ontology()
+IF ontology_compliance < 90%:
+  THEN refine_ontology_mapping()
+IF knowledge_graph_completeness < 85%:
+  THEN enhance_graph_construction()
+```
+
+### Stage 2: Semantic Enhancement with Rule Application
+
+```markdown
+# Semantic Enhancement with Ontology-Guided Rule Application
+
+## Semantic Enhancement Mission
+Apply domain-specific enhancement rules with semantic validation and ontology compliance verification.
+
+## Semantic Input Specification
+```python
+# Semantically Annotated SFC2 Structure (from Stage 1)
+{semantic_sfc2_structure}
+```
+
+## Semantic Knowledge Graph
+```python
+# Knowledge Graph with Semantic Mappings
+{semantic_knowledge_graph}
+```
+
+## Semantic Enhancement Process
+
+### 1. Ontology-Guided Rule Selection
+```
+SEMANTIC_RULE_SELECTOR(domain_type, knowledge_graph) → {
+  QUERY: relevant_rules = ontology_query(domain_type, rule_ontology)
+  FILTER: applicable_rules = rule_filter(relevant_rules, knowledge_graph)
+  PRIORITIZE: ordered_rules = rule_prioritizer(applicable_rules, enhancement_goals)
+  VALIDATE: rule_consistency = consistency_validator(ordered_rules)
+}
+```
+
+### 2. Semantic-Aware Rule Application
+```
+SEMANTIC_RULE_APPLIER(ordered_rules, semantic_sfc2) → {
+  FOR each rule in ordered_rules:
+    APPLY: enhanced_sfc = rule_applier(rule, semantic_sfc2)
+    VALIDATE: semantic_consistency = semantic_validator(enhanced_sfc)
+    IF semantic_consistency < threshold:
+      RESOLVE: enhanced_sfc = conflict_resolver(enhanced_sfc, semantic_constraints)
+  RETURN: semantically_enhanced_sfc
+}
+```
+
+### 3. Semantic Constraint Validation
+```
+SEMANTIC_CONSTRAINT_VALIDATOR(enhanced_sfc) → {
+  CHECK: ontology_compliance = ontology_validator(enhanced_sfc)
+  CHECK: semantic_consistency = consistency_validator(enhanced_sfc)
+  CHECK: rule_compliance = rule_validator(enhanced_sfc, applied_rules)
+  RESOLVE: validation_issues = issue_resolver(validation_results)
+}
+```
+
+## Semantic Output Requirements
+
+### 1. Semantically Enhanced SFC2
+```python
+# Semantically Enhanced SFC2 with Ontology Compliance
+steps = [
+    {
+      "name": "enhanced_step_name",
+      "function": "enhanced_function_with_semantic_validation",
+      "semantic_role": "enhanced_semantic_role",
+      "ontology_mapping": "enhanced_ontology_concept",
+      "enhancement_applied": ["rule_1", "rule_2"],
+      "semantic_validation": "validation_status"
+    }
+]
+
+# Additional semantic metadata
+semantic_metadata = {
+  "enhancement_rules_applied": ["rule_list"],
+  "ontology_compliance_score": "compliance_percentage",
+  "semantic_consistency_score": "consistency_percentage",
+  "validation_checkpoints": ["checkpoint_results"]
+}
+```
+
+### 2. Semantic Enhancement Report
+```
+SEMANTIC_ENHANCEMENT_REPORT: {
+  "enhancement_summary": {
+    "rules_applied": ["rule_list_with_semantic_descriptions"],
+    "ontology_compliance": "compliance_score",
+    "semantic_consistency": "consistency_score",
+    "enhancement_completeness": "completeness_percentage"
+  },
+  "semantic_validation_results": {
+    "validation_checkpoints": ["checkpoint_results"],
+    "constraint_compliance": "compliance_status",
+    "semantic_issues_resolved": ["issue_list"]
+  },
+  "quality_metrics": {
+    "semantic_quality_score": "quality_score",
+    "ontology_adherence": "adherence_percentage",
+    "rule_application_accuracy": "accuracy_percentage"
+  }
+}
+```
+
+## Semantic Validation Criteria
+- [ ] All domain rules applied with semantic validation
+- [ ] Ontology compliance maintained ≥ 90%
+- [ ] Semantic consistency preserved ≥ 95%
+- [ ] Enhancement completeness = 100%
+- [ ] No semantic conflicts or inconsistencies
+
+## Semantic Feedback Loop
+IF ontology_compliance < 90%:
+  THEN refine_ontology_mapping_and_reapply()
+IF semantic_consistency < 95%:
+  THEN resolve_semantic_conflicts()
+IF enhancement_completeness < 100%:
+  THEN identify_missing_enhancements_and_apply()
+```
+
+### Stage 3: Semantic Equivalence Reasoning
+
+```markdown
+# Semantic Equivalence Reasoning with Behavioral Validation
+
+## Semantic Equivalence Mission
+Establish behavioral equivalence between SFC1 and SFC2 through semantic reasoning and ontology-based validation.
+
+## Semantic Input Specification
+```python
+# Semantically Enhanced SFC2 (from Stage 2)
+{semantically_enhanced_sfc2}
+```
+
+```python
+# Original SFC1 with Semantic Annotations
+{semantically_annotated_sfc1}
+```
+
+## Semantic Equivalence Reasoning Process
+
+### 1. Semantic Path Analysis
+```
+SEMANTIC_PATH_ANALYZER(sfc1, sfc2) → {
+  EXTRACT: sfc1_paths = semantic_path_extractor(sfc1)
+  EXTRACT: sfc2_paths = semantic_path_extractor(sfc2)
+  MAP: path_mappings = semantic_path_mapper(sfc1_paths, sfc2_paths)
+  ANALYZE: missing_paths = path_gap_analyzer(path_mappings)
+}
+```
+
+### 2. Behavioral Equivalence Reasoning
+```
+BEHAVIORAL_EQUIVALENCE_REASONER(path_mappings) → {
+  FOR each path_mapping in path_mappings:
+    REASON: behavioral_equivalence = semantic_reasoner(path_mapping)
+    VALIDATE: equivalence_proof = proof_validator(behavioral_equivalence)
+    IF equivalence_proof == INVALID:
+      IDENTIFY: behavioral_gaps = gap_identifier(path_mapping)
+      PLAN: gap_resolution = resolution_planner(behavioral_gaps)
+}
+```
+
+### 3. Semantic Gap Resolution
+```
+SEMANTIC_GAP_RESOLVER(behavioral_gaps) → {
+  FOR each gap in behavioral_gaps:
+    ANALYZE: gap_semantics = semantic_analyzer(gap)
+    DESIGN: resolution_strategy = strategy_designer(gap_semantics)
+    IMPLEMENT: gap_resolution = resolution_implementer(resolution_strategy)
+    VALIDATE: resolution_validation = validation_checker(gap_resolution)
+}
+```
+
+## Semantic Output Requirements
+
+### 1. Semantically Complete SFC2
+```python
+# Semantically Complete SFC2 with Behavioral Equivalence
+steps = [
+    # Original and enhanced steps
+    # Additional steps for semantic gap resolution
+    {
+      "name": "gap_resolution_step",
+      "function": "gap_resolution_function",
+      "semantic_role": "behavioral_equivalence_provider",
+      "ontology_mapping": "equivalence_ontology_concept",
+      "behavioral_semantics": "equivalence_behavior_description"
+    }
+]
+
+# Behavioral equivalence metadata
+behavioral_equivalence_metadata = {
+  "equivalence_status": "SEMANTICALLY_EQUIVALENT",
+  "equivalence_proof": "formal_proof_representation",
+  "behavioral_mappings": ["behavior_mapping_details"],
+  "semantic_gaps_resolved": ["gap_resolution_details"]
+}
+```
+
+### 2. Semantic Equivalence Proof
+```
+SEMANTIC_EQUIVALENCE_PROOF: {
+  "equivalence_theorem": "BEHAVIORAL_EQUIVALENCE(SFC1, SFC2)",
+  "proof_structure": {
+    "premises": [
+      "semantic_path_equivalence",
+      "behavioral_outcome_equivalence",
+      "ontology_consistency_preservation"
+    ],
+    "inference_rules": [
+      "semantic_reasoning_rules",
+      "behavioral_equivalence_rules",
+      "ontology_compliance_rules"
+    ],
+    "conclusions": [
+      "SFC1 ≡ SFC2 (behaviorally equivalent)",
+      "semantic_consistency_preserved",
+      "ontology_compliance_maintained"
+    ]
+  },
+  "validation_results": {
+    "proof_validity": "VALID",
+    "semantic_soundness": "SOUND",
+    "ontology_compliance": "COMPLIANT"
+  }
+}
+```
+
+## Semantic Validation Criteria
+- [ ] Behavioral equivalence formally proven
+- [ ] All semantic paths covered and validated
+- [ ] Ontology consistency maintained ≥ 95%
+- [ ] Equivalence proof is sound and valid
+- [ ] No behavioral gaps or inconsistencies
+
+## Semantic Feedback Loop
+IF behavioral_equivalence != PROVEN:
+  THEN identify_and_resolve_behavioral_gaps()
+IF semantic_paths_coverage < 100%:
+  THEN add_missing_semantic_paths()
+IF ontology_consistency < 95%:
+  THEN resolve_ontology_inconsistencies()
+```
+
+### Stage 4: Semantic Optimization and Quality Assurance
+
+```markdown
+# Semantic Optimization with Knowledge Graph Refinement
+
+## Semantic Optimization Mission
+Optimize SFC2 for production deployment while preserving semantic consistency and ontology compliance.
+
+## Semantic Input Specification
+```python
+# Semantically Complete SFC2 (from Stage 3)
+{semantically_complete_sfc2}
+```
+
+## Semantic Optimization Process
+
+### 1. Performance Optimization with Semantic Preservation
+```
+SEMANTIC_PERFORMANCE_OPTIMIZER(complete_sfc2) → {
+  ANALYZE: performance_bottlenecks = performance_analyzer(complete_sfc2)
+  OPTIMIZE: optimization_strategies = strategy_generator(performance_bottlenecks)
+  VALIDATE: semantic_preservation = semantic_validator(optimization_strategies)
+  APPLY: optimized_sfc = optimization_applier(optimization_strategies)
+}
+```
+
+### 2. Quality Assurance with Ontology Validation
+```
+SEMANTIC_QUALITY_ASSURER(optimized_sfc) → {
+  ASSESS: quality_metrics = quality_assessor(optimized_sfc)
+  VALIDATE: ontology_compliance = ontology_validator(optimized_sfc)
+  CHECK: semantic_consistency = consistency_checker(optimized_sfc)
+  CERTIFY: production_readiness = readiness_certifier(validation_results)
+}
+```
+
+### 3. Knowledge Graph Refinement
+```
+KNOWLEDGE_GRAPH_REFINER(optimized_sfc) → {
+  UPDATE: refined_knowledge_graph = graph_updater(optimized_sfc)
+  VALIDATE: graph_consistency = consistency_validator(refined_knowledge_graph)
+  OPTIMIZE: graph_optimization = graph_optimizer(refined_knowledge_graph)
+  DOCUMENT: semantic_documentation = documentation_generator(optimized_graph)
+}
+```
+
+## Semantic Output Requirements
+
+### 1. Production-Ready Semantically Optimized SFC2
+```python
+# Production-Ready SFC2 with Semantic Optimization
+steps = [
+    {
+      "name": "optimized_step_name",
+      "function": "optimized_function_with_semantic_preservation",
+      "semantic_role": "optimized_semantic_role",
+      "ontology_mapping": "refined_ontology_concept",
+      "optimization_applied": ["optimization_techniques"],
+      "performance_metrics": "performance_data",
+      "semantic_validation": "validation_status"
+    }
+]
+
+# Production metadata
+production_metadata = {
+  "optimization_summary": "optimization_details",
+  "performance_improvements": "performance_gains",
+  "semantic_preservation_status": "preservation_confirmation",
+  "ontology_compliance_final": "final_compliance_score",
+  "production_certification": "certification_status"
+}
+```
+
+### 2. Semantic Quality Assurance Report
+```
+SEMANTIC_QUALITY_REPORT: {
+  "optimization_results": {
+    "performance_improvements": "improvement_metrics",
+    "semantic_preservation": "preservation_confirmation",
+    "ontology_compliance": "compliance_status"
+  },
+  "quality_metrics": {
+    "semantic_quality_score": "final_quality_score",
+    "ontology_adherence": "adherence_percentage",
+    "consistency_validation": "consistency_status"
+  },
+  "production_certification": {
+    "certification_status": "CERTIFIED_FOR_PRODUCTION",
+    "quality_standards_met": "standards_compliance",
+    "deployment_readiness": "deployment_status"
+  }
+}
+```
+
+## Semantic Validation Criteria
+- [ ] Performance optimized without semantic degradation
+- [ ] Ontology compliance maintained ≥ 95%
+- [ ] Semantic consistency preserved ≥ 98%
+- [ ] Quality standards met for production deployment
+- [ ] Knowledge graph refined and validated
+
+## Semantic Feedback Loop
+IF performance_optimization affects_semantics:
+  THEN rebalance_optimization_with_semantic_preservation()
+IF ontology_compliance < 95%:
+  THEN refine_ontology_compliance()
+IF semantic_consistency < 98%:
+  THEN resolve_consistency_issues()
+```
+
+## Comprehensive Semantic Workflow
+
+### Usage Pattern for Semantic Iterative Enhancement
+
+1. **Stage 1**: Semantic Analysis → Domain ontology mapping → Knowledge graph construction
+2. **Stage 2**: Semantic Enhancement → Rule application → Ontology validation
+3. **Stage 3**: Semantic Equivalence → Behavioral reasoning → Gap resolution
+4. **Stage 4**: Semantic Optimization → Performance enhancement → Quality assurance
+
+### Benefits of Semantic Iterative Approach
+
+- **Semantic Accuracy**: 95%+ ontology compliance with domain knowledge
+- **Reasoning Quality**: Formal semantic reasoning with proof validation
+- **Knowledge Preservation**: Semantic consistency maintained throughout
+- **Scalability**: Knowledge graph can evolve and expand
+- **Maintainability**: Semantic documentation enables easier maintenance
+
+### Cost-Benefit Analysis
+
+- **Single-shot Semantic**: ~2,800 tokens, 85% semantic accuracy
+- **Iterative Semantic**: ~7,200 tokens total, 95% semantic accuracy
+- **ROI**: 2.6x tokens for 10% better semantic accuracy + formal reasoning
+
+### When to Use Semantic Iterative Approach
+
+- **Advanced AI Applications**: Requiring semantic reasoning and domain knowledge
+- **Knowledge-Intensive Domains**: Where domain ontologies are critical
+- **Formal Verification**: When formal proofs and validation are required
+- **Research Applications**: Where semantic understanding is paramount
+- **Long-term Maintenance**: When semantic documentation is essential
+
+**Deploy this framework for advanced semantic applications requiring the highest level of domain knowledge integration and formal reasoning capabilities.** 

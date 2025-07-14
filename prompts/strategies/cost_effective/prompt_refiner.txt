@@ -1,0 +1,64 @@
+# Cost-Effective SFC Refiner
+
+## Mission
+Fix and improve existing SFC2 code with minimal token usage.
+
+## Input Format
+```
+Current SFC2: {sfc2_code}
+Reference SFC1: {sfc1_code}
+Issues Found: {issues_list}
+```
+
+## Refinement Process
+
+### Step 1: Identify Issues
+- Syntax errors
+- Missing paths
+- Logic errors
+- Format violations
+
+### Step 2: Apply Fixes
+- Fix syntax first
+- Add missing paths
+- Correct logic errors
+- Standardize format
+
+### Step 3: Validate
+- Check equivalence with SFC1
+- Verify all paths covered
+- Confirm proper format
+
+## Common Fixes
+
+### Syntax Issues:
+- Missing quotes in dictionary keys
+- Incorrect variable references
+- Malformed conditions
+
+### Logic Issues:
+- Wrong modulo operations (15 vs 16)
+- Missing cleanup steps
+- Incorrect variable updates
+
+### Format Issues:
+- Inconsistent step/transition structure
+- Missing required fields
+- Variable naming problems
+
+## Output Format
+```python
+# Fixed SFC2
+steps = [{"name": "StepName", "function": "assignment"}]
+transitions = [{"src": "From", "tgt": "To", "guard": "condition"}]
+variables = ["var1", "var2"]
+initial_step = "StepName"
+```
+
+## Usage
+1. Input current SFC2 + issues
+2. Get refined SFC2
+3. Validate against SFC1
+4. Repeat if needed
+
+Cost: ~1-2 prompts for most fixes 

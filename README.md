@@ -79,7 +79,7 @@ PYTHONPATH="$PWD/src:$PYTHONPATH" python evaluation/verification/verify_prompt_i
 PYTHONPATH="$PWD/src:$PYTHONPATH" python evaluation/testing/demonstrate_framework_effectiveness.py
 
 # Run A/B testing comparison
-PYTHONPATH="$PWD/src:$PYTHONPATH" python evaluatiom/testing/ab_test_example.py
+PYTHONPATH="$PWD/src:$PYTHONPATH" python evaluation/testing/ab_test_example.py
 
 # Complete testing suite with domain-specific validation
 PYTHONPATH="$PWD/src:$PYTHONPATH" python evaluation/testing/sfc_prompt_tester.py

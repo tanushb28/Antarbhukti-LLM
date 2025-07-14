@@ -1,0 +1,55 @@
+# Cost-Effective Iterative SFC Upgrade
+
+## Stage 1: Initial Analysis
+Input: SFC1 code and upgrade requirements
+Output: Basic SFC2 structure with primary paths
+
+## Stage 2: Path Validation  
+Input: SFC2 from Stage 1 + missing paths list
+Output: Updated SFC2 with added paths
+
+## Stage 3: Final Validation
+Input: Updated SFC2 + original SFC1
+Output: Validated SFC2 with equivalence confirmation
+
+## Upgrade Rules (Compact)
+- **Factorial**: Add `temp` tracking + cleanup
+- **Dec-to-Hex R1**: Integer-only arithmetic  
+- **Dec-to-Hex R2**: String output + "Error" handling
+
+## Stage Templates
+
+### Stage 1 Template:
+```
+Analyze SFC1 and create basic SFC2 structure:
+{sfc1_code}
+
+Apply upgrade rules: {upgrade_type}
+Output: steps2, transitions2, variables, initial_step
+```
+
+### Stage 2 Template:
+```
+Current SFC2: {sfc2_code}
+Missing paths: {missing_paths}
+
+Add missing paths to SFC2. 
+Output: Updated steps2, transitions2 only
+```
+
+### Stage 3 Template:
+```
+Validate SFC2 equivalence with SFC1:
+SFC1: {sfc1_code}
+SFC2: {sfc2_code}
+
+Confirm equivalence or list remaining issues.
+```
+
+## Usage
+1. Run Stage 1 with SFC1 input
+2. Run Stage 2 with missing paths (if any)
+3. Run Stage 3 for final validation
+4. Iterate stages 2-3 until equivalence achieved
+
+Cost: ~3-4 prompts vs 1 single-shot (3x tokens but better accuracy) 
