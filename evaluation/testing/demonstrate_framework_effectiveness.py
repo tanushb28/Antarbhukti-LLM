@@ -147,7 +147,7 @@ class SFC:
         # Determine the correct path based on current working directory
         script_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.dirname(os.path.dirname(script_dir))
-        data_path = os.path.join(project_root, "data", "iterative_prompting.txt")
+        data_path = os.path.join(project_root, "prompts", "current", "iterative_prompting.txt")
         
         with open(data_path, 'r') as f:
             enhanced_prompt = f.read()
@@ -177,7 +177,7 @@ class SFC:
         # Example 2: Python Code Prompt Enhancement  
         original_python = self.original_prompts["PythonCodePrompt.txt"]
         
-        python_data_path = os.path.join(project_root, "data", "PythonCodePrompt.txt")
+        python_data_path = os.path.join(project_root, "prompts", "current", "PythonCodePrompt.txt")
         with open(python_data_path, 'r') as f:
             enhanced_python = f.read()
         

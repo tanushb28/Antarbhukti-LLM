@@ -21,8 +21,8 @@ cd Antarbhukti-LLM
 conda env create -f environment.yml && conda activate antarbhukti
 # OR: pip install -r requirements.txt
 
-# 3. Install package
-pip install -e .
+# 3. Install package (with conda conflict workaround)
+pip install -e . || export PYTHONPATH="$PWD/src:$PYTHONPATH"
 
 # 4. Configure environment variables
 export AZURE_OPENAI_ENDPOINT=your-endpoint
@@ -30,7 +30,7 @@ export AZURE_OPENAI_API_KEY=your-api-key
 export AZURE_OPENAI_API_VERSION=2023-12-01-preview
 
 # 5. Test enhanced prompts
-python prompt_evaluation/verification/run_prompt_verification.py
+PYTHONPATH="$PWD/src:$PYTHONPATH" python evaluation/verification/run_prompt_verification.py
 ```
 
 ## Enhanced LLM Prompts 🚀
@@ -55,10 +55,10 @@ Production-ready prompts with **proven 240% quality improvements** over basic te
 
 ## Prompt Evaluation Framework
 
-Structured testing and validation tools in `prompt_evaluation/`:
+Structured testing and validation tools in `evaluation/`:
 
 ```
-prompt_evaluation/
+evaluation/
 ├── framework/           # Evaluation methodology
 ├── testing/            # A/B testing and demonstrations
 ├── verification/       # Quality verification tools
@@ -70,32 +70,32 @@ prompt_evaluation/
 
 ```bash
 # Verify all enhanced prompts (30 seconds)
-python prompt_evaluation/verification/run_prompt_verification.py
+PYTHONPATH="$PWD/src:$PYTHONPATH" python evaluation/verification/run_prompt_verification.py
 
 # Run comprehensive analysis with detailed scoring
-python prompt_evaluation/verification/verify_prompt_improvements.py
+PYTHONPATH="$PWD/src:$PYTHONPATH" python evaluation/verification/verify_prompt_improvements.py
 
 # Demonstrate framework effectiveness with real data
-python prompt_evaluation/testing/demonstrate_framework_effectiveness.py
+PYTHONPATH="$PWD/src:$PYTHONPATH" python evaluation/testing/demonstrate_framework_effectiveness.py
 
 # Run A/B testing comparison
-python prompt_evaluation/testing/ab_test_example.py
+PYTHONPATH="$PWD/src:$PYTHONPATH" python evaluation/testing/ab_test_example.py
 
 # Complete testing suite with domain-specific validation
-python prompt_evaluation/testing/sfc_prompt_tester.py
+PYTHONPATH="$PWD/src:$PYTHONPATH" python evaluation/testing/sfc_prompt_tester.py
 ```
 
 ### View Results
 
 ```bash
 # Check A/B test results
-cat prompt_evaluation/results/ab_test_results.json
+cat evaluation/results/ab_test_results.json
 
 # View framework effectiveness evidence
-cat prompt_evaluation/results/framework_evidence_report.md
+cat evaluation/results/framework_evidence_report.md
 
 # Access comprehensive testing guide
-cat prompt_evaluation/docs/PROMPT_TESTING_GUIDE.md
+cat evaluation/docs/PROMPT_TESTING_GUIDE.md
 ```
 
 ## Proven Effectiveness 📊
@@ -124,15 +124,59 @@ cat prompt_evaluation/docs/PROMPT_TESTING_GUIDE.md
 **Prerequisites:** Python 3.8+, Z3 SMT solver, Azure OpenAI credentials
 
 ```bash
-# Using conda (recommended)
+# Method 1: Using conda environment (recommended)
 conda env create -f environment.yml
 conda activate antarbhukti
+
+# For development (if pip install -e . fails due to conda conflicts):
+export PYTHONPATH="$PWD/src:$PYTHONPATH"
+
+# For production (try this first, use PYTHONPATH if it fails):
+pip install -e . || echo "Using PYTHONPATH method due to conda conflicts"
+
+# Method 2: Using pip only (alternative)
+pip install -r requirements.txt
 pip install -e .
 
-# Using pip
+# Method 3: Fresh Python environment (if conda conflicts persist)
+python -m venv antarbhukti-env
+source antarbhukti-env/bin/activate  # On Windows: antarbhukti-env\Scripts\activate
 pip install -r requirements.txt
 pip install -e .
 ```
+
+**Note:** If you encounter `backports.tarfile` errors with conda, use the PYTHONPATH method for development:
+```bash
+export PYTHONPATH="$PWD/src:$PYTHONPATH"
+python your_script.py
+```
+
+### Troubleshooting Installation
+
+**Common Issue: `pip install -e .` fails in conda environment**
+
+**Symptom:** `ImportError: cannot import name 'tarfile' from 'backports'`
+
+**Solutions:**
+1. **Use PYTHONPATH (recommended for development):**
+   ```bash
+   export PYTHONPATH="$PWD/src:$PYTHONPATH"
+   python your_script.py
+   ```
+
+2. **Use a fresh Python environment:**
+   ```bash
+   python -m venv antarbhukti-env
+   source antarbhukti-env/bin/activate
+   pip install -r requirements.txt
+   pip install -e .
+   ```
+
+3. **Add to your shell profile for permanent setup:**
+   ```bash
+   echo 'export PYTHONPATH="$PWD/src:$PYTHONPATH"' >> ~/.bashrc  # or ~/.zshrc
+   source ~/.bashrc
+   ```
 
 ### Core Application
 
@@ -151,13 +195,15 @@ result = llm.generate_sfc_enhancement(
 
 ```bash
 # Basic verification
-python examples/driver.py
+PYTHONPATH="$PWD/src:$PYTHONPATH" python data/examples/driver.py
 
-# Usage examples
-python examples/example_usage.py
+# Usage examples  
+PYTHONPATH="$PWD/src:$PYTHONPATH" python data/examples/example_usage.py
 
-# Run tests
+# Run tests (if package is installed)
 pytest
+# OR with PYTHONPATH method:
+PYTHONPATH="$PWD/src:$PYTHONPATH" python -m pytest tests/
 ```
 
 ## Environment Variables
@@ -175,10 +221,11 @@ export AZURE_OPENAI_API_VERSION=2023-12-01-preview
 ```
 Antarbhukti-LLM/
 ├── src/antarbhukti/          # Main library code
-├── examples/                 # Usage examples
+├── data/examples/            # Usage examples
 ├── benchmarks/              # OSCAT benchmark suite
-├── data/                    # Enhanced SFC prompts
-├── prompt_evaluation/       # Testing and validation framework
+├── data/                    # SFC data files
+├── prompts/                 # Enhanced LLM prompts
+├── evaluation/              # Testing and validation framework
 ├── tests/                   # Test suite
 └── docs/                    # Documentation
 ```

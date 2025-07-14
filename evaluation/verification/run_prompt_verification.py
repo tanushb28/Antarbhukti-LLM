@@ -96,11 +96,11 @@ def main():
     
     # Enhanced prompt files to check
     enhanced_prompts = [
-        str(project_root / "data" / "iterative_prompting.txt"),
-        str(project_root / "data" / "prompt_refiner.txt"), 
-        str(project_root / "data" / "PromptForUpgrade.txt"),
-        str(project_root / "data" / "PythonCodePrompt.txt"),
-        str(project_root / "data" / "prompt_evaluation_framework.txt")
+        str(project_root / "prompts" / "current" / "iterative_prompting.txt"),
+        str(project_root / "prompts" / "current" / "prompt_refiner.txt"), 
+        str(project_root / "prompts" / "current" / "PromptForUpgrade.txt"),
+        str(project_root / "prompts" / "current" / "PythonCodePrompt.txt"),
+        str(project_root / "prompts" / "current" / "prompt_evaluation_framework.txt")
     ]
     
     framework_files = [

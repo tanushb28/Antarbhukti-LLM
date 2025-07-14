@@ -44,7 +44,7 @@ class PromptAnalysis:
 class PromptQualityAnalyzer:
     """Comprehensive analyzer for prompt quality and improvements"""
     
-    def __init__(self, data_dir: str = "../../data"):
+    def __init__(self, data_dir: str = "prompts/current"):
         self.data_dir = Path(data_dir)
         self.enhanced_prompts = [
             "iterative_prompting.txt",
@@ -616,7 +616,7 @@ def main():
     """Main execution function"""
     parser = argparse.ArgumentParser(description='Verify SFC prompt improvements')
     parser.add_argument('--prompt', type=str, help='Specific prompt file to analyze')
-    parser.add_argument('--data-dir', type=str, default='data', help='Data directory path')
+    parser.add_argument('--data-dir', type=str, default='prompts/current', help='Data directory path')
     parser.add_argument('--no-charts', action='store_true', help='Skip chart generation')
     parser.add_argument('--output', type=str, default='prompt_analysis_report.json', help='Output report file')
     

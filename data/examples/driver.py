@@ -50,8 +50,8 @@ def main():
 
     sfc1 = SFC()
     sfc2 = SFC()
-    sfc1.load("../data/dec2hex.txt")
-    sfc2.load("../data/dec2hex_mod.txt")
+    sfc1.load("data/sfc_files/dec2hex.txt")
+    sfc2.load("data/sfc_files/dec2hex_mod.txt")
 
     # Iteration count for iterative prompting
 
@@ -91,15 +91,15 @@ def main():
 
         improved = llm_mng.improve_sfc2(
             sfc1, sfc2, verifier.get_unmatched_paths(),
-            prompt_template_path="../data/iterative_prompting.txt",
-            prompt_path=f"../data/prompt_refiner_iter{iter_count+1}.txt",
-            sfc2_path="../data/dec2hex_mod.txt"
+            prompt_template_path="prompts/current/iterative_prompting.txt",
+            prompt_path=f"prompts/current/prompt_refiner_iter{iter_count+1}.txt",
+            sfc2_path="data/sfc_files/dec2hex_mod.txt"
         )
         if not improved:
             print("No further improvement possible or LLM failed.")
             break
         sfc2 = SFC()
-        sfc2.load("../data/dec2hex_mod.txt")
+        sfc2.load("data/sfc_files/dec2hex_mod.txt")
 
 
 if __name__ == "__main__":

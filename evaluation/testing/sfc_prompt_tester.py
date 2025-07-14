@@ -406,7 +406,7 @@ def main():
     # Determine the correct path based on current working directory
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(os.path.dirname(script_dir))
-    data_dir = os.path.join(project_root, "data")
+    data_dir = os.path.join(project_root, "prompts", "current")
     
     # Define prompt files to compare
     # Note: Since original files don't exist, we'll use the enhanced ones for demonstration

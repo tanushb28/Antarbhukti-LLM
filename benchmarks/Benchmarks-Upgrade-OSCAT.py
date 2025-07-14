@@ -908,5 +908,3 @@ oscat_examples_upgraded = [
         "variables": ["input", "minval", "maxval", "out", "init"]
     },
 ]
-
-]
