@@ -83,6 +83,9 @@ PYTHONPATH="$PWD/src:$PYTHONPATH" python evaluation/testing/ab_test_example.py
 
 # Complete testing suite with domain-specific validation
 PYTHONPATH="$PWD/src:$PYTHONPATH" python evaluation/testing/sfc_prompt_tester.py
+
+# Demonstrate cost-accuracy tradeoffs for different prompt strategies
+PYTHONPATH="$PWD/src:$PYTHONPATH" python demonstrate_prompt_strategies.py
 ```
 
 ### View Results
@@ -117,6 +120,41 @@ cat evaluation/docs/PROMPT_TESTING_GUIDE.md
 - **Production Ready:** ✅ YES - Zero issues found
 - **Framework Status:** ✅ PROVEN EFFECTIVE
 
+## Cost-Accuracy Analysis 💰
+
+Strategic prompt optimization with three balanced approaches:
+
+### Three Optimization Strategies
+
+| Strategy | Tokens | Cost/Prompt | Quality Score | Best For |
+|----------|--------|-------------|---------------|----------|
+| **Cost-Effective** | ~190 | $0.0004 | 55/100 | High-volume, cost-sensitive |
+| **Sweet Spot** ⭐ | ~380 | $0.0008 | 83/100 | General production use |
+| **Accuracy-Effective** | ~1,630 | $0.0033 | 90/100 | Critical applications |
+
+### Key Findings
+- **Sweet Spot Strategy** provides optimal balance for most applications
+- **Cost Savings:** 75% reduction vs accuracy-effective approach
+- **Quality Maintained:** 83/100 professional standard
+- **Annual Cost Impact:** $4.8-$39.6/year per 1000 prompts/month
+
+### Strategic Recommendations
+- **Development Phase:** Use Cost-Effective (save 80% on costs)
+- **Production Phase:** Use Sweet Spot (balanced approach)
+- **Critical Tasks:** Use Accuracy-Effective (maximum quality)
+
+### View Analysis Reports
+```bash
+# Comprehensive cost-accuracy analysis
+cat cost_accuracy_summary.md
+
+# Executive cost-benefit report
+cat cost_benefit_analysis_report.md
+
+# Interactive cost demonstration
+python demonstrate_prompt_strategies.py
+```
+
 ## Basic Usage
 
 ### Installation
@@ -143,6 +181,10 @@ python -m venv antarbhukti-env
 source antarbhukti-env/bin/activate  # On Windows: antarbhukti-env\Scripts\activate
 pip install -r requirements.txt
 pip install -e .
+
+# Method 4: Automated setup (recommended for first-time users)
+pip install -e .
+python setup_helper.py  # Sets up environment, installs Graphviz, creates .env template
 ```
 
 **Note:** If you encounter `backports.tarfile` errors with conda, use the PYTHONPATH method for development:
