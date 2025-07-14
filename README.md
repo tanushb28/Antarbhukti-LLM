@@ -37,7 +37,7 @@ PYTHONPATH="$PWD/src:$PYTHONPATH" python evaluation/verification/run_prompt_veri
 
 Production-ready prompts with **proven 240% quality improvements** over basic templates.
 
-### Core SFC Enhancement Prompts (`data/`)
+### Core SFC Enhancement Prompts (`prompts/current/`)
 
 - **`iterative_prompting.txt`** - SFC Equivalence Enhancement Framework
 - **`prompt_refiner.txt`** - General SFC Refinement Framework  
@@ -185,7 +185,7 @@ from antarbhukti.llm_manager import LLMManager
 
 llm = LLMManager()
 result = llm.generate_sfc_enhancement(
-    prompt_file="data/iterative_prompting.txt",
+    prompt_file="prompts/current/iterative_prompting.txt",
     sfc1_code=source_sfc,
     sfc2_code=target_sfc
 )
@@ -222,9 +222,9 @@ export AZURE_OPENAI_API_VERSION=2023-12-01-preview
 Antarbhukti-LLM/
 ├── src/antarbhukti/          # Main library code
 ├── data/examples/            # Usage examples
+├── data/sfc_files/           # SFC data files
 ├── benchmarks/              # OSCAT benchmark suite
-├── data/                    # SFC data files
-├── prompts/                 # Enhanced LLM prompts
+├── prompts/current/         # Enhanced LLM prompts
 ├── evaluation/              # Testing and validation framework
 ├── tests/                   # Test suite
 └── docs/                    # Documentation
