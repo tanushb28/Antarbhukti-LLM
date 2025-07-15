@@ -220,7 +220,7 @@ This document compares the single-shot strategies in `prompts/strategies/` with 
 - Semantic validation
 
 **Use Cases:**
-- Advanced AI applications
+- Research-grade applications
 - Research projects
 - Formal verification
 - Knowledge-intensive domains
@@ -281,7 +281,7 @@ This document compares the single-shot strategies in `prompts/strategies/` with 
 - **Avoid When**: Budget is primary concern, simple tasks
 
 #### Semantic-View Iterative
-- **Use When**: Advanced AI applications, research projects, formal verification needed
+- **Use When**: Research-grade applications, research projects, formal verification needed
 - **Avoid When**: Budget is critical, simple domain requirements
 
 ## Implementation Guidelines
@@ -377,7 +377,7 @@ Each strategy now includes:
 2. **Upgrade 1**: Cost-Effective Iterative (better quality, same cost range)
 3. **Upgrade 2**: Sweet Spot Iterative (balanced production approach)
 4. **Upgrade 3**: Accuracy-Effective Iterative (enterprise-grade)
-5. **Upgrade 4**: Semantic-View Iterative (advanced AI applications)
+5. **Upgrade 4**: Semantic-View Iterative (research-grade applications)
 
 ## Conclusion
 

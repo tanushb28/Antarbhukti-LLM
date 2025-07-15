@@ -131,7 +131,7 @@ Strategic prompt optimization with four balanced approaches:
 | **Cost-Effective** | ~190 | $0.0004 | 55/100 | High-volume, cost-sensitive |
 | **Sweet Spot** ⭐ | ~380 | $0.0008 | 83/100 | General production use |
 | **Accuracy-Effective** | ~1,630 | $0.0033 | 90/100 | Critical applications |
-| **Semantic-View** 🧠 | ~2,800 | $0.0056 | 95/100 | Advanced AI with semantic reasoning |
+| **Semantic-View** 🧠 | ~2,800 | $0.0056 | 95/100 | Research-grade applications |
 
 ### Key Findings
 - **Sweet Spot Strategy** provides optimal balance for most applications
@@ -144,7 +144,7 @@ Strategic prompt optimization with four balanced approaches:
 - **Development Phase:** Use Cost-Effective (save 80% on costs)
 - **Production Phase:** Use Sweet Spot (balanced approach)
 - **Critical Tasks:** Use Accuracy-Effective (maximum quality)
-- **Advanced AI Applications:** Use Semantic-View (semantic reasoning & domain knowledge)
+- **Research-Grade Applications:** Use Semantic-View (semantic reasoning & domain knowledge)
 
 ### View Analysis Reports
 ```bash
