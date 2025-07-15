@@ -1,0 +1,103 @@
+# SFC Code Refinement and Path Equivalence Enhancement
+
+## Mission Statement
+Refine SFC2 (Sequential Function Chart 2) to achieve complete behavioral equivalence with SFC1 by systematically adding missing execution paths and ensuring logical consistency.
+
+## Problem Analysis
+Your task is to identify and implement missing execution paths in SFC2 that exist in SFC1, ensuring both models can handle identical input scenarios and produce equivalent outputs.
+
+## Input Specification
+
+### Missing Path Analysis
+```
+From Step    To Step      Transitions       Z3 Condition            Z3 Data Transformation
+{non_equiv_paths_str}
+```
+
+### Target SFC2 Code (To Be Modified)
+```python
+{sfc2_code}
+```
+
+### Reference SFC1 Code (Behavioral Standard)
+```python
+{sfc1_code}
+```
+
+## Refinement Requirements
+
+### 1. Core Objectives
+- **Path Completeness**: Ensure all execution paths from SFC1 are accessible in SFC2
+- **Behavioral Equivalence**: SFC2 should produce identical results to SFC1 for all valid inputs
+- **Data Consistency**: Maintain proper variable states and transformations throughout execution
+- **Logical Integrity**: Preserve existing SFC2 functionality while adding missing capabilities
+
+### 2. Implementation Standards
+- **Precise Modifications**: Only modify `steps2` and `transitions2` data structures
+- **Format Consistency**: Maintain exact same dictionary structure and key names
+- **Z3 Integration**: Implement Z3 conditions and transformations exactly as specified
+- **Guard Condition Accuracy**: Ensure transition guards are logically sound and complete
+
+### 3. Code Quality Requirements
+- **Python Compliance**: Follow Python best practices and syntax standards
+- **Clear Documentation**: Add inline comments for complex logical additions
+- **Maintainability**: Write code that integrates seamlessly with existing structure
+- **Error Prevention**: Avoid introducing logical conflicts or unreachable states
+
+## Expected Deliverables
+
+### Primary Output:
+1. **Complete Modified `steps2`**: Full updated steps2 data structure
+2. **Complete Modified `transitions2`**: Full updated transitions2 data structure
+3. **Implementation Summary**: Brief explanation of key changes and rationale
+
+### Output Format:
+```python
+# Refined steps2 with added equivalence paths
+steps2 = [
+    # ... existing entries preserved ...
+    # ... new entries added for missing paths ...
+]
+
+# Refined transitions2 with added equivalence paths  
+transitions2 = [
+    # ... existing entries preserved ...
+    # ... new entries added for missing paths ...
+]
+```
+
+**Refinement Summary**: [2-3 sentences explaining the key modifications and how they address the missing paths]
+
+## Validation Criteria
+
+### Functional Requirements
+- [ ] All paths from the missing paths table are now executable in SFC2
+- [ ] No existing SFC2 functionality is broken or removed
+- [ ] Z3 conditions and data transformations are correctly implemented
+- [ ] Transition guards are logically consistent and complete
+
+### Technical Requirements
+- [ ] Code follows established patterns and conventions
+- [ ] Data structures maintain proper format and typing
+- [ ] Variable names and references are consistent
+- [ ] No syntax errors or logical contradictions
+
+## Strategic Guidelines
+
+### Conflict Resolution
+- **Priority**: Preserve existing SFC2 behavior when conflicts arise
+- **Integration**: Merge new paths harmoniously with existing logic
+- **Validation**: Ensure new paths don't create unreachable or inconsistent states
+
+### Performance Considerations
+- **Efficiency**: Avoid unnecessary complexity or redundant checks
+- **Clarity**: Maintain readable and understandable code structure
+- **Scalability**: Design additions that won't interfere with future modifications
+
+## Quality Assurance Notes
+- Mentally trace through execution paths to verify logical flow
+- Ensure variable states are properly maintained across transitions
+- Verify that all new conditions can be evaluated correctly
+- Check that data transformations preserve semantic meaning
+
+**Deliver refined, production-ready code that achieves complete SFC equivalence.**

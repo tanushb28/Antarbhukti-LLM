@@ -1,0 +1,42 @@
+# SFC Text File to Python Class - Cost-Effective Version
+
+## Task
+Read SFC text file and generate Python class with proper structure.
+
+## Input Format
+```python
+steps1 = [
+    {"name": "Start", "function": "i := 1; fact := 1"},
+    {"name": "Check", "function": ""},
+    # ... more steps
+]
+transitions1 = [
+    {"src": "Start", "tgt": "Check", "guard": "init"},
+    # ... more transitions
+]
+```
+
+## Required Output
+```python
+class SFC:
+    def __init__(self, steps, variables, transitions, initial_step):
+        self.steps = steps
+        self.variables = variables
+        self.transitions = transitions
+        self.initial_step = initial_step
+    
+    def step_names(self):
+        return [step["name"] for step in self.steps]
+    
+    def step_functions(self):
+        return {step["name"]: step["function"] for step in self.steps}
+```
+
+## Requirements
+- Read file safely (handle FileNotFoundError)
+- Parse steps, transitions, variables, initial_step
+- Generate working SFC class
+- Include step_names() and step_functions() methods
+- Use proper Python syntax and naming
+
+Generate complete, runnable Python code. 

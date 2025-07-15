@@ -1,0 +1,201 @@
+# Sweet Spot Iterative SFC Upgrade Framework
+
+## Overview
+Multi-stage upgrade process balancing quality and efficiency for SFC enhancement tasks.
+
+## Stage Framework
+
+### Stage 1: Analysis and Planning
+**Input**: SFC1 code + upgrade requirements
+**Process**: 
+- Analyze SFC1 structure and identify domain (factorial, dec-to-hex)
+- Plan upgrade strategy based on domain rules
+- Create initial SFC2 structure with core functionality
+
+**Output**: Basic SFC2 with primary execution paths
+
+### Stage 2: Enhancement Implementation
+**Input**: Basic SFC2 + detailed upgrade requirements
+**Process**:
+- Apply domain-specific upgrade rules
+- Add auxiliary variables and tracking (if needed)
+- Implement error handling and validation
+
+**Output**: Enhanced SFC2 with upgrade features
+
+### Stage 3: Path Validation and Completeness
+**Input**: Enhanced SFC2 + missing paths analysis
+**Process**:
+- Analyze missing execution paths compared to SFC1
+- Add missing transitions and steps
+- Ensure behavioral equivalence
+
+**Output**: Complete SFC2 with all paths covered
+
+### Stage 4: Quality Assurance
+**Input**: Complete SFC2 + original SFC1
+**Process**:
+- Validate structure and format compliance
+- Check logical consistency
+- Verify all upgrade rules are applied
+
+**Output**: Production-ready SFC2
+
+## Domain-Specific Upgrade Rules
+
+### Factorial Enhancement Rules
+- **Tracking**: Add `temp` variable for iteration monitoring
+- **Cleanup**: Implement proper auxiliary variable cleanup
+- **Validation**: Ensure loop bounds and termination conditions
+
+### Dec-to-Hex Enhancement Rules
+#### R1 (Hardware/PLC):
+- **Integer Arithmetic**: Use only integer operations
+- **Hardware Compatibility**: Ensure PLC-ready implementation
+- **Deterministic Execution**: Predictable timing
+
+#### R2 (String Enhancement):
+- **String Output**: Change HexValue to string type
+- **Error Handling**: Use descriptive error messages
+- **Character Building**: Implement proper string accumulation
+
+## Stage Templates
+
+### Stage 1 Template:
+```markdown
+# SFC Analysis and Initial Upgrade
+
+## Task
+Analyze SFC1 and create initial SFC2 structure.
+
+## Input
+```python
+{sfc1_code}
+```
+
+## Domain: {domain_type}
+## Upgrade Rules: {upgrade_rules}
+
+## Requirements
+- Preserve original functionality
+- Create proper SFC structure
+- Plan for {domain_type} specific enhancements
+
+## Output Format
+```python
+steps = [{"name": "StepName", "function": "assignment"}]
+transitions = [{"src": "From", "tgt": "To", "guard": "condition"}]
+variables = ["var1", "var2"]
+initial_step = "StepName"
+```
+
+## Validation
+- Check basic structure compliance
+- Verify variable declarations
+- Ensure logical flow
+```
+
+### Stage 2 Template:
+```markdown
+# Enhancement Implementation
+
+## Task
+Apply domain-specific upgrade rules to SFC2.
+
+## Current SFC2
+```python
+{sfc2_code}
+```
+
+## Enhancement Rules
+{enhancement_rules}
+
+## Requirements
+- Add auxiliary variables if needed
+- Implement error handling
+- Ensure compatibility requirements
+
+## Output
+Enhanced SFC2 with upgrade features applied.
+```
+
+### Stage 3 Template:
+```markdown
+# Path Validation and Completion
+
+## Task
+Add missing execution paths to achieve SFC1-SFC2 equivalence.
+
+## Current SFC2
+```python
+{sfc2_code}
+```
+
+## Missing Paths
+{missing_paths}
+
+## Reference SFC1
+```python
+{sfc1_code}
+```
+
+## Requirements
+- Add all missing paths
+- Maintain existing functionality
+- Ensure logical consistency
+
+## Output
+Complete SFC2 with all paths covered.
+```
+
+### Stage 4 Template:
+```markdown
+# Quality Assurance Validation
+
+## Task
+Perform final validation of SFC2 against SFC1.
+
+## SFC2 (Final)
+```python
+{sfc2_code}
+```
+
+## SFC1 (Reference)
+```python
+{sfc1_code}
+```
+
+## Validation Checklist
+- [ ] All paths from SFC1 are covered in SFC2
+- [ ] Upgrade rules are properly implemented
+- [ ] Structure follows required format
+- [ ] Variables are properly declared and used
+- [ ] Error handling is appropriate
+
+## Output
+Validation report + final SFC2 (if changes needed).
+```
+
+## Usage Workflow
+
+1. **Stage 1**: Analyze SFC1 → Create basic SFC2
+2. **Stage 2**: Apply upgrade rules → Enhanced SFC2
+3. **Stage 3**: Add missing paths → Complete SFC2
+4. **Stage 4**: Final validation → Production-ready SFC2
+
+## Benefits
+- **Structured Approach**: Clear progression through stages
+- **Quality Focus**: Built-in validation at each stage
+- **Flexibility**: Can restart from any stage if issues arise
+- **Efficiency**: Balanced token usage vs quality output
+
+## Cost Analysis
+- **Single-shot**: ~380 tokens, 70% success rate
+- **Iterative**: ~1,200 tokens total, 90% success rate
+- **Cost-effectiveness**: 3x tokens for 20% better quality
+
+## When to Use
+- Production SFC development
+- Complex upgrade scenarios
+- When quality is important but cost matters
+- Team development with review cycles 

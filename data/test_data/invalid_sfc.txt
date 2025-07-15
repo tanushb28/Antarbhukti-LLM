@@ -1,0 +1,14 @@
+steps = [
+    {"name": "Start", "function": "counter := 0"},
+    {"name": "Process", "function": "counter := counter + 1"},
+    # Missing End step
+]
+
+transitions = [
+    {"src": "Start", "tgt": "Process", "guard": "init"},
+    {"src": "Process", "tgt": "NonExistentStep", "guard": "counter >= 3"}
+]
+
+variables = ["counter", "init"]
+
+initial_step = "Start" 
