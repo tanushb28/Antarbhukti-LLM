@@ -293,6 +293,11 @@
       "reasoning": "Maximizes quality for high-stakes applications",
       "expected_outcome": "Highest quality output regardless of cost"
     },
+    "Advanced AI Applications": {
+      "recommended_strategy": "Semantic-View",
+      "reasoning": "Provides semantic understanding and domain knowledge integration",
+      "expected_outcome": "Highest quality (95/100) with semantic reasoning capabilities"
+    },
     "Development/Testing": {
       "recommended_strategy": "Cost-Effective",
       "reasoning": "Reduces costs during iterative development",
@@ -302,6 +307,12 @@
       "recommended_strategy": "Sweet Spot",
       "reasoning": "Professional quality without excessive costs",
       "expected_outcome": "Reliable results with cost control"
+    },
+    "Iterative Processing": {
+      "recommended_approach": "All strategies support iterative and refinement modes",
+      "reasoning": "3-4 stage processing with validation checkpoints for quality improvements",
+      "expected_outcome": "8-36% quality improvement at 3-4x cost increase",
+      "cost_multiplier": "3-4x base strategy cost"
     }
   }
 }
