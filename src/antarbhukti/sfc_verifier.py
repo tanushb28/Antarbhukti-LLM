@@ -236,7 +236,6 @@ class Verifier:
 
         def dfs(current_place, current_path, visited, start_cut):
             if len(current_path) > 0 and current_place in cutpoint_set:
-                if current_place != start_cut:
                     cond, subst = compute_condition_and_subst(current_path)
                     paths.append(
                         {
