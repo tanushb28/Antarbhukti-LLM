@@ -1,0 +1,62 @@
+[
+    {
+        "llm_name": "gpt4o",
+        "model_name": "gpt-4o",
+        "api_key": "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",
+        "max_tokens": 1500,
+        "max_retries": 5,
+        "temperature": 0.3,
+        "top_p": 0.9,
+        "top_k": 10,
+        "n": 1,
+        "stop": null
+    },
+    {
+        "llm_name": "gemini",
+        "model_name": "gemini-1.5-flash-001",
+        "api_key": "AIzaSyDXbCqsRPESrfHkgKFUVKO98bnx6M2ndSI",
+        "max_tokens": 1500,
+        "max_retries": 5,
+        "temperature": 0.2,
+        "top_p": 1,
+        "top_k": 1,
+        "n": 1,
+        "stop": null
+    },
+    {
+        "llm_name": "grok",
+        "model_name": "grok-beta",
+        "api_key": "your-grok-api-key-here",
+        "max_tokens": 1500,
+        "max_retries": 5,
+        "temperature": 0.2,
+        "top_p": 0.9,
+        "top_k": 10,
+        "n": 1,
+        "stop": null
+    },
+    {
+        "llm_name": "llama",
+        "model_name": "meta-llama/llama-4-scout-17b-16e-instruct",
+        "api_key": "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",
+        "max_tokens": 4096,
+        "max_retries": 5,
+        "temperature": 0.3,
+        "top_p": 1,
+        "top_k": 10,
+        "n": 1,
+        "stop": null
+    },
+    {
+        "llm_name": "claude",
+        "model_name": "claude-3-5-sonnet-20241022",
+        "api_key": "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",
+        "max_tokens": 4096,
+        "max_retries": 5,
+        "temperature": 0.3,
+        "top_p": 1,
+        "top_k": 10,
+        "n": 1,
+        "stop": null
+    }
+    ]
