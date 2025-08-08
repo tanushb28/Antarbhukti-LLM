@@ -1,414 +1,334 @@
+"Tank_Level_Control": {
+    "steps": [
+        {"name": "ValidateInput", "function": "CheckSensorInputs"},
+        {"name": "Start", "function": "CheckLevel"},
+        {"name": "Fill", "function": "OpenInletValve"},
+        {"name": "Stop", "function": "CloseInletValve"}
+    ],
+    "transitions": [
+        {"src": "ValidateInput", "tgt": "Start", "guard": "inputs_valid"},
+        {"src": "Start", "tgt": "Fill", "guard": "level < LOW"},
+        {"src": "Fill", "tgt": "Stop", "guard": "level >= HIGH"},
+        {"src": "Stop", "tgt": "ValidateInput", "guard": "level <= NORMAL"}
+    ],
+    "variables": ["level", "LOW", "HIGH", "NORMAL", "inputs_valid"],
+    "initial_step": "ValidateInput"
+},
+
+"Batch_Mixing_System": {
+    "steps": [
+        {"name": "Idle", "function": "WaitForStart"},
+        {"name": "ExecutionBoundCheck", "function": "CheckMixingTimer"},
+        {"name": "AddIngredient", "function": "OpenValve"},
+        {"name": "Mix", "function": "StartMixer"},
+        {"name": "End", "function": "StopAll"}
+    ],
+    "transitions": [
+        {"src": "Idle", "tgt": "ExecutionBoundCheck", "guard": "startButton == true"},
+        {"src": "ExecutionBoundCheck", "tgt": "AddIngredient", "guard": "within_bounds"},
+        {"src": "AddIngredient", "tgt": "Mix", "guard": "ingredientAdded == true"},
+        {"src": "Mix", "tgt": "End", "guard": "mixingTimeElapsed == true"}
+    ],
+    "variables": ["startButton", "ingredientAdded", "mixingTimeElapsed", "within_bounds"],
+    "initial_step": "Idle"
+},
+
+"Temperature_Control_System": {
+    "steps": [
+        {"name": "Monitor", "function": "ReadTemp"},
+        {"name": "LogIntermediate", "function": "LogTemperature"},
+        {"name": "Heat", "function": "TurnHeaterOn"},
+        {"name": "Cool", "function": "TurnCoolerOn"}
+    ],
+    "transitions": [
+        {"src": "Monitor", "tgt": "LogIntermediate", "guard": "true"},
+        {"src": "LogIntermediate", "tgt": "Heat", "guard": "temp < MIN_TEMP"},
+        {"src": "LogIntermediate", "tgt": "Cool", "guard": "temp > MAX_TEMP"},
+        {"src": "Heat", "tgt": "Monitor", "guard": "temp >= MIN_TEMP"},
+        {"src": "Cool", "tgt": "Monitor", "guard": "temp <= MAX_TEMP"}
+    ],
+    "variables": ["temp", "MIN_TEMP", "MAX_TEMP"],
+    "initial_step": "Monitor"
+},
+
+"Conveyor_System_Controller": {
+    "steps": [
+        {"name": "Idle", "function": "WaitForObject"},
+        {"name": "Move", "function": "StartConveyor"},
+        {"name": "WatchdogCheck", "function": "ResetWatchdog"},
+        {"name": "Stop", "function": "StopConveyor"}
+    ],
+    "transitions": [
+        {"src": "Idle", "tgt": "Move", "guard": "objectDetected == true"},
+        {"src": "Move", "tgt": "WatchdogCheck", "guard": "positionReached == true"},
+        {"src": "WatchdogCheck", "tgt": "Stop", "guard": "watchdog_ok"},
+        {"src": "Stop", "tgt": "Idle", "guard": "objectCleared == true"}
+    ],
+    "variables": ["objectDetected", "positionReached", "objectCleared", "watchdog_ok"],
+    "initial_step": "Idle"
+},
+
+"Traffic_Light_Controller": {
+    "steps": [
+        {"name": "Green", "function": "SetGreen"},
+        {"name": "ExecutionBoundCheck", "function": "CheckSignalTimer"},
+        {"name": "Yellow", "function": "SetYellow"},
+        {"name": "Red", "function": "SetRed"}
+    ],
+    "transitions": [
+        {"src": "Green", "tgt": "ExecutionBoundCheck", "guard": "greenTimeElapsed == true"},
+        {"src": "ExecutionBoundCheck", "tgt": "Yellow", "guard": "within_bounds"},
+        {"src": "Yellow", "tgt": "Red", "guard": "yellowTimeElapsed == true"},
+        {"src": "Red", "tgt": "Green", "guard": "redTimeElapsed == true"}
+    ],
+    "variables": ["greenTimeElapsed", "yellowTimeElapsed", "redTimeElapsed", "within_bounds"],
+    "initial_step": "Green"
+}
+
 {
-    "Tank_Level_Control": {
+    "Filling_and_Packaging_Line": {
         "steps": [
             {"name": "ValidateInput", "function": "CheckSensorInputs"},
-            {"name": "Start", "function": "CheckLevel"},
-            {"name": "Fill", "function": "OpenInletValve"},
-            {"name": "Stop", "function": "CloseInletValve"}
-        ],
-        "transitions": [
-            {"src": "ValidateInput", "tgt": "Start", "guard": "inputs_valid"},
-            {"src": "Start", "tgt": "Fill", "guard": "level < LOW"},
-            {"src": "Fill", "tgt": "Stop", "guard": "level >= HIGH"},
-            {"src": "Stop", "tgt": "Start", "guard": "level <= NORMAL"}
-        ],
-        "variables": ["level", "LOW", "HIGH", "NORMAL", "inputs_valid"],
-        "initial_step": "ValidateInput"
-    },
-
-    "Batch_Mixing_System": {
-        "steps": [
-            {"name": "Idle", "function": "WaitForStart"},
-            {"name": "AddIngredient", "function": "OpenValve"},
-            {"name": "ExecutionCheck", "function": "CheckMixingTime"},
-            {"name": "Mix", "function": "StartMixer"},
-            {"name": "End", "function": "StopAll"}
-        ],
-        "transitions": [
-            {"src": "Idle", "tgt": "AddIngredient", "guard": "startButton == true"},
-            {"src": "AddIngredient", "tgt": "ExecutionCheck", "guard": "ingredientAdded == true"},
-            {"src": "ExecutionCheck", "tgt": "Mix", "guard": "within_time_bound"},
-            {"src": "Mix", "tgt": "End", "guard": "mixingTimeElapsed == true"}
-        ],
-        "variables": ["startButton", "ingredientAdded", "mixingTimeElapsed", "within_time_bound"],
-        "initial_step": "Idle"
-    },
-
-    "Temperature_Control_System": {
-        "steps": [
-            {"name": "Monitor", "function": "ReadTemp"},
-            {"name": "LogData", "function": "RecordTemperature"},
-            {"name": "Heat", "function": "TurnHeaterOn"},
-            {"name": "Cool", "function": "TurnCoolerOn"}
-        ],
-        "transitions": [
-            {"src": "Monitor", "tgt": "LogData", "guard": "true"},
-            {"src": "LogData", "tgt": "Heat", "guard": "temp < MIN_TEMP"},
-            {"src": "LogData", "tgt": "Cool", "guard": "temp > MAX_TEMP"},
-            {"src": "Heat", "tgt": "Monitor", "guard": "temp >= MIN_TEMP"},
-            {"src": "Cool", "tgt": "Monitor", "guard": "temp <= MAX_TEMP"}
-        ],
-        "variables": ["temp", "MIN_TEMP", "MAX_TEMP"],
-        "initial_step": "Monitor"
-    },
-
-    "Conveyor_System_Controller": {
-        "steps": [
-            {"name": "Idle", "function": "WaitForObject"},
-            {"name": "Move", "function": "StartConveyor"},
-            {"name": "WatchdogCheck", "function": "CheckMovementStatus"},
+            {"name": "Start", "function": "CheckConveyor"},
+            {"name": "Fill", "function": "FillContainer"},
+            {"name": "Package", "function": "SealPackage"},
             {"name": "Stop", "function": "StopConveyor"}
         ],
         "transitions": [
-            {"src": "Idle", "tgt": "Move", "guard": "objectDetected == true"},
-            {"src": "Move", "tgt": "WatchdogCheck", "guard": "positionReached == false"},
-            {"src": "WatchdogCheck", "tgt": "Stop", "guard": "positionReached == true or fault_detected"},
-            {"src": "Stop", "tgt": "Idle", "guard": "objectCleared == true"}
-        ],
-        "variables": ["objectDetected", "positionReached", "objectCleared", "fault_detected"],
-        "initial_step": "Idle"
+            {"src": "ValidateInput", "tgt": "Start", "condition": "sensors_ok"},
+            {"src": "Start", "tgt": "Fill", "condition": "container_present"},
+            {"src": "Fill", "tgt": "Package", "condition": "fill_complete"},
+            {"src": "Package", "tgt": "Stop", "condition": "package_done"}
+        ]
     },
-
-    "Traffic_Light_Controller": {
+    "Water_Treatment_Plant_Controller": {
         "steps": [
-            {"name": "Green", "function": "SetGreen"},
-            {"name": "ExecutionCheck", "function": "VerifyGreenDuration"},
-            {"name": "Yellow", "function": "SetYellow"},
-            {"name": "ExecutionCheckYellow", "function": "VerifyYellowDuration"},
-            {"name": "Red", "function": "SetRed"},
-            {"name": "ExecutionCheckRed", "function": "VerifyRedDuration"}
+            {"name": "Start", "function": "CheckTankLevel"},
+            {"name": "Filter", "function": "ActivateFilter"},
+            {"name": "LogFilter", "function": "LogFilterPerformance"},
+            {"name": "Treat", "function": "AddChemicals"},
+            {"name": "Stop", "function": "CloseValves"}
         ],
         "transitions": [
-            {"src": "Green", "tgt": "ExecutionCheck", "guard": "true"},
-            {"src": "ExecutionCheck", "tgt": "Yellow", "guard": "within_green_time"},
-            {"src": "Yellow", "tgt": "ExecutionCheckYellow", "guard": "true"},
-            {"src": "ExecutionCheckYellow", "tgt": "Red", "guard": "within_yellow_time"},
-            {"src": "Red", "tgt": "ExecutionCheckRed", "guard": "true"},
-            {"src": "ExecutionCheckRed", "tgt": "Green", "guard": "within_red_time"}
+            {"src": "Start", "tgt": "Filter", "condition": "level_ok"},
+            {"src": "Filter", "tgt": "LogFilter", "condition": "filter_done"},
+            {"src": "LogFilter", "tgt": "Treat", "condition": "log_saved"},
+            {"src": "Treat", "tgt": "Stop", "condition": "treatment_done"}
+        ]
+    },
+    "Material_Handling_Robot": {
+        "steps": [
+            {"name": "Start", "function": "CheckMotorStatus"},
+            {"name": "Move", "function": "MoveToLocation"},
+            {"name": "MonitorBound", "function": "CheckExecutionTime"},
+            {"name": "Pick", "function": "PickObject"},
+            {"name": "Stop", "function": "Shutdown"}
         ],
-        "variables": ["within_green_time", "within_yellow_time", "within_red_time"],
-        "initial_step": "Green"
+        "transitions": [
+            {"src": "Start", "tgt": "Move", "condition": "motors_ready"},
+            {"src": "Move", "tgt": "MonitorBound", "condition": "position_reached"},
+            {"src": "MonitorBound", "tgt": "Pick", "condition": "within_time"},
+            {"src": "Pick", "tgt": "Stop", "condition": "pick_done"}
+        ]
+    },
+    "HVAC_System": {
+        "steps": [
+            {"name": "ValidateInput", "function": "CheckTemperatureSensors"},
+            {"name": "Start", "function": "CheckFanStatus"},
+            {"name": "Cool", "function": "ActivateCooling"},
+            {"name": "Stop", "function": "ShutdownCooling"}
+        ],
+        "transitions": [
+            {"src": "ValidateInput", "tgt": "Start", "condition": "sensors_ok"},
+            {"src": "Start", "tgt": "Cool", "condition": "fan_ready"},
+            {"src": "Cool", "tgt": "Stop", "condition": "temp_ok"}
+        ]
+    },
+    "Boiler_Control": {
+        "steps": [
+            {"name": "Start", "function": "CheckWaterLevel"},
+            {"name": "Heat", "function": "ActivateBurner"},
+            {"name": "LogPressure", "function": "LogPressureReading"},
+            {"name": "Stop", "function": "ShutdownBoiler"}
+        ],
+        "transitions": [
+            {"src": "Start", "tgt": "Heat", "condition": "level_ok"},
+            {"src": "Heat", "tgt": "LogPressure", "condition": "pressure_stable"},
+            {"src": "LogPressure", "tgt": "Stop", "condition": "log_done"}
+        ]
+    },
+    "Welding_Line_Controller": {
+        "steps": [
+            {"name": "Start", "function": "CheckWelderStatus"},
+            {"name": "Weld", "function": "PerformWelding"},
+            {"name": "MonitorBound", "function": "CheckExecutionTime"},
+            {"name": "Stop", "function": "ShutdownWelder"}
+        ],
+        "transitions": [
+            {"src": "Start", "tgt": "Weld", "condition": "welder_ready"},
+            {"src": "Weld", "tgt": "MonitorBound", "condition": "weld_done"},
+            {"src": "MonitorBound", "tgt": "Stop", "condition": "within_time"}
+        ]
+    },
+    "Automated_Gate_System": {
+        "steps": [
+            {"name": "ValidateInput", "function": "CheckSensorInputs"},
+            {"name": "Start", "function": "OpenGate"},
+            {"name": "Stop", "function": "CloseGate"}
+        ],
+        "transitions": [
+            {"src": "ValidateInput", "tgt": "Start", "condition": "sensors_ok"},
+            {"src": "Start", "tgt": "Stop", "condition": "timeout"}
+        ]
+    },
+    "Crane_Automation": {
+        "steps": [
+            {"name": "Start", "function": "CheckCraneStatus"},
+            {"name": "Lift", "function": "LiftLoad"},
+            {"name": "MonitorBound", "function": "CheckExecutionTime"},
+            {"name": "Move", "function": "MoveLoad"},
+            {"name": "Stop", "function": "ShutdownCrane"}
+        ],
+        "transitions": [
+            {"src": "Start", "tgt": "Lift", "condition": "crane_ready"},
+            {"src": "Lift", "tgt": "MonitorBound", "condition": "lift_done"},
+            {"src": "MonitorBound", "tgt": "Move", "condition": "within_time"},
+            {"src": "Move", "tgt": "Stop", "condition": "move_done"}
+        ]
+    },
+    "Packaging_Robot": {
+        "steps": [
+            {"name": "Start", "function": "CheckRobotStatus"},
+            {"name": "Pick", "function": "PickItem"},
+            {"name": "LogPick", "function": "LogPickOperation"},
+            {"name": "Pack", "function": "PackItem"},
+            {"name": "Stop", "function": "ShutdownRobot"}
+        ],
+        "transitions": [
+            {"src": "Start", "tgt": "Pick", "condition": "robot_ready"},
+            {"src": "Pick", "tgt": "LogPick", "condition": "pick_done"},
+            {"src": "LogPick", "tgt": "Pack", "condition": "log_saved"},
+            {"src": "Pack", "tgt": "Stop", "condition": "pack_done"}
+        ]
     }
 }
 
-[
-  {
-    "name": "Pump Control System",
-    "rule": "Watchdog Monitoring",
-    "description": "Controls pumps based on tank level or pressure sensor inputs.",
-    "variables": ["tankLevel", "pressure", "pumpStatus", "watchdogTimer"],
-    "steps": [
-      {"id": "S1", "name": "Check Sensors"},
-      {"id": "S2", "name": "Evaluate Control Logic"},
-      {"id": "S3", "name": "Activate Pump"},
-      {"id": "S4", "name": "Deactivate Pump"},
-      {"id": "S5", "name": "Watchdog Reset"},
-      {"id": "S6", "name": "Safe Shutdown"}
-    ],
-    "transitions": [
-      {"from": "S1", "to": "S2", "condition": "sensorsValid"},
-      {"from": "S2", "to": "S3", "condition": "tankLevel < lowLimit || pressure < lowLimit"},
-      {"from": "S2", "to": "S4", "condition": "tankLevel > highLimit || pressure > highLimit"},
-      {"from": "S3", "to": "S5", "condition": "pumpStatus == ON"},
-      {"from": "S4", "to": "S5", "condition": "pumpStatus == OFF"},
-      {"from": "S5", "to": "S1", "condition": "watchdogTimerReset"},
-      {"from": "S5", "to": "S6", "condition": "!watchdogSignal"}
-    ]
-  },
-  {
-    "name": "Elevator Controller",
-    "rule": "Input Validation",
-    "description": "Manages elevator movement based on floor request inputs and door sensors.",
-    "variables": ["requestedFloor", "currentFloor", "doorClosed", "validRequest"],
-    "steps": [
-      {"id": "S1", "name": "Validate Request"},
-      {"id": "S2", "name": "Check Door Status"},
-      {"id": "S3", "name": "Move Elevator"},
-      {"id": "S4", "name": "Arrive and Open Door"}
-    ],
-    "transitions": [
-      {"from": "S1", "to": "S2", "condition": "validRequest"},
-      {"from": "S2", "to": "S3", "condition": "doorClosed"},
-      {"from": "S3", "to": "S4", "condition": "currentFloor == requestedFloor"}
-    ]
-  },
-  {
-    "name": "PID-Controlled Process",
-    "rule": "Intermediate Logging",
-    "description": "Uses a PID loop to regulate a physical quantity like pressure or flow.",
-    "variables": ["setpoint", "processValue", "controlOutput", "logData"],
-    "steps": [
-      {"id": "S1", "name": "Read Sensors"},
-      {"id": "S2", "name": "Compute PID Output"},
-      {"id": "S3", "name": "Log Process Data"},
-      {"id": "S4", "name": "Apply Control Output"}
-    ],
-    "transitions": [
-      {"from": "S1", "to": "S2", "condition": "sensorsOK"},
-      {"from": "S2", "to": "S3", "condition": "pidCalculated"},
-      {"from": "S3", "to": "S4", "condition": "logDataStored"}
-    ]
-  },
-  {
-    "name": "Motor Start-Stop with Interlocks",
-    "rule": "Watchdog Monitoring",
-    "description": "Ensures motor start/stop only under correct conditions using interlock inputs.",
-    "variables": ["interlockOK", "motorRunning", "watchdogSignal", "watchdogTimer"],
-    "steps": [
-      {"id": "S1", "name": "Check Interlocks"},
-      {"id": "S2", "name": "Start Motor"},
-      {"id": "S3", "name": "Stop Motor"},
-      {"id": "S4", "name": "Watchdog Reset"},
-      {"id": "S5", "name": "Safe Shutdown"}
-    ],
-    "transitions": [
-      {"from": "S1", "to": "S2", "condition": "interlockOK && !motorRunning"},
-      {"from": "S1", "to": "S3", "condition": "!interlockOK && motorRunning"},
-      {"from": "S2", "to": "S4", "condition": "motorRunning"},
-      {"from": "S3", "to": "S4", "condition": "!motorRunning"},
-      {"from": "S4", "to": "S1", "condition": "watchdogTimerReset"},
-      {"from": "S4", "to": "S5", "condition": "!watchdogSignal"}
-    ]
-  },
-  {
-    "name": "Filling and Packaging Line",
-    "rule": "Intermediate Logging",
-    "description": "Coordinates filling, capping, and labeling in a manufacturing line.",
-    "variables": ["fillLevel", "capStatus", "labelStatus", "logData"],
-    "steps": [
-      {"id": "S1", "name": "Fill Container"},
-      {"id": "S2", "name": "Log Filling Data"},
-      {"id": "S3", "name": "Cap Container"},
-      {"id": "S4", "name": "Log Capping Data"},
-      {"id": "S5", "name": "Label Container"}
-    ],
-    "transitions": [
-      {"from": "S1", "to": "S2", "condition": "fillLevel == target"},
-      {"from": "S2", "to": "S3", "condition": "logDataStored"},
-      {"from": "S3", "to": "S4", "condition": "capStatus == OK"},
-      {"from": "S4", "to": "S5", "condition": "logDataStored"}
-    ]
-  },
-  {
-    "name": "Water Treatment Plant Controller",
-    "rule": "Input Validation",
-    "description": "Controls chemical dosing, filtration, and tank levels in a treatment system.",
-    "variables": ["chemicalLevel", "tankLevel", "filterStatus", "validInputs"],
-    "steps": [
-      {"id": "S1", "name": "Validate Sensor Inputs"},
-      {"id": "S2", "name": "Control Dosing"},
-      {"id": "S3", "name": "Control Filtration"},
-      {"id": "S4", "name": "Maintain Tank Levels"}
-    ],
-    "transitions": [
-      {"from": "S1", "to": "S2", "condition": "validInputs"},
-      {"from": "S2", "to": "S3", "condition": "dosingComplete"},
-      {"from": "S3", "to": "S4", "condition": "filterStatus == OK"}
-    ]
-  }
-]
-
-[
-  {
-    "name": "Material Handling Robot",
-    "upgrade_rule": "Execution Bound Monitoring",
-    "description": "Operates robotic arm for pick-and-place with loop-bound checks on movement cycles.",
-    "variables": {
-      "cycle_count": 0,
-      "max_cycles": 10,
-      "item_detected": false
+{
+    "Printing_Press_Controller": {
+        "steps": [
+            {"name": "ValidateInput", "function": "CheckSensorInputs"},
+            {"name": "Start", "function": "InitializePress"},
+            {"name": "Print", "function": "RunPrintCycle"},
+            {"name": "Stop", "function": "ShutdownPress"}
+        ],
+        "transitions": [
+            {"src": "ValidateInput", "tgt": "Start", "condition": "AllInputsValid"},
+            {"src": "Start", "tgt": "Print", "condition": "PressReady"},
+            {"src": "Print", "tgt": "Stop", "condition": "PrintComplete"}
+        ]
     },
-    "steps": [
-      "Start",
-      "Check Cycle Bound",
-      "Pick Item",
-      "Place Item",
-      "Increment Cycle Count",
-      "End"
-    ],
-    "transitions": [
-      {"from": "Start", "to": "Check Cycle Bound"},
-      {"from": "Check Cycle Bound", "to": "Pick Item", "condition": "cycle_count < max_cycles AND item_detected"},
-      {"from": "Check Cycle Bound", "to": "End", "condition": "cycle_count >= max_cycles"},
-      {"from": "Pick Item", "to": "Place Item"},
-      {"from": "Place Item", "to": "Increment Cycle Count"},
-      {"from": "Increment Cycle Count", "to": "Check Cycle Bound", "action": "cycle_count++"}
-    ]
-  },
-  {
-    "name": "HVAC System",
-    "upgrade_rule": "Watchdog Monitoring",
-    "description": "Regulates heating, ventilation, and air conditioning based on ambient conditions.",
-    "variables": {
-      "temperature": 0,
-      "setpoint": 22,
-      "watchdog_timer": 0,
-      "watchdog_limit": 100
+    "Silo_Management_System": {
+        "steps": [
+            {"name": "Start", "function": "CheckSiloStatus"},
+            {"name": "Fill", "function": "LoadSilo"},
+            {"name": "LogIntermediate", "function": "RecordFillStatus"},
+            {"name": "Stop", "function": "CloseFillValve"}
+        ],
+        "transitions": [
+            {"src": "Start", "tgt": "Fill", "condition": "NeedsFilling"},
+            {"src": "Fill", "tgt": "LogIntermediate", "condition": "PartialFillComplete"},
+            {"src": "LogIntermediate", "tgt": "Stop", "condition": "SiloFull"}
+        ]
     },
-    "steps": [
-      "Start",
-      "Read Sensors",
-      "Control HVAC",
-      "Reset Watchdog",
-      "End"
-    ],
-    "transitions": [
-      {"from": "Start", "to": "Read Sensors"},
-      {"from": "Read Sensors", "to": "Control HVAC"},
-      {"from": "Control HVAC", "to": "Reset Watchdog"},
-      {"from": "Reset Watchdog", "to": "Read Sensors", "action": "watchdog_timer = 0"},
-      {"from": "Read Sensors", "to": "End", "condition": "watchdog_timer > watchdog_limit"}
-    ]
-  },
-  {
-    "name": "Boiler Control",
-    "upgrade_rule": "Intermediate Logging",
-    "description": "Controls pressure and temperature in industrial boilers with safety interlocks.",
-    "variables": {
-      "pressure": 0,
-      "temperature": 0
+    "Power_Distribution_Unit": {
+        "steps": [
+            {"name": "Start", "function": "CheckPowerLoad"},
+            {"name": "Distribute", "function": "ActivateCircuits"},
+            {"name": "MonitorTime", "function": "CheckExecutionTime"},
+            {"name": "Stop", "function": "DeactivateCircuits"}
+        ],
+        "transitions": [
+            {"src": "Start", "tgt": "Distribute", "condition": "LoadStable"},
+            {"src": "Distribute", "tgt": "MonitorTime", "condition": "DistributionStarted"},
+            {"src": "MonitorTime", "tgt": "Stop", "condition": "TimeoutOrComplete"}
+        ]
     },
-    "steps": [
-      "Start",
-      "Read Sensors",
-      "Log Data",
-      "Adjust Controls",
-      "End"
-    ],
-    "transitions": [
-      {"from": "Start", "to": "Read Sensors"},
-      {"from": "Read Sensors", "to": "Log Data"},
-      {"from": "Log Data", "to": "Adjust Controls"},
-      {"from": "Adjust Controls", "to": "Read Sensors"}
-    ]
-  },
-  {
-    "name": "Welding Line Controller",
-    "upgrade_rule": "Input Validation",
-    "description": "Controls stepwise welding with input checks for alignment and readiness.",
-    "variables": {
-      "alignment_ok": false,
-      "readiness_ok": false
+    "Grain_Sorting_Machine": {
+        "steps": [
+            {"name": "ValidateInput", "function": "CheckSensorInputs"},
+            {"name": "Start", "function": "InitializeSorter"},
+            {"name": "Sort", "function": "RunSortingCycle"},
+            {"name": "Stop", "function": "ShutdownSorter"}
+        ],
+        "transitions": [
+            {"src": "ValidateInput", "tgt": "Start", "condition": "AllInputsValid"},
+            {"src": "Start", "tgt": "Sort", "condition": "SorterReady"},
+            {"src": "Sort", "tgt": "Stop", "condition": "SortingComplete"}
+        ]
     },
-    "steps": [
-      "Start",
-      "Validate Inputs",
-      "Perform Welding",
-      "End"
-    ],
-    "transitions": [
-      {"from": "Start", "to": "Validate Inputs"},
-      {"from": "Validate Inputs", "to": "Perform Welding", "condition": "alignment_ok AND readiness_ok"},
-      {"from": "Validate Inputs", "to": "End", "condition": "NOT (alignment_ok AND readiness_ok)"},
-      {"from": "Perform Welding", "to": "Start"}
-    ]
-  },
-  {
-    "name": "Automated Gate System",
-    "upgrade_rule": "Execution Bound Monitoring",
-    "description": "Controls gate opening/closing with sensors and ensures timing limits.",
-    "variables": {
-      "operation_time": 0,
-      "max_time": 30
+    "Wind_Turbine_Controller": {
+        "steps": [
+            {"name": "Start", "function": "InitializeTurbine"},
+            {"name": "MonitorWind", "function": "MeasureWindSpeed"},
+            {"name": "LogIntermediate", "function": "RecordWindData"},
+            {"name": "Stop", "function": "ShutdownTurbine"}
+        ],
+        "transitions": [
+            {"src": "Start", "tgt": "MonitorWind", "condition": "TurbineReady"},
+            {"src": "MonitorWind", "tgt": "LogIntermediate", "condition": "DataSampled"},
+            {"src": "LogIntermediate", "tgt": "Stop", "condition": "ShutdownSignal"}
+        ]
     },
-    "steps": [
-      "Start",
-      "Check Time Bound",
-      "Open Gate",
-      "Close Gate",
-      "End"
-    ],
-    "transitions": [
-      {"from": "Start", "to": "Check Time Bound"},
-      {"from": "Check Time Bound", "to": "Open Gate", "condition": "operation_time < max_time"},
-      {"from": "Check Time Bound", "to": "End", "condition": "operation_time >= max_time"},
-      {"from": "Open Gate", "to": "Close Gate"},
-      {"from": "Close Gate", "to": "Check Time Bound", "action": "operation_time++"}
-    ]
-  },
-  {
-    "name": "Crane Automation",
-    "upgrade_rule": "Watchdog Monitoring",
-    "description": "Automates crane operation with position and load monitoring for safe execution.",
-    "variables": {
-      "watchdog_timer": 0,
-      "watchdog_limit": 200
+    "Chemical_Reactor_Controller": {
+        "steps": [
+            {"name": "Start", "function": "InitializeReactor"},
+            {"name": "React", "function": "RunReactionCycle"},
+            {"name": "MonitorTime", "function": "CheckExecutionTime"},
+            {"name": "Stop", "function": "ShutdownReactor"}
+        ],
+        "transitions": [
+            {"src": "Start", "tgt": "React", "condition": "ReactorReady"},
+            {"src": "React", "tgt": "MonitorTime", "condition": "ReactionStarted"},
+            {"src": "MonitorTime", "tgt": "Stop", "condition": "TimeoutOrComplete"}
+        ]
     },
-    "steps": [
-      "Start",
-      "Move Crane",
-      "Reset Watchdog",
-      "End"
-    ],
-    "transitions": [
-      {"from": "Start", "to": "Move Crane"},
-      {"from": "Move Crane", "to": "Reset Watchdog"},
-      {"from": "Reset Watchdog", "to": "Move Crane", "action": "watchdog_timer = 0"},
-      {"from": "Move Crane", "to": "End", "condition": "watchdog_timer > watchdog_limit"}
-    ]
-  },
-  {
-    "name": "Packaging Robot",
-    "upgrade_rule": "Intermediate Logging",
-    "description": "Handles item sorting and packing with state logs for each package.",
-    "variables": {
-      "item_ready": false
+    "Fuel_Dispenser_Logic": {
+        "steps": [
+            {"name": "ValidateInput", "function": "CheckSensorInputs"},
+            {"name": "Start", "function": "ActivateDispenser"},
+            {"name": "Dispense", "function": "PumpFuel"},
+            {"name": "Stop", "function": "DeactivateDispenser"}
+        ],
+        "transitions": [
+            {"src": "ValidateInput", "tgt": "Start", "condition": "AllInputsValid"},
+            {"src": "Start", "tgt": "Dispense", "condition": "DispenserReady"},
+            {"src": "Dispense", "tgt": "Stop", "condition": "DispensingComplete"}
+        ]
     },
-    "steps": [
-      "Start",
-      "Pick Item",
-      "Log State",
-      "Pack Item",
-      "End"
-    ],
-    "transitions": [
-      {"from": "Start", "to": "Pick Item"},
-      {"from": "Pick Item", "to": "Log State"},
-      {"from": "Log State", "to": "Pack Item"},
-      {"from": "Pack Item", "to": "Pick Item"}
-    ]
-  },
-  {
-    "name": "AGV Controller",
-    "upgrade_rule": "Watchdog Monitoring",
-    "description": "Monitors path, obstacle detection, and battery health for warehouse robots.",
-    "variables": {
-      "watchdog_timer": 0,
-      "watchdog_limit": 150
+    "Lift_Control_System": {
+        "steps": [
+            {"name": "Start", "function": "InitializeLift"},
+            {"name": "Move", "function": "ControlLiftMovement"},
+            {"name": "LogIntermediate", "function": "RecordFloorData"},
+            {"name": "Stop", "function": "ShutdownLift"}
+        ],
+        "transitions": [
+            {"src": "Start", "tgt": "Move", "condition": "LiftReady"},
+            {"src": "Move", "tgt": "LogIntermediate", "condition": "FloorReached"},
+            {"src": "LogIntermediate", "tgt": "Stop", "condition": "DestinationReached"}
+        ]
     },
-    "steps": [
-      "Start",
-      "Navigate Path",
-      "Reset Watchdog",
-      "End"
-    ],
-    "transitions": [
-      {"from": "Start", "to": "Navigate Path"},
-      {"from": "Navigate Path", "to": "Reset Watchdog"},
-      {"from": "Reset Watchdog", "to": "Navigate Path", "action": "watchdog_timer = 0"},
-      {"from": "Navigate Path", "to": "End", "condition": "watchdog_timer > watchdog_limit"}
-    ]
-  },
-  {
-    "name": "Greenhouse Monitoring System",
-    "upgrade_rule": "Input Validation",
-    "description": "Controls irrigation, humidity, and temperature with sensor checks.",
-    "variables": {
-      "temp_sensor_ok": false,
-      "humidity_sensor_ok": false
-    },
-    "steps": [
-      "Start",
-      "Validate Sensors",
-      "Control Environment",
-      "End"
-    ],
-    "transitions": [
-      {"from": "Start", "to": "Validate Sensors"},
-      {"from": "Validate Sensors", "to": "Control Environment", "condition": "temp_sensor_ok AND humidity_sensor_ok"},
-      {"from": "Validate Sensors", "to": "End", "condition": "NOT (temp_sensor_ok AND humidity_sensor_ok)"},
-      {"from": "Control Environment", "to": "Start"}
-    ]
-  }
-]
-
+    "Baggage_Handling_System": {
+        "steps": [
+            {"name": "ValidateInput", "function": "CheckSensorInputs"},
+            {"name": "Start", "function": "InitializeConveyor"},
+            {"name": "MoveBags", "function": "RunConveyorCycle"},
+            {"name": "Stop", "function": "ShutdownConveyor"}
+        ],
+        "transitions": [
+            {"src": "ValidateInput", "tgt": "Start", "condition": "AllInputsValid"},
+            {"src": "Start", "tgt": "MoveBags", "condition": "ConveyorReady"},
+            {"src": "MoveBags", "tgt": "Stop", "condition": "HandlingComplete"}
+        ]
+    }
+}
