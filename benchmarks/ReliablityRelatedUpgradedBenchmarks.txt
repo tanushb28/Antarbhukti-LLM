@@ -401,4 +401,58 @@
         ]
     }
 }
+{
+    "AGV_Controller": {
+        "steps": [
+            {"name": "WatchdogTimer", "function": "ResetIfAGVResponds"},
+            {"name": "CheckPath", "function": "ValidateNavigationPath"},
+            {"name": "ObstacleCheck", "function": "DetectObstacles"},
+            {"name": "BatteryCheck", "function": "MonitorBatteryLevel"},
+            {"name": "MoveAGV", "function": "ExecuteMovement"}
+        ],
+        "transitions": [
+            {"src": "WatchdogTimer", "tgt": "CheckPath", "condition": "PathValid"},
+            {"src": "CheckPath", "tgt": "ObstacleCheck", "condition": "PathClear"},
+            {"src": "ObstacleCheck", "tgt": "BatteryCheck", "condition": "NoObstacle"},
+            {"src": "BatteryCheck", "tgt": "MoveAGV", "condition": "BatteryHealthy"},
+            {"src": "MoveAGV", "tgt": "WatchdogTimer", "condition": "ContinueOperation"}
+        ]
+    },
+    "Greenhouse_Monitoring_System": {
+        "steps": [
+            {"name": "ValidateInput", "function": "CheckSensorInputs"},
+            {"name": "CheckIrrigation", "function": "MonitorSoilMoisture"},
+            {"name": "ControlIrrigation", "function": "ActivateWateringSystem"},
+            {"name": "CheckHumidity", "function": "MonitorHumidity"},
+            {"name": "ControlHumidity", "function": "ActivateHumidifierDehumidifier"},
+            {"name": "CheckTemperature", "function": "MonitorTemperature"},
+            {"name": "ControlTemperature", "function": "ActivateHeatingCoolingSystem"}
+        ],
+        "transitions": [
+            {"src": "ValidateInput", "tgt": "CheckIrrigation", "condition": "SensorsOK"},
+            {"src": "CheckIrrigation", "tgt": "ControlIrrigation", "condition": "IrrigationNeeded"},
+            {"src": "ControlIrrigation", "tgt": "CheckHumidity", "condition": "IrrigationDone"},
+            {"src": "CheckHumidity", "tgt": "ControlHumidity", "condition": "HumidityOutOfRange"},
+            {"src": "ControlHumidity", "tgt": "CheckTemperature", "condition": "HumidityControlled"},
+            {"src": "CheckTemperature", "tgt": "ControlTemperature", "condition": "TemperatureOutOfRange"},
+            {"src": "ControlTemperature", "tgt": "ValidateInput", "condition": "TemperatureControlled"}
+        ]
+    },
+    "Railway_Crossing_System": {
+        "steps": [
+            {"name": "StartTimer", "function": "ResetIfWithinTimeLimit"},
+            {"name": "DetectTrain", "function": "CheckTrainSensors"},
+            {"name": "CloseGate", "function": "ActivateGateClosure"},
+            {"name": "WaitForTrainPass", "function": "MonitorTrainClearance"},
+            {"name": "OpenGate", "function": "ActivateGateOpening"}
+        ],
+        "transitions": [
+            {"src": "StartTimer", "tgt": "DetectTrain", "condition": "TimerOK"},
+            {"src": "DetectTrain", "tgt": "CloseGate", "condition": "TrainApproaching"},
+            {"src": "CloseGate", "tgt": "WaitForTrainPass", "condition": "GateClosed"},
+            {"src": "WaitForTrainPass", "tgt": "OpenGate", "condition": "TrainPassed"},
+            {"src": "OpenGate", "tgt": "StartTimer", "condition": "GateOpened"}
+        ]
+    }
+}
 
