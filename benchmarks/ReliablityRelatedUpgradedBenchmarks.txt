@@ -331,4 +331,74 @@
             {"src": "MoveBags", "tgt": "Stop", "condition": "HandlingComplete"}
         ]
     }
+
+
+{
+    "Pump_Control_System": {
+        "steps": [
+            {"name": "WatchdogInit", "function": "StartWatchdogTimer"},
+            {"name": "CheckSensors", "function": "ReadTankOrPressure"},
+            {"name": "StartPump", "function": "ActivatePump"},
+            {"name": "StopPump", "function": "DeactivatePump"},
+            {"name": "ResetWatchdog", "function": "ResetWatchdogTimer"}
+        ],
+        "transitions": [
+            {"src": "WatchdogInit", "tgt": "CheckSensors", "condition": "TimerStarted"},
+            {"src": "CheckSensors", "tgt": "StartPump", "condition": "LevelLowOrPressureLow"},
+            {"src": "CheckSensors", "tgt": "StopPump", "condition": "LevelHighOrPressureHigh"},
+            {"src": "StartPump", "tgt": "ResetWatchdog", "condition": "PumpRunning"},
+            {"src": "StopPump", "tgt": "ResetWatchdog", "condition": "PumpStopped"},
+            {"src": "ResetWatchdog", "tgt": "CheckSensors", "condition": "WatchdogReset"}
+        ]
+    },
+    "Elevator_Controller": {
+        "steps": [
+            {"name": "ValidateInput", "function": "CheckFloorRequestAndDoorSensors"},
+            {"name": "MoveUp", "function": "ElevatorUp"},
+            {"name": "MoveDown", "function": "ElevatorDown"},
+            {"name": "Stop", "function": "StopElevator"}
+        ],
+        "transitions": [
+            {"src": "ValidateInput", "tgt": "MoveUp", "condition": "RequestAboveCurrentFloor"},
+            {"src": "ValidateInput", "tgt": "MoveDown", "condition": "RequestBelowCurrentFloor"},
+            {"src": "ValidateInput", "tgt": "Stop", "condition": "NoRequestOrDoorOpen"},
+            {"src": "MoveUp", "tgt": "Stop", "condition": "ReachedRequestedFloor"},
+            {"src": "MoveDown", "tgt": "Stop", "condition": "ReachedRequestedFloor"},
+            {"src": "Stop", "tgt": "ValidateInput", "condition": "NewRequest"}
+        ]
+    },
+    "PID_Controlled_Process": {
+        "steps": [
+            {"name": "InitLog", "function": "StartIntermediateLogging"},
+            {"name": "ReadSensors", "function": "GetProcessVariable"},
+            {"name": "ComputePID", "function": "CalculateControlOutput"},
+            {"name": "ApplyOutput", "function": "SetActuatorValue"},
+            {"name": "LogIntermediate", "function": "RecordProcessData"}
+        ],
+        "transitions": [
+            {"src": "InitLog", "tgt": "ReadSensors", "condition": "LoggingStarted"},
+            {"src": "ReadSensors", "tgt": "ComputePID", "condition": "ValidData"},
+            {"src": "ComputePID", "tgt": "ApplyOutput", "condition": "PIDCalculated"},
+            {"src": "ApplyOutput", "tgt": "LogIntermediate", "condition": "OutputApplied"},
+            {"src": "LogIntermediate", "tgt": "ReadSensors", "condition": "LogRecorded"}
+        ]
+    },
+    "Motor_Start_Stop_with_Interlocks": {
+        "steps": [
+            {"name": "WatchdogInit", "function": "StartWatchdogTimer"},
+            {"name": "CheckInterlocks", "function": "VerifyAllSafetyConditions"},
+            {"name": "StartMotor", "function": "ActivateMotor"},
+            {"name": "StopMotor", "function": "DeactivateMotor"},
+            {"name": "ResetWatchdog", "function": "ResetWatchdogTimer"}
+        ],
+        "transitions": [
+            {"src": "WatchdogInit", "tgt": "CheckInterlocks", "condition": "TimerStarted"},
+            {"src": "CheckInterlocks", "tgt": "StartMotor", "condition": "AllConditionsOK"},
+            {"src": "CheckInterlocks", "tgt": "StopMotor", "condition": "ConditionFailed"},
+            {"src": "StartMotor", "tgt": "ResetWatchdog", "condition": "MotorRunning"},
+            {"src": "StopMotor", "tgt": "ResetWatchdog", "condition": "MotorStopped"},
+            {"src": "ResetWatchdog", "tgt": "CheckInterlocks", "condition": "WatchdogReset"}
+        ]
+    }
 }
+
