@@ -92,6 +92,7 @@ def refine_code(src, mod, llm:LLM_Mgr, prompt_template, dest_root):
         # Perform containment analysis
         resp= verifier.check_pn_containment(sfc1, pn1, sfc2, pn2)
         if not resp:
+            print(f"\n>>> Running {llm.name} to improve ...")
             llm_prompt = llm.generate_prompt(sfc1, sfc2, verifier.get_unmatched_paths(), prompt_template_path=prompt_template)
             if llm_prompt is None:  # No unmatched paths to improve
                 print("No unmatched paths to improve on.")
@@ -114,7 +115,6 @@ def refine_code(src, mod, llm:LLM_Mgr, prompt_template, dest_root):
     return (iter_count+1, False)   
 
 def refine_all(args, llm):
-    print(f"\n>>> Running {llm.name}...")
     outdir = args.result_root + "/" + llm.name
     os.makedirs(outdir, exist_ok=True)
     if os.path.isfile(args.src_path):

@@ -172,3 +172,6 @@ extracted_sfc_data.py
 pn_containment_report.html
 .DS_Store
 generated/
+
+# Ignore output directory
+output/
