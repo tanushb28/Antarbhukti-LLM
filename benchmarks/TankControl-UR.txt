@@ -1,0 +1,15 @@
+
+    steps= [
+        {"name": "ValidateInput", "function": "CheckSensorInputs"},
+        {"name": "Start", "function": "CheckLevel"},
+        {"name": "Fill", "function": "OpenInletValve"},
+        {"name": "Stop", "function": "CloseInletValve"}
+    ],
+    transitions= [
+        {"src": "ValidateInput", "tgt": "Start", "guard": "inputs_valid"},
+        {"src": "Start", "tgt": "Fill", "guard": "level < LOW"},
+        {"src": "Fill", "tgt": "Stop", "guard": "level >= HIGH"},
+        {"src": "Stop", "tgt": "ValidateInput", "guard": "level <= NORMAL"}
+    ],
+    variables= ["level", "LOW", "HIGH", "NORMAL", "inputs_valid"],
+    initial_step= "ValidateInput"

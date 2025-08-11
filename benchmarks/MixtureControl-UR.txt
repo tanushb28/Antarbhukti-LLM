@@ -1,0 +1,15 @@
+steps = [
+        {"name": "Idle", "function": "WaitForStart"},
+        {"name": "ExecutionBoundCheck", "function": "CheckMixingTimer"},
+        {"name": "AddIngredient", "function": "OpenValve"},
+        {"name": "Mix", "function": "StartMixer"},
+        {"name": "End", "function": "StopAll"}
+    ],
+transitions = [
+        {"src": "Idle", "tgt": "ExecutionBoundCheck", "guard": "startButton == true"},
+        {"src": "ExecutionBoundCheck", "tgt": "AddIngredient", "guard": "within_bounds"},
+        {"src": "AddIngredient", "tgt": "Mix", "guard": "ingredientAdded == true"},
+        {"src": "Mix", "tgt": "End", "guard": "mixingTimeElapsed == true"}
+    ],
+variables = ["startButton", "ingredientAdded", "mixingTimeElapsed", "within_bounds"],
+initial_step = "Idle"
