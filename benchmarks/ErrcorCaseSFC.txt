@@ -1,0 +1,60 @@
+"Tank_Fill": {
+  "steps": [
+    {"name": "CheckLevel", "function": "ReadSensor"},
+    {"name": "Fill", "function": "OpenValve"},
+    {"name": "ValidateInput", "function": "CheckRange"}  
+  ],
+  "transitions": [
+    {"src": "CheckLevel", "tgt": "Fill", "guard": "Level < LOW"},
+    {"src": "Fill", "tgt": "ValidateInput", "guard": "always"},  
+    {"src": "ValidateInput", "tgt": "CheckLevel", "guard": "always"}
+  ],
+  "variables": ["Level", "LOW", "HIGH"],
+  "initial_step": "CheckLevel"
+}
+//Misplaced Step (InputValidation inside loop instead of start)
+
+"Loop_Control": {
+  "steps": [
+    {"name": "Iterate", "function": "DoWork"},
+    {"name": "StopLoop", "function": "Halt"}
+  ],
+  "transitions": [
+    {"src": "Iterate", "tgt": "StopLoop", "guard": "temp >= Threshold"}  
+  ],
+  "variables": ["count", "Threshold"],  
+  "initial_step": "Iterate"
+}
+
+// Wrong Variable Usage (using temp instead of count)
+
+
+
+"Motor_Control": {
+  "steps": [
+    {"name": "Start", "function": "R_TRIG(StartButton)"},
+    {"name": "Run", "function": "MotorON"},
+    {"name": "Log", "function": "DeepAITrack"}  
+  ],
+  "transitions": [
+    {"src": "Start", "tgt": "Run", "guard": "R_TRIG.Q = TRUE"},
+    {"src": "Run", "tgt": "Log", "guard": "always"}
+  ],
+  "variables": ["StartButton"],
+  "initial_step": "Start"
+}
+// Invented Functions/Steps (non-existent Log steps)
+
+"Temp_Control": {
+  "steps": [
+    {"name": "Monitor", "function": "ReadTemp"},
+    {"name": "Cool", "function": "TurnCoolerOn"}
+  ],
+  "transitions": [
+    {"src": "Monitor", "tgt": "Cool", "guard": "speed > limit"}  
+  ],
+  "variables": ["Temp", "MIN_TEMP", "MAX_TEMP"],  
+  "initial_step": "Monitor"
+}
+// Invalid Guard Expressions (undefined variables)
+
