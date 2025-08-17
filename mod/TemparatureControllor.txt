@@ -1,15 +1,13 @@
-steps = [
+steps= [
         {"name": "Monitor", "function": "ReadTemp"},
-        {"name": "LogIntermediate", "function": "LogTemperature"},
         {"name": "Heat", "function": "TurnHeaterOn"},
-        {"name": "Cool", "function": "TurnCoolerOn"}
+        {"name": "Cooler", "function": "TurnCoolerOn"}  
     ],
-transitions = [
-        {"src": "Monitor", "tgt": "LogIntermediate", "guard": "true"},
-        {"src": "LogIntermediate", "tgt": "Heat", "guard": "temp < MIN_TEMP"},
-        {"src": "LogIntermediate", "tgt": "Cool", "guard": "temp > MAX_TEMP"},
+transitions= [
+        {"src": "Monitor", "tgt": "Heat", "guard": "temp <= MIN_TEMP"}, 
+        {"src": "Monitor", "tgt": "Cool", "guard": "temp > MAXTEMP"},  
         {"src": "Heat", "tgt": "Monitor", "guard": "temp >= MIN_TEMP"},
-        {"src": "Cool", "tgt": "Monitor", "guard": "temp <= MAX_TEMP"}
+        {"src": "Cool", "tgt": "Monitor", "guard": "temperature <= MAX_TEMP"} 
     ],
-variables = ["temp", "MIN_TEMP", "MAX_TEMP"],
-initial_step = "Monitor"
+variables= ["temp", "MIN_TEMP"],  
+initial_step= "Start"             
