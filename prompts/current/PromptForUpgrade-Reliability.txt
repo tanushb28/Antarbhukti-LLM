@@ -1,75 +1,80 @@
-You are an expert in control software design using IEC 61131-3 Sequential Function Charts
-(SFCs). Given an SFC (SFC1) representing a control process,
-your task is to generate an upgraded version (SFC2) that improves system reliability.
-The upgrade must embed reliability concerns while preserving the original behavior under
-nominal conditions.
+You are an expert in control software design using IEC 61131-3 Sequential Function Charts (SFCs).
+Given an SFC (SFC1) representing a control process, your task is to generate an upgraded version (SFC2) that improves system reliability.
+The upgrade must embed reliability concerns while preserving the original behavior under nominal conditions.
+
 ---
+
 **SFC1: Original Control Logic**
-Add your SFC code
+(Insert contents of SFC code here)
+
 ---
+
 **Reliability Requirements (When Language)**
+
 1. *Input Validation*
-When: If any input variable is out of valid range at the beginning of execution.
-Action: Add a ValidateInput step. If validation fails, transition to a ValidationError step that
-logs the failure and halts control flow.
+   - When: If any input variable is out of valid range at the beginning of execution.
+   - Action: Add a ValidateInput step. If validation fails, transition to a ValidationError step that logs the failure and halts control flow.
+
 2. *Execution Bound (Iteration or Time)*
-When: A control loop executes beyond a configured maximum count (e.g., 10 iterations).
-Action: Use a variable (e.g., count) to track iterations. If count >= threshold, divert to a
-SafeAbort step that stores current state and stops execution.
+   - When: A control loop executes beyond a configured maximum count (e.g., 10 iterations).
+   - Action: Use a variable (e.g., count) to track iterations. If count >= threshold, divert to a SafeAbort step that stores current state and stops execution.
+
 3. *Intermediate Logging*
-When: After every critical step (e.g., computation, actuator command).
-Action: Insert a Log step that records key internal states (n, result, etc.) to support
-traceability and debugging.
+   - When: After every critical step (e.g., computation, actuator command).
+   - Action: Insert a Log step that records key internal states (n, result, etc.) to support traceability and debugging.
+
 4. *Watchdog Monitoring*
-When: A variable (e.g., n, temperature, etc.) becomes undefined, negative, or out of
-operational range during execution.
-Action: Add a guard or WatchdogCheck step. If abnormal state is detected, transition to
-WatchdogError.
+   - When: A variable (e.g., n, temperature, etc.) becomes undefined, negative, or out of operational range during execution.
+   - Action: Add a guard or WatchdogCheck step. If abnormal state is detected, transition to WatchdogError.
+
 ---
+
 **Instructions for Generating SFC2**
 
 Use the structured format below to define the upgraded SFC (SFC2):
+
 steps = [
-{ name: StepName1, function: FunctionOrAssignment1 },
-...
+    { "name": StepName1, "function": FunctionName1 },
+    ...
 ]
 transitions = [
-{ src: StepNameX, tgt: StepNameY, guard: GuardCondition1 },
-...
+    { "src": StepNameX, "tgt": StepNameY, "guard": GuardCondition1 },
+    ...
 ]
 variables = [ var1, var2, ..., additionalVarsIfNeeded ]
 initial_step = StepName1
----
-**SFC-Specific Guidelines for Upgradation**
-1. *SFC Semantics Compliance*
-- Follow IEC 61131-3 execution semantics: *steps* hold active states; *transitions* must be
-evaluated between cycles.
-- Transitions should only occur when all preceding steps are active and the guard condition
-evaluates to true.
-2. *Determinism and Safety*
-- Ensure transitions are *deterministic* and do not cause ambiguous behavior (i.e., one
-enabled transition per active step set).
-- Avoid conflicting parallel branches unless explicitly required, and model them using AND/OR
-semantics with care.
-3. *Guard Conditions*
-- Guards must be side-effect-free and should not modify variable states. Use separate action
-blocks for updates.
-4. *Modularity and Naming*
-- Introduce reliability-specific steps (e.g., ErrorHandler, Log, Retry, SafeAbort) clearly
-and consistently.
-- Avoid overloading existing steps—separate fault-handling from core logic.
-5. *State Preservation*
-- Ensure that the upgraded SFC preserves *functional equivalence* under fault-free
-execution
 
-Use logging or backup steps to preserve state before transitions into non-recoverable paths.
-6. *Control Flow Validity*
-- Every step must have a valid exit transition.
-- Do not leave the system in a deadlock or non-terminal state unless it's an intended final
-state.
-7. *Minimal Disruption Principle*
-- Do not restructure the original logic unless required to fulfill the reliability Whens.
-- Prefer incremental additions (guards, new steps, safe exits) over refactoring core paths.
 ---
-Return only the upgraded SFC2 in the format above. Ensure semantic correctness, adherence
-to IEC SFC rules, and full coverage of all reliability requirements.
+
+**SFC-Specific Guidelines for Upgradation**
+
+1. *SFC Semantics Compliance*
+   - Follow IEC 61131-3 execution semantics: steps hold active states; transitions must be evaluated between cycles.
+   - Transitions should only occur when all preceding steps are active and the guard condition evaluates to true.
+
+2. *Determinism and Safety*
+   - Ensure transitions are deterministic and do not cause ambiguous behavior (i.e., one enabled transition per active step set).
+   - Avoid conflicting parallel branches unless explicitly required, and model them using AND/OR semantics with care.
+
+3. *Guard Conditions*
+   - Guards must be side-effect-free and should not modify variable states. Use separate action blocks for updates.
+
+4. *Modularity and Naming*
+   - Introduce reliability-specific steps (e.g., ErrorHandler, Log, Retry, SafeAbort) clearly and consistently.
+   - Avoid overloading existing steps—separate fault-handling from core logic.
+
+5. *State Preservation*
+   - Ensure that the upgraded SFC preserves functional equivalence under fault-free execution.
+   - Use logging or backup steps to preserve state before transitions into non-recoverable paths.
+
+6. *Control Flow Validity*
+   - Every step must have a valid exit transition.
+   - Do not leave the system in a deadlock or non-terminal state unless it's an intended final state.
+
+7. *Minimal Disruption Principle*
+   - Do not restructure the original logic unless required to fulfill the reliability Whens.
+   - Prefer incremental additions (guards, new steps, safe exits) over refactoring core paths.
+
+---
+
+Return only the upgraded SFC2 in the format above. Ensure semantic correctness, adherence to IEC SFC rules, and full coverage of all reliability requirements.
