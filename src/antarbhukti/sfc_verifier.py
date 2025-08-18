@@ -1,3 +1,4 @@
+
 import subprocess
 import base64
 import os
@@ -253,7 +254,9 @@ class Verifier:
                         return z3.BoolVal(True)
                     if ast.lower() == 'false':
                         return z3.BoolVal(False)
-                    return ast
+                    variables[ast] = z3.Int(ast)
+                    return variables[ast]
+                    #return ast
             if not isinstance(ast, list) or not ast:
                 return ast
             head = ast[0]
@@ -391,3 +394,4 @@ if __name__ == "__main__":
     # Run driver.py for a complete example of using Verifier and GenReport classes
     print("This module provides Verifier class for Petri Net containment analysis.")
     print("Run driver.py for a complete example of usage.")
+
