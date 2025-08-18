@@ -2,7 +2,7 @@
     steps= [
         {"name": "Monitor", "function": "ReadTemp"},
         {"name": "Heat", "function": "TurnHeaterOn"},
-        {"name": "Cooler", "function": "TurnCoolerOn"}  
+        {"name": "Cool", "function": "TurnCoolerOn"}  
     ],
     transitions= [
         {"src": "Monitor", "tgt": "Heat", "guard": "temp <= MIN_TEMP"}, 
