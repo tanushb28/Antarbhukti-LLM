@@ -77,4 +77,5 @@ initial_step = StepName1
 
 ---
 
-Return only the upgraded SFC2 in the format above. Ensure semantic correctness, adherence to IEC SFC rules, and full coverage of all reliability requirements.
+Return only the upgraded SFC2 in the format above.Adherence to IEC SFC rules, and full coverage of all reliability requirements.
+
