@@ -1,0 +1,71 @@
+
+steps = [
+    {
+      "name": "Start",
+      "function": "InitializeCycle"
+    },
+    {
+      "name": "DetectWasteA",
+      "function": "CheckWasteSensor1"
+    },
+    {
+      "name": "RobotA_Pick",
+      "function": "ActivateRobotA"
+    },
+    {
+      "name": "DetectWasteB",
+      "function": "CheckWasteSensor2"
+    },
+    {
+      "name": "RobotB_Pick",
+      "function": "ActivateRobotB"
+    }
+  ],
+  transitions = [
+    {
+      "src": "Start",
+      "tgt": "DetectWasteA",
+      "guard": "Step_Start == TRUE"
+    },
+    {
+      "src": "DetectWasteA",
+      "tgt": "RobotA_Pick",
+      "guard": "WasteTypeSensor1 >= 0"  
+    },
+    {
+      "src": "RobotA_Pick",
+      "tgt": "DetectWasteB",
+      "guard": "RobotA_Task_Complete == TRUE"
+    },
+    {
+      "src": "DetectWasteB",
+      "tgt": "RobotB_Pick",
+      "guard": "WasteTypeSensor2 != NULL"  
+    },
+    {
+      "src": "RobotB_Pick",
+      "tgt": "Start",
+      "guard": "RobotB_Task_Complete == TRUE"
+    }
+  ],
+  variables = [
+    "Step_Start",
+    "Step_Detect_Waste_A",
+    "Step_RobotA_Pick",
+    "Step_RobotA_Done",
+    "Step_Detect_Waste_B",
+    "Step_RobotB_Pick",
+    "Step_RobotB_Done",
+    "WasteTypeSensor1",
+    "WasteTypeSensor2",
+    "RobotA_PickPlastic",
+    "RobotA_PickMetal",
+    "RobotA_PickPaper",
+    "RobotB_PickPlastic",
+    "RobotB_PickMetal",
+    "RobotB_PickPaper",
+    "RobotA_Task_Complete",
+    "RobotB_Task_Complete"
+  ],
+  initial_step= "Start"
+
