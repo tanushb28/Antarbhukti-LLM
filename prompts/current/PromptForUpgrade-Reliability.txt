@@ -9,7 +9,7 @@ The upgrade must embed reliability concerns while preserving the original behavi
 
 ---
 
-**Reliability Requirements (When Language)**
+**Reliability Requirements**
 
 1. *Input Validation*
    - When: If any input variable is out of valid range at the beginning of execution.
@@ -78,4 +78,5 @@ initial_step = StepName1
 ---
 
 Return only the upgraded SFC2 in the format above.Adherence to IEC SFC rules, and full coverage of all reliability requirements.
+
 
