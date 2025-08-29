@@ -1,0 +1,59 @@
+prompt = role, task, context, upgrade_spec, quality_list, constraint_clause,
+         original_sfc_block, { quality_block }, structured_format, compliance_block ;
+
+role = "Act as a control software designer using IEC 61131-3 Sequential Function Charts (SFCs)." ;
+
+task = " Given an SFC (SFC1) representing a control process, your task is to generate an upgraded SFC (SFC2)." ;
+
+context = " The upgraded version must preserve the original behavior under nominal conditions "
+           "and preserve compliance with IEC-61131-3." ;
+
+upgrade_spec = " Use the Structured Format to generate the upgraded SFC (SFC2)." ;
+
+quality_list = " The upgrade must improve ", quality_items, "." ;
+quality_items = quality_item, { " and ", quality_item } ;
+quality_item = "Reliability" | "Safety" | "Performance" | "Fault Tolerance" | custom_quality ;
+custom_quality = string ;
+
+constraint_clause = " Ensure determinism, safety, and IEC compliance as outlined below." ;
+
+original_sfc_block = "---\n**SFC1: Original Control Logic**\n", sfc_code, "\n\n" ;
+sfc_code = { line } ;
+line = string ;
+
+quality_block =  a_quality | a_quality quality_block;
+a_quality = "---\n**", quality_item, "**\n", requirement_text, "\n" ;
+requirement_text = string ;
+
+structured_format =
+    "**Structured Format to generate the upgraded SFC (SFC2)**\n",
+    "steps = [", step_list, "]\n",
+    "transitions = [", transition_list, "]\n",
+    "variables = [", variable_list, "]\n",
+    "initial_step = ", step_name, "\n" ;
+
+step_list = step, { ",", step } ;
+step = "{ \"name\": ", step_name, ", \"function\": ", function_name, " }" ;
+
+transition_list = transition, { ",", transition } ;
+transition = "{ \"src\": ", step_name, ", \"tgt\": ", step_name, ", \"guard\": ", guard_condition, " }" ;
+
+variable_list = variable, { ",", variable } ;
+variable = identifier ;
+
+step_name = identifier ;
+function_name = identifier ;
+guard_condition = expression ;
+identifier = letter, { letter | digit | "_" } ;
+expression = string ;
+
+compliance_block =
+    "**Compliance with IEC-61131-3 SFC**\n",
+    "1. *SFC Semantics Compliance* ...\n",
+    "2. *Determinism and Safety* ...\n",
+    "3. *Guard Conditions* ..." ;
+
+string = { character } ;
+letter = "A" | ... | "Z" | "a" | ... | "z" ;
+digit = "0" | ... | "9" ;
+character = ? any printable character ? ;

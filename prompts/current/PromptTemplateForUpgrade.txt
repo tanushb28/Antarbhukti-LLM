@@ -1,0 +1,37 @@
+LLM Prompt Template for SFC Upgrade
+----
+Act as a control software designer using IEC 61131-3 Sequential Function Charts (SFCs). Given an SFC (SFC1) representing a control process, your task is to generate an upgraded SFC (SFC2) that improves Reliability, and Safety while preserving the original behavior under nominal conditions and while preserving compliance with IEC-61131-3. Use the Structured Format to generate the upgraded SFC (SFC2).
+---
+**SFC1: Original Control Logic**
+(Insert contents of SFC code here)
+---
+**Reliability**
+(Insert reliability requirements here)
+---
+**Safety**
+(Insert safety requirements here)
+---
+**Structured Format to generate the upgraded SFC (SFC2)**
+steps = [
+    { "name": StepName1, "function": FunctionName1 },
+    ...
+]
+transitions = [
+    { "src": StepNameX, "tgt": StepNameY, "guard": GuardCondition1 },
+    ...
+]
+variables = [ var1, var2, ..., additionalVarsIfNeeded ]
+initial_step = StepName1
+---
+**Compliance with IEC-61131-3 SFC**
+1. *SFC Semantics Compliance*
+   - Follow IEC 61131-3 execution semantics: steps hold active states; transitions must be evaluated between cycles.
+   - Transitions should only occur when all preceding steps are active and the guard condition evaluates to true.
+
+2. *Determinism and Safety*
+   - Ensure transitions are deterministic and do not cause ambiguous behavior (i.e., one enabled transition per active step set).
+   - Avoid conflicting parallel branches unless explicitly required, and model them using AND/OR semantics with care.
+
+3. *Guard Conditions*
+   - Guards must be side-effect-free and should not modify variable states. Use separate action blocks for updates.
+---

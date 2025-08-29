@@ -1,0 +1,64 @@
+     steps=[
+        {"name": "Start", "function": "InitializeCycle"},
+        {"name": "ValidateInput", "function": "CheckSensorValues"},
+        {"name": "DetectWasteA", "function": "CheckWasteSensor1"},
+        {"name": "SkipRobotA", "function": "LogSkipRobotA"},
+        {"name": "RobotA_Pick", "function": "ActivateRobotA"},
+        {"name": "DetectWasteB", "function": "CheckWasteSensor2"},
+        {"name": "SkipRobotB", "function": "LogSkipRobotB"},
+        {"name": "RobotB_Pick", "function": "ActivateRobotB"},
+        {"name": "MonitorMotors", "function": "CheckMotorCurrents"},
+        {"name": "MonitorBins", "function": "CheckBinFullness"},
+        {"name": "SystemShutdown", "function": "TriggerEmergencyShutdown"},
+        {"name": "PauseInput", "function": "HaltWasteInput"}
+    ],
+    transitions=[
+        {"src": "Start", "tgt": "ValidateInput", "guard": "Step_Start == TRUE"},
+        {"src": "ValidateInput", "tgt": "DetectWasteA", "guard": "WasteTypeSensor1 >> 1 AND WasteTypeSensor1 << 3"},  # Error: invalid operators
+        {"src": "ValidateInput", "tgt": "SystemShutdown", "guard": "WasteTypeSensor1 < 1 OR WasteTypeSensor1 > 3"},  # Missing condition for WasteTypeSensor2
+        {"src": "DetectWasteA", "tgt": "RobotA_Pick", "guard": "WasteTypeSensor1 >= 1 AND WasteTypeSensor1 <= 3"},
+        {"src": "DetectWasteA", "tgt": "SkipRobotA", "guard": "WasteTypeSensor1 < 1 OR WasteTypeSensor1 > 3"},
+        {"src": "RobotA_Pick", "tgt": "DetectWasteB", "guard": "RobotA_Task_Complete = TRUE"},  # Error: assignment instead of comparison
+        {"src": "SkipRobotA", "tgt": "DetectWasteB", "guard": "TRUE"},
+        {"src": "DetectWasteB", "tgt": "RobotB_Pick", "guard": "WasteTypeSensor2 >= 1 AND WasteTypeSensor2 <= 3"},
+        {"src": "DetectWasteB", "tgt": "SkipRobotB", "guard": "WasteTypeSensor2 < 1 OR WasteTypeSensor2 > 3"},
+        {"src": "RobotB_Pick", "tgt": "Start"},  # Error: missing guard
+        {"src": "SkipRobotB", "tgt": "Start", "guard": "TRUE"},
+        {"src": "Start", "tgt": "MonitorMotors", "guard": "TRUE"},
+        {"src": "MonitorMotors", "tgt": "SystemShutdown"},  # Error: missing guard
+        {"src": "Start", "tgt": "MonitorBins", "guard": "TRUE"},
+        {"src": "MonitorBins", "tgt": "PauseInput", "guard": "BinFullSensor1 = TRUE OR BinFullSensor2 = TRUE"},  # Error: assignment instead of comparison
+        {"src": "PauseInput", "tgt": "Start", "guard": "BinFullSensor1 == FALSE AND BinFullSensor2 == FALSE"}
+    ],
+    variables=[
+        "Step_Start",
+        "Step_ValidateInput",
+        "Step_DetectWasteA",
+        "Step_SkipRobotA",
+        "Step_RobotA_Pick",
+        "Step_DetectWasteB",
+        "Step_SkipRobotB",
+        "Step_RobotB_Pick",
+        "Step_MonitorMotors",
+        "Step_MonitorBins",
+        "Step_SystemShutdown",
+        "Step_PauseInput",
+        "WasteTypeSensor1",
+        "WasteTypeSensor2",
+        "RobotA_PickPlastic",
+        "RobotA_PickMetal",
+        "RobotA_PickPaper",
+        "RobotB_PickPlastic",
+        "RobotB_PickMetal",
+        "RobotB_PickPaper",
+        "RobotA_Task_Complete",
+        "RobotB_Task_Complete",
+        "ConveyorMotorCurrent",
+        "RobotMotorCurrent",
+        "MotorOverloadDetected",
+        "BinFullSensor1",
+        "BinFullSensor2",
+        "BinOverflowAlert",
+        "Invalid Variable Name"  # Error: invalid variable name with space
+    ],
+    initial_step="Start"
