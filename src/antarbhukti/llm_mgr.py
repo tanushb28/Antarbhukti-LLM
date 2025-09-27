@@ -91,13 +91,13 @@ class LLM_Mgr(ABC):
         code_block = self.extract_code_block(llm_response)
         if not code_block:  
             print("No valid code block found in LLM output.")
-            return None
+            return None, token_usage
         try:
             # Execute the extracted code to get updated steps2 and transitions2
             steps2, transitions2 = self.sfc2_code_to_python(code_block)
         except Exception as e:  # Handle code parsing errors
             print(f"Error parsing LLM output: {e}")
-            return False
+            return False, token_usage
 
         # Helper function to format a list of dicts as Python code
         def format_list_of_dicts(name, lst):
@@ -132,7 +132,7 @@ class LLM_Mgr(ABC):
             f.write(format_string("initial_step", modified.initial_step))  
 #        print(f"Updated SFC2 saved to {sfc2_path}")
 
-        return True  # Indicate that improvement was successfully applied
+        return True,token_usage  # Indicate that improvement was successfully applied
 
     # def improve_sfc(self, prompt):
     #     response = self.llm.invoke([HumanMessage(content=prompt)])  # Send the prompt to the LLM and get response
