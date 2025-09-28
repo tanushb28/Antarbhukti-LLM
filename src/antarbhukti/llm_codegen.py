@@ -14,6 +14,7 @@ import google.generativeai as genai
 from groq import Groq
 # Claude (Anthropic) Library
 import anthropic
+from perplexity import Perplexity as PerplexityClient
 
 class GPT4o(LLM_Mgr):
     def __init__(self, api_key: str, model_name: str = "gpt-4o"):
@@ -111,11 +112,19 @@ class LLaMA(LLM_Mgr):
         super().__init__("LLaMA", model_name, api_key)
         self.llm = Groq(api_key=self.api_key)
 
-    def _get_response_and_tokens(self, user_message: str):
+    # src/antarbhukti/llm_codegen.py
+
+# ... (inside the LLaMA class)
+
+    def _get_response_and_tokens(self, system_message: str, user_message: str):
         try:
             completion = self.llm.chat.completions.create(
                 model=self.model_name,
-                messages=[{"role": "user", "content": user_message}],
+                # Corrected: Use a structured message list
+                messages=[
+                    {"role": "system", "content": system_message},
+                    {"role": "user", "content": user_message}
+                ],
                 stream=True,
             )
             response_content = "".join(chunk.choices[0].delta.content for chunk in completion if chunk.choices[0].delta.content)
@@ -128,11 +137,51 @@ class LLaMA(LLM_Mgr):
 
     def generate_code(self, prompt: str, src_code: str):
         system_message = "You are a helpful assistant for generating Sequential Function Chart (SFC) code."
-        return self._get_response_and_tokens(f"{system_message}\n\n{prompt}\n{src_code}")
+        # Corrected: Pass messages separately
+        return self._get_response_and_tokens(system_message, f"{prompt}\n{src_code}")
 
     def _do_improve(self, prompt: str):
         system_message = "You are a helpful assistant for improving Sequential Function Chart (SFC) code."
-        return self._get_response_and_tokens(f"{system_message}\n{prompt}")
+        # Corrected: Pass messages separately
+        return self._get_response_and_tokens(system_message, prompt)
+
+# --- NEW PERPLEXITY CLASS ---
+class Perplexity(LLM_Mgr):
+    def __init__(self, api_key: str, model_name="llama-3-sonar-large-32k-online"):
+        super().__init__("Perplexity", model_name,api_key)
+        # Initialize the official Perplexity client
+        self.llm = PerplexityClient(api_key=api_key)
+        #print(f"[{self.name}] Initialized with model: {self.model_name}")
+
+    def _get_response_and_tokens(self, system_message: str, user_message: str):
+        """A private helper method to handle the API call and token counting."""
+        try:
+            response = self.llm.chat.completions.create(
+                model=self.model_name,
+                messages=[
+                    {"role": "system", "content": system_message},
+                    {"role": "user", "content": user_message},
+                ],
+            )
+            response_content = response.choices[0].message.content
+            total_tokens = response.usage.total_tokens
+            print(f"[{self.name}] Token usage - Total: {total_tokens}")
+            return response_content, total_tokens
+        except Exception as e:
+            print(f"[{self.name}] Error: {str(e)}")
+            return f"Error: {str(e)}", None
+
+    def generate_code(self, prompt: str, src_code: str):
+        """Generates new SFC code based on a prompt and source."""
+        system_message = "You are a helpful assistant for generating Sequential Function Chart (SFC) code."
+        user_message = f"{prompt}\n{src_code}"
+        return self._get_response_and_tokens(system_message, user_message)
+
+    def _do_improve(self, prompt: str):
+        """Improves existing SFC code based on a detailed prompt."""
+        system_message = "You are a helpful assistant for improving Sequential Function Chart (SFC) code."
+        # The prompt for improvement is the user message
+        return self._get_response_and_tokens(system_message, prompt)
 
 def instantiate_llms(llm_names: list[str], llms_config: list):
     # This function remains unchanged but will work with the corrected classes.
@@ -144,10 +193,11 @@ def instantiate_llms(llm_names: list[str], llms_config: list):
         "gemini": Gemini,
         "grok": Grok,
         "llama": LLaMA,
-        "claude": Claude
+        "claude": Claude,
+        "perplexity": Perplexity
     }
     if "all" in llm_names:
-        llm_names = ["gpt4o", "gemini", "llama", "claude"]
+        llm_names = ["gpt4o", "gemini", "llama", "claude", "perplexity"]
 
     all_llms = []
     config_map = {cfg[0].lower(): cfg for cfg in llms_config}

@@ -42,7 +42,7 @@ def update_token_usage_excel(file_name: str, token_usages: dict):
     This version is more robust, checking headers and using flexible name matching.
     """
     excel_file = "llm_token_usage.xlsx"
-    header = ["Name", "GPT4o", "Gemini", "LLaMA", "Claude"]
+    header = ["Name", "GPT4o", "Gemini", "LLaMA", "Claude", "Perplexity"]
 
     try:
         workbook = load_workbook(excel_file)
@@ -75,13 +75,15 @@ def update_token_usage_excel(file_name: str, token_usages: dict):
     for llm_name, token_count in token_usages.items():
         llm_name_lower = llm_name.lower()
         if "gpt4o" in llm_name_lower:
-            sheet.cell(row=file_row, column=2).value += token_count
+            sheet.cell(row=file_row, column=2).value = token_count
         elif "gemini" in llm_name_lower:
-            sheet.cell(row=file_row, column=3).value += token_count
+            sheet.cell(row=file_row, column=3).value = token_count
         elif "llama" in llm_name_lower:
-            sheet.cell(row=file_row, column=4).value += token_count
+            sheet.cell(row=file_row, column=4).value = token_count
         elif "claude" in llm_name_lower:
-            sheet.cell(row=file_row, column=5).value += token_count
+            sheet.cell(row=file_row, column=5).value = token_count
+        elif "perplexity" in llm_name_lower:
+            sheet.cell(row=file_row, column=6).value = token_count 
 
     workbook.save(excel_file)
     print(f"Updated token usage in {excel_file}")

@@ -58,5 +58,17 @@
         "top_k": 10,
         "n": 1,
         "stop": null
+    },
+    {
+        "llm_name": "perplexity",
+        "model_name": "sonar-pro",                 
+        "api_key": "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", 
+        "max_tokens": 1500,
+        "max_retries": 5,
+        "temperature": 0.3,
+        "top_p": 0.9,
+        "top_k": 10,
+        "n": 1,
+        "stop": null
     }
     ]
