@@ -1,0 +1,8 @@
+Name,GPT4o,Gemini,LLaMA,Claude,Perplexity
+WeldingLineController,0,0,0,0,0
+Conveyor_System_Controller,979,9589,0,1320,
+Traffic_Light_Controller,1608,6581,0,2146,2929
+WaterTreatmentPlantController,0,0,0,0,0
+WindTurbineController,0,0,0,0,0
+BaggageHandlingSystem,1840,8248,0,1087,1609
+Fuel_Dispenser_Logic,863,4773,0,1148,865

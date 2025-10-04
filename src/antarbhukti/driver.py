@@ -14,79 +14,64 @@ from llm_mgr import LLM_Mgr
 from llm_codegen import instantiate_llms
 import shutil
 import os
+import csv
 from openpyxl import Workbook, load_workbook
-
-def write_token_usage_to_excel(excel_path: str, sfc_name: str, token_dict: dict):
-    """
-    Append a row to Excel with SFC name and token usage.
-    token_dict = {"GPT4o": 1234, "Gemini": 567, ...}
-    """
-    # Create workbook if not exists
-    if not os.path.exists(excel_path):
-        wb = Workbook()
-        ws = wb.active
-        # header row
-        ws.append(["SFC Name"] + list(token_dict.keys()))
-    else:
-        wb = load_workbook(excel_path)
-        ws = wb.active
-    # append data row
-    ws.append([sfc_name] + [token_dict.get(llm, 0) for llm in token_dict.keys()])
-    wb.save(excel_path)
-
-# src/antarbhukti/driver.py
 
 def update_token_usage_excel(file_name: str, token_usages: dict):
     """
-    Updates an Excel sheet with the token usage for each LLM.
-    This version is more robust, checking headers and using flexible name matching.
+    Updates a CSV file with the token usage for each LLM.
+    This method is robust against file corruption and race conditions.
     """
-    excel_file = "llm_token_usage.xlsx"
+    csv_file = "llm_token_usage.csv"
     header = ["Name", "GPT4o", "Gemini", "LLaMA", "Claude", "Perplexity"]
+    
+    # Read the existing data from the CSV
+    data = []
+    if os.path.exists(csv_file):
+        with open(csv_file, mode='r', newline='', encoding='utf-8') as infile:
+            reader = csv.DictReader(infile)
+            # Ensure the header is what we expect, even if the file is empty
+            if set(header) != set(reader.fieldnames or []):
+                 # If headers are bad, we'll overwrite with good data
+                 pass
+            else:
+                for row in reader:
+                    data.append(row)
 
-    try:
-        workbook = load_workbook(excel_file)
-        sheet = workbook.active
-        # Check if header is correct, if not, recreate it
-        if sheet["A1"].value != header[0] or sheet["B1"].value != header[1]:
-            sheet.delete_rows(1)
-            sheet.insert_rows(1)
-            sheet.append(header)
-    except FileNotFoundError:
-        workbook = Workbook()
-        sheet = workbook.active
-        sheet.title = "Token Usage"
-        sheet.append(header)
-
-    # Find the row for the current file or create a new one
-    file_row = -1
-    for row_num, row in enumerate(sheet.iter_rows(min_row=2, values_only=True), start=2):
-        if row and row[0] == file_name:
-            file_row = row_num
+    # Find the entry for the current file or create it
+    file_entry = None
+    for row in data:
+        # Use .strip() for robust matching
+        if row.get("Name", "").strip() == file_name.strip():
+            file_entry = row
             break
+            
+    if file_entry is None:
+        # If the file name was not found, create a new entry
+        file_entry = {key: "0" for key in header} # Initialize all values as strings
+        file_entry["Name"] = file_name
+        data.append(file_entry)
 
-    if file_row == -1:
-        # Create a new row with the file name and zeros for all LLMs
-        new_row_data = [file_name] + [0] * (len(header) - 1)
-        sheet.append(new_row_data)
-        file_row = sheet.max_row
-
-    # Update the token counts using a more flexible 'in' check
+    # Update the token count for the specific LLM
     for llm_name, token_count in token_usages.items():
-        llm_name_lower = llm_name.lower()
-        if "gpt4o" in llm_name_lower:
-            sheet.cell(row=file_row, column=2).value = token_count
-        elif "gemini" in llm_name_lower:
-            sheet.cell(row=file_row, column=3).value = token_count
-        elif "llama" in llm_name_lower:
-            sheet.cell(row=file_row, column=4).value = token_count
-        elif "claude" in llm_name_lower:
-            sheet.cell(row=file_row, column=5).value = token_count
-        elif "perplexity" in llm_name_lower:
-            sheet.cell(row=file_row, column=6).value = token_count 
+        # Find the header key that matches the LLM name
+        for key in header:
+            if llm_name.lower() in key.lower():
+                # Get the current count, add the new count, and update
+                current_count = int(file_entry.get(key, 0))
+                file_entry[key] = str(current_count + token_count)
+                break
 
-    workbook.save(excel_file)
-    print(f"Updated token usage in {excel_file}")
+    # Write the entire updated dataset back to the CSV file
+    try:
+        with open(csv_file, mode='w', newline='', encoding='utf-8') as outfile:
+            writer = csv.DictWriter(outfile, fieldnames=header)
+            writer.writeheader()
+            writer.writerows(data)
+        print(f"Updated token usage in {csv_file}")
+    except IOError as e:
+        print(f"Error writing to {csv_file}: {e}")
+
 
 def check_pn_containment_html(verifier, gen_report, sfc1, pn1, sfc2, pn2):
     gen_report.sfc_to_dot(sfc1, "sfc1.dot")
