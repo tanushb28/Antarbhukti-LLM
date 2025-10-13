@@ -1,0 +1,12 @@
+steps = [
+{"name": "LoadPaper", "function": "CheckPaper()"},
+{"name": "StartPrint", "function": "InitiatePrintJob()"},
+{"name": "UnloadPaper", "function": "EjectPaper()"}
+]
+transitions = [
+{"src": "LoadPaper", "tgt": "StartPrint", "guard": "paperReady == True"},
+{"src": "StartPrint", "tgt": "UnloadPaper", "guard": "jobDone == True"},
+{"src": "UnloadPaper", "tgt": "LoadPaper", "guard": "True"}
+]
+variables = ['paperReady', 'jobDone']
+initial_step = 'LoadPaper'

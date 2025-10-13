@@ -1,6 +1,6 @@
 Name,GPT4o,Gemini,LLaMA,Claude,Perplexity
 WeldingLineController,0,0,0,0,0
-Conveyor_System_Controller,979,9589,0,1320,
+Conveyor_System_Controller,979,9589,0,1320,1033
 Traffic_Light_Controller,1608,6581,0,2146,2929
 WaterTreatmentPlantController,0,0,0,0,0
 WindTurbineController,0,0,0,0,0

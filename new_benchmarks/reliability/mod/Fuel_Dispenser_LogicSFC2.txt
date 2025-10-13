@@ -1,0 +1,16 @@
+steps = [
+    {"name": "Idle", "function": "WaitForCard"},
+    {"name": "ValidateInput", "function": "CheckFuelAmountAndNozzle"},
+    {"name": "Authorize", "function": "CheckCard"},
+    {"name": "Dispense", "function": "StartPump"},
+    {"name": "ValidationError", "function": "LogAndBlockDispense"}
+]
+transitions = [
+    {"src": "Idle", "tgt": "ValidateInput", "guard": "cardInserted == true"},
+    {"src": "ValidateInput", "tgt": "Authorize", "guard": "inputValid == true"},
+    {"src": "ValidateInput", "tgt": "ValidationError", "guard": "inputValid == false"},
+    {"src": "Authorize", "tgt": "Dispense", "guard": "authSuccess == true"},
+    {"src": "Dispense", "tgt": "Idle", "guard": "dispenseDone == true"}
+]
+variables = ["cardInserted", "authSuccess", "dispenseDone", "fuelAmount", "nozzleSensor", "inputValid"]
+initial_step = "Idle"

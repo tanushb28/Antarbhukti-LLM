@@ -1,0 +1,19 @@
+steps = [
+{ "name": "Idle", "function": "MonitorLevel" },
+{ "name": "WatchdogCheck", "function": "ValidateLevelPressure" },
+{ "name": "WatchdogError", "function": "StopAndLog" },
+{ "name": "PumpOn", "function": "StartPump" },
+{ "name": "PumpOff", "function": "StopPump" }
+]
+transitions = [
+{ "src": "Idle", "tgt": "WatchdogCheck", "guard": "true" },
+{ "src": "WatchdogCheck", "tgt": "PumpOn", "guard": "inputsValid == true and level < LOW" },
+{ "src": "WatchdogCheck", "tgt": "PumpOff", "guard": "inputsValid == true and level >= HIGH" },
+{ "src": "WatchdogCheck", "tgt": "Idle", "guard": "inputsValid == true and level <= NORMAL and level >= LOW and level < HIGH" },
+{ "src": "WatchdogCheck", "tgt": "WatchdogError", "guard": "inputsValid == false" },
+{ "src": "WatchdogError", "tgt": "Idle", "guard": "errorAcknowledged == true" },
+{ "src": "PumpOn", "tgt": "PumpOff", "guard": "level >= HIGH" },
+{ "src": "PumpOff", "tgt": "Idle", "guard": "level <= NORMAL" }
+]
+variables = [ 'level', 'LOW', 'HIGH', 'NORMAL', 'pressure', 'inputsValid', 'errorAcknowledged' ]
+initial_step = 'Idle'

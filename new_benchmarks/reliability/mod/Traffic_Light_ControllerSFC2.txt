@@ -1,0 +1,17 @@
+steps = [
+    {"name": "Green", "function": "SetGreen"},
+    {"name": "Yellow", "function": "SetYellow"},
+    {"name": "Red", "function": "SetRed"},
+    {"name": "SafeAbort", "function": "HaltAndReset"}
+]
+transitions = [
+    {"src": "Green", "tgt": "Yellow", "guard": "greenTimeElapsed == true"},
+    {"src": "Yellow", "tgt": "Red", "guard": "yellowTimeElapsed == true"},
+    {"src": "Red", "tgt": "Green", "guard": "redTimeElapsed == true"},
+    {"src": "Green", "tgt": "SafeAbort", "guard": "greenElapsed > MAX_GREEN or cycle_count > MAX_CYCLES"},
+    {"src": "Yellow", "tgt": "SafeAbort", "guard": "yellowElapsed > MAX_YELLOW or cycle_count > MAX_CYCLES"},
+    {"src": "Red", "tgt": "SafeAbort", "guard": "redElapsed > MAX_RED or cycle_count > MAX_CYCLES"}
+]
+variables = ["greenTimeElapsed", "yellowTimeElapsed", "redTimeElapsed", "cycle_count", "MAX_CYCLES", "greenElapsed", "MAX_GREEN", "yellowElapsed",
+"MAX_YELLOW", "redElapsed", "MAX_RED"]
+initial_step = "Green"

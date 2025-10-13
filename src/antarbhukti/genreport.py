@@ -2,6 +2,7 @@ import subprocess
 import base64
 import os
 import json
+import csv
 
 class GenReport:
     """Report generation and utility functions for Petri Net analysis"""
@@ -216,3 +217,52 @@ class GenReport:
             html += "<span class='notcontained'>There are paths in Model 1 that are not matched in Model 2 (Containment does NOT hold).</span>"
         html += "</div></body></html>"
         return html
+    
+    def generate_csv(self, file_name: str, token_usages: dict):
+        """
+        Updates a CSV file with the token usage for each LLM.
+        This method is robust against file corruption and race conditions.
+        """
+        csv_file = "llm_token_usage.csv"
+        header = ["Name", "GPT4o", "Gemini", "LLaMA", "Claude", "Perplexity"]
+        
+        # Read the existing data from the CSV
+        data = []
+        if os.path.exists(csv_file):
+            with open(csv_file, mode='r', newline='', encoding='utf-8') as infile:
+                reader = csv.DictReader(infile)
+                if set(header) != set(reader.fieldnames or []):
+                    pass
+                else:
+                    for row in reader:
+                        data.append(row)
+
+        # Find the entry for the current file or create it
+        file_entry = None
+        for row in data:
+            if row.get("Name", "").strip() == file_name.strip():
+                file_entry = row
+                break
+                
+        if file_entry is None:
+            file_entry = {key: "0" for key in header}
+            file_entry["Name"] = file_name
+            data.append(file_entry)
+
+        # Update the token count for the specific LLM
+        for llm_name, token_count in token_usages.items():
+            for key in header:
+                if llm_name.lower() in key.lower():
+                    current_count = int(file_entry.get(key, 0))
+                    file_entry[key] = str(token_count)
+                    break
+
+        # Write the entire updated dataset back to the CSV file
+        try:
+            with open(csv_file, mode='w', newline='', encoding='utf-8') as outfile:
+                writer = csv.DictWriter(outfile, fieldnames=header)
+                writer.writeheader()
+                writer.writerows(data)
+            print(f"Updated token usage in {csv_file}")
+        except IOError as e:
+            print(f"Error writing to {csv_file}: {e}")

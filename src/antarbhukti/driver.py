@@ -14,63 +14,63 @@ from llm_mgr import LLM_Mgr
 from llm_codegen import instantiate_llms
 import shutil
 import os
-import csv
+
 from openpyxl import Workbook, load_workbook
 
-def update_token_usage_excel(file_name: str, token_usages: dict):
-    """
-    Updates a CSV file with the token usage for each LLM.
-    This method is robust against file corruption and race conditions.
-    """
-    csv_file = "llm_token_usage.csv"
-    header = ["Name", "GPT4o", "Gemini", "LLaMA", "Claude", "Perplexity"]
+# def update_token_usage_excel(file_name: str, token_usages: dict):
+#     """
+#     Updates a CSV file with the token usage for each LLM.
+#     This method is robust against file corruption and race conditions.
+#     """
+#     csv_file = "llm_token_usage.csv"
+#     header = ["Name", "GPT4o", "Gemini", "LLaMA", "Claude", "Perplexity"]
     
-    # Read the existing data from the CSV
-    data = []
-    if os.path.exists(csv_file):
-        with open(csv_file, mode='r', newline='', encoding='utf-8') as infile:
-            reader = csv.DictReader(infile)
-            # Ensure the header is what we expect, even if the file is empty
-            if set(header) != set(reader.fieldnames or []):
-                 # If headers are bad, we'll overwrite with good data
-                 pass
-            else:
-                for row in reader:
-                    data.append(row)
+#     # Read the existing data from the CSV
+#     data = []
+#     if os.path.exists(csv_file):
+#         with open(csv_file, mode='r', newline='', encoding='utf-8') as infile:
+#             reader = csv.DictReader(infile)
+#             # Ensure the header is what we expect, even if the file is empty
+#             if set(header) != set(reader.fieldnames or []):
+#                  # If headers are bad, we'll overwrite with good data
+#                  pass
+#             else:
+#                 for row in reader:
+#                     data.append(row)
 
-    # Find the entry for the current file or create it
-    file_entry = None
-    for row in data:
-        # Use .strip() for robust matching
-        if row.get("Name", "").strip() == file_name.strip():
-            file_entry = row
-            break
+#     # Find the entry for the current file or create it
+#     file_entry = None
+#     for row in data:
+#         # Use .strip() for robust matching
+#         if row.get("Name", "").strip() == file_name.strip():
+#             file_entry = row
+#             break
             
-    if file_entry is None:
-        # If the file name was not found, create a new entry
-        file_entry = {key: "0" for key in header} # Initialize all values as strings
-        file_entry["Name"] = file_name
-        data.append(file_entry)
+#     if file_entry is None:
+#         # If the file name was not found, create a new entry
+#         file_entry = {key: "0" for key in header} # Initialize all values as strings
+#         file_entry["Name"] = file_name
+#         data.append(file_entry)
 
-    # Update the token count for the specific LLM
-    for llm_name, token_count in token_usages.items():
-        # Find the header key that matches the LLM name
-        for key in header:
-            if llm_name.lower() in key.lower():
-                # Get the current count, add the new count, and update
-                current_count = int(file_entry.get(key, 0))
-                file_entry[key] = str(current_count + token_count)
-                break
+#     # Update the token count for the specific LLM
+#     for llm_name, token_count in token_usages.items():
+#         # Find the header key that matches the LLM name
+#         for key in header:
+#             if llm_name.lower() in key.lower():
+#                 # Get the current count, add the new count, and update
+#                 current_count = int(file_entry.get(key, 0))
+#                 file_entry[key] = str(current_count + token_count)
+#                 break
 
-    # Write the entire updated dataset back to the CSV file
-    try:
-        with open(csv_file, mode='w', newline='', encoding='utf-8') as outfile:
-            writer = csv.DictWriter(outfile, fieldnames=header)
-            writer.writeheader()
-            writer.writerows(data)
-        print(f"Updated token usage in {csv_file}")
-    except IOError as e:
-        print(f"Error writing to {csv_file}: {e}")
+#     # Write the entire updated dataset back to the CSV file
+#     try:
+#         with open(csv_file, mode='w', newline='', encoding='utf-8') as outfile:
+#             writer = csv.DictWriter(outfile, fieldnames=header)
+#             writer.writeheader()
+#             writer.writerows(data)
+#         print(f"Updated token usage in {csv_file}")
+#     except IOError as e:
+#         print(f"Error writing to {csv_file}: {e}")
 
 
 def check_pn_containment_html(verifier, gen_report, sfc1, pn1, sfc2, pn2):
@@ -180,7 +180,9 @@ def refine_code(src, mod, llm:LLM_Mgr, prompt_template, dest_root):
 def refine_all(args, llm):
     outdir = args.result_root + "/" + llm.name
     os.makedirs(outdir, exist_ok=True)
-    
+
+    reporter = GenReport()
+
     if os.path.isfile(args.src_path):
         # This block runs for a single file.
         itr, iscontained, token_usage = refine_code(args.src_path, args.mod_path, llm, args.prompt_path, outdir)
@@ -189,7 +191,7 @@ def refine_all(args, llm):
         
         # Update Excel for the single file run inside the 'if' block.
         file_name = os.path.splitext(os.path.basename(args.src_path))[0]
-        update_token_usage_excel(file_name, token_usages_dict)
+        reporter.generate_csv(file_name, token_usages_dict)
     else:
         # This block runs for a directory.
         srcfiles = readfiles(args.src_path)
@@ -204,7 +206,7 @@ def refine_all(args, llm):
         
         # Update Excel for the entire directory run inside the 'else' block.
         file_name = os.path.basename(args.src_path)
-        update_token_usage_excel(file_name, total_token_usages)
+        reporter.generate_csv(file_name, total_token_usages)
 
 def run_all_llms(args):
     llm_names = [name.strip().lower() for name in args.llms.split(",") if name.strip()]

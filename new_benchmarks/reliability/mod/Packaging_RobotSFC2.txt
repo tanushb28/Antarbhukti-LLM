@@ -1,0 +1,24 @@
+steps = [
+{ "name": "Start", "function": "WaitStartSignal" },
+{ "name": "FetchBox", "function": "PickEmptyBox" },
+{ "name": "LogFetch", "function": "LogPackageStage" },
+{ "name": "FillBox", "function": "PlaceItems" },
+{ "name": "LogFill", "function": "LogPackageStage" },
+{ "name": "CloseBox", "function": "FoldAndSeal" },
+{ "name": "LogClose", "function": "LogPackageStage" },
+{ "name": "Dispatch", "function": "MoveToConveyor" },
+{ "name": "LogDispatch", "function": "LogPackageStage" }
+]
+transitions = [
+{ "src": "Start", "tgt": "FetchBox", "guard": "start_signal" },
+{ "src": "FetchBox", "tgt": "LogFetch", "guard": "box_picked" },
+{ "src": "LogFetch", "tgt": "FillBox", "guard": "log_done" },
+{ "src": "FillBox", "tgt": "LogFill", "guard": "items_placed" },
+{ "src": "LogFill", "tgt": "CloseBox", "guard": "log_done" },
+{ "src": "CloseBox", "tgt": "LogClose", "guard": "box_closed" },
+{ "src": "LogClose", "tgt": "Dispatch", "guard": "log_done" },
+{ "src": "Dispatch", "tgt": "LogDispatch", "guard": "box_dispatched" },
+{ "src": "LogDispatch", "tgt": "Start", "guard": "log_done" }
+]
+variables = [ 'start_signal', 'box_picked', 'items_placed', 'box_closed', 'box_dispatched', 'package_id', 'sort_status', 'cycle_no', 'error_flags', 'log_done' ]
+initial_step = 'Start'

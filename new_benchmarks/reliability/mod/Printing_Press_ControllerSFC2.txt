@@ -1,0 +1,14 @@
+steps = [
+{ "name": "LoadPaper", "function": "CheckPaper()" },
+{ "name": "StartPrint", "function": "InitiatePrintJob()" },
+{ "name": "LogCycle", "function": "LogPrintCycle()" },
+{ "name": "UnloadPaper", "function": "EjectPaper()" }
+]
+transitions = [
+{ "src": "LoadPaper", "tgt": "StartPrint", "guard": "paperReady == True" },
+{ "src": "StartPrint", "tgt": "LogCycle", "guard": "jobDone == True" },
+{ "src": "LogCycle", "tgt": "UnloadPaper", "guard": "log_done == True" },
+{ "src": "UnloadPaper", "tgt": "LoadPaper", "guard": "True" }
+]
+variables = ['paperReady', 'jobDone', 'ink_usage', 'pages_printed', 'errors_detected', 'log_done']
+initial_step = 'LoadPaper'

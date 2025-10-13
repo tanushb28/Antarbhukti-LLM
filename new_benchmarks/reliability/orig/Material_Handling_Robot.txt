@@ -1,0 +1,16 @@
+steps = [
+{"name": "Idle", "function": "WaitCommand"},
+{"name": "Pick", "function": "GripObject"},
+{"name": "Move", "function": "NavigateToLocation"},
+{"name": "Place", "function": "ReleaseObject"},
+{"name": "Return", "function": "ReturnToBase"}
+]
+transitions = [
+{"src": "Idle", "tgt": "Pick", "guard": "command_received"},
+{"src": "Pick", "tgt": "Move", "guard": "object_gripped"},
+{"src": "Move", "tgt": "Place", "guard": "target_reached"},
+{"src": "Place", "tgt": "Return", "guard": "object_released"},
+{"src": "Return", "tgt": "Idle", "guard": "base_reached"}
+]
+variables = ['command_received', 'object_gripped', 'target_reached', 'object_released', 'base_reached']
+initial_step = 'Idle'

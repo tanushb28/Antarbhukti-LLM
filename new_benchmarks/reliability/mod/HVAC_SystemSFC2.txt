@@ -1,0 +1,26 @@
+steps = [
+    {"name": "SenseTemp", "function": "ReadTemperature"},
+    {"name": "CheckTemp", "function": "EvaluateTemperature"},
+    {"name": "Heat", "function": "TurnOnHeater"},
+    {"name": "Cool", "function": "TurnOnCooler"},
+    {"name": "Idle", "function": "MaintainState"},
+    {"name": "WatchdogCheck", "function": "MonitorSensors"},
+    {"name": "WatchdogError", "function": "ShutdownAndLog"}
+]
+transitions = [
+    {"src": "SenseTemp", "tgt": "CheckTemp", "guard": "sensor_ok"},
+    {"src": "CheckTemp", "tgt": "Heat", "guard": "temp_below_min"},
+    {"src": "CheckTemp", "tgt": "Cool", "guard": "temp_above_max"},
+    {"src": "CheckTemp", "tgt": "Idle", "guard": "temp_ok"},
+    {"src": "Heat", "tgt": "SenseTemp", "guard": "heating_done"},
+    {"src": "Cool", "tgt": "SenseTemp", "guard": "cooling_done"},
+    {"src": "Idle", "tgt": "SenseTemp", "guard": "cycle_complete"},
+    {"src": "SenseTemp", "tgt": "WatchdogCheck", "guard": "sensorFault == true"},
+    {"src": "CheckTemp", "tgt": "WatchdogCheck", "guard": "sensorFault == true"},
+    {"src": "Heat", "tgt": "WatchdogCheck", "guard": "sensorFault == true"},
+    {"src": "Cool", "tgt": "WatchdogCheck", "guard": "sensorFault == true"},
+    {"src": "WatchdogCheck", "tgt": "WatchdogError", "guard": "faultConfirmed == true"},
+    {"src": "WatchdogCheck", "tgt": "SenseTemp", "guard": "faultConfirmed == false"}
+]
+variables = ["sensor_ok", "temp_below_min", "temp_above_max", "temp_ok", "heating_done", "cooling_done", "cycle_complete", "sensorFault", "faultConfirmed"]
+initial_step = "SenseTemp"

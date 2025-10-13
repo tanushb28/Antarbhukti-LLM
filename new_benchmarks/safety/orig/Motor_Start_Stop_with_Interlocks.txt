@@ -1,0 +1,12 @@
+steps = [
+{"name": "Idle", "function": "WaitStart"},
+{"name": "StartMotor", "function": "MotorOn"},
+{"name": "StopMotor", "function": "MotorOff"}
+]
+transitions = [
+{"src": "Idle", "tgt": "StartMotor", "guard": "startCommand == true and interlockOk == true"},
+{"src": "StartMotor", "tgt": "StopMotor", "guard": "stopCommand == true"},
+{"src": "StopMotor", "tgt": "Idle", "guard": "motorStopped == true"}
+]
+variables = ['startCommand', 'stopCommand', 'interlockOk', 'motorStopped']
+initial_step = 'Idle'

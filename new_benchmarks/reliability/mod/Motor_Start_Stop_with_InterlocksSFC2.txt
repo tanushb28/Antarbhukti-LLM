@@ -1,0 +1,17 @@
+steps = [
+{ "name": "Idle", "function": "WaitStart" },
+{ "name": "StartMotor", "function": "MotorOn" },
+{ "name": "RunWatchdogCheck", "function": "WatchdogCheckInterlocks" },
+{ "name": "WatchdogError", "function": "HaltAndLog" },
+{ "name": "StopMotor", "function": "MotorOff" }
+]
+transitions = [
+{ "src": "Idle", "tgt": "StartMotor", "guard": "startCommand == true and interlockOk == true" },
+{ "src": "StartMotor", "tgt": "RunWatchdogCheck", "guard": "motorRunning == true" },
+{ "src": "RunWatchdogCheck", "tgt": "WatchdogError", "guard": "interlockOk == false or interlockUndefined == true" },
+{ "src": "RunWatchdogCheck", "tgt": "StopMotor", "guard": "stopCommand == true" },
+{ "src": "StopMotor", "tgt": "Idle", "guard": "motorStopped == true" },
+{ "src": "RunWatchdogCheck", "tgt": "RunWatchdogCheck", "guard": "interlockOk == true and stopCommand == false" }
+]
+variables = [ 'startCommand', 'stopCommand', 'interlockOk', 'interlockUndefined', 'motorRunning', 'motorStopped']
+initial_step = 'Idle'
