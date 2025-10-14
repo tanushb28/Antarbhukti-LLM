@@ -3,6 +3,7 @@ import base64
 import os
 import json
 import csv
+import pandas as pd
 
 class GenReport:
     """Report generation and utility functions for Petri Net analysis"""
@@ -218,51 +219,43 @@ class GenReport:
         html += "</div></body></html>"
         return html
     
-    def generate_csv(self, file_name: str, token_usages: dict):
+    def generate_csv(self, file_name: str, test_type: str, token_usages: dict):
         """
         Updates a CSV file with the token usage for each LLM.
         This method is robust against file corruption and race conditions.
         """
-        csv_file = "llm_token_usage.csv"
-        header = ["Name", "GPT4o", "Gemini", "LLaMA", "Claude", "Perplexity"]
+        csv_file = "NewBenchmark - Sheet1.csv"
         
-        # Read the existing data from the CSV
-        data = []
-        if os.path.exists(csv_file):
-            with open(csv_file, mode='r', newline='', encoding='utf-8') as infile:
-                reader = csv.DictReader(infile)
-                if set(header) != set(reader.fieldnames or []):
-                    pass
-                else:
-                    for row in reader:
-                        data.append(row)
-
-        # Find the entry for the current file or create it
-        file_entry = None
-        for row in data:
-            if row.get("Name", "").strip() == file_name.strip():
-                file_entry = row
-                break
-                
-        if file_entry is None:
-            file_entry = {key: "0" for key in header}
-            file_entry["Name"] = file_name
-            data.append(file_entry)
-
-        # Update the token count for the specific LLM
-        for llm_name, token_count in token_usages.items():
-            for key in header:
-                if llm_name.lower() in key.lower():
-                    current_count = int(file_entry.get(key, 0))
-                    file_entry[key] = str(token_count)
-                    break
-
-        # Write the entire updated dataset back to the CSV file
         try:
-            with open(csv_file, mode='w', newline='', encoding='utf-8') as outfile:
-                writer = csv.DictWriter(outfile, fieldnames=header)
-                writer.writeheader()
-                writer.writerows(data)
-            print(f"Updated token usage in {csv_file}")
-        except IOError as e:
-            print(f"Error writing to {csv_file}: {e}")
+            # Read the existing data from the CSV, using a multi-level header
+            df = pd.read_csv(csv_file, header=[0, 1])
+
+            # Find the index of the row to update
+            row_index = df[(df[('Benchmark Name', 'Unnamed: 0_level_1')] == file_name) & (df[('Type', 'Unnamed: 1_level_1')] == test_type)].index
+
+            if not row_index.empty:
+                idx = row_index[0]
+                # Update the token count for the specific LLM
+                for llm_name, token_count in token_usages.items():
+                    llm_column_map = {
+                        'gpt4o': ('#TokenCounts', 'GPT4o'),
+                        'gemini': ('Unnamed: 8_level_0', 'Gemini'),
+                        'llama': ('Unnamed: 9_level_0', 'LLaMA'),
+                        'claude': ('Unnamed: 10_level_0', 'Claude'),
+                        'perplexity': ('Unnamed: 11_level_0', 'Perplexity')
+                    }
+                    
+                    column_to_update = llm_column_map.get(llm_name.lower())
+                    if column_to_update and column_to_update in df.columns:
+                        df.loc[idx, column_to_update] = token_count
+
+                # Write the updated DataFrame back to the CSV file
+                df.to_csv(csv_file, index=False)
+                print(f"Updated token usage in {csv_file} for {file_name} ({test_type})")
+            else:
+                print(f"Could not find a matching row for {file_name} ({test_type}) in {csv_file}")
+
+        except FileNotFoundError:
+            print(f"Error: The file {csv_file} was not found.")
+        except Exception as e:
+            print(f"An error occurred: {e}")

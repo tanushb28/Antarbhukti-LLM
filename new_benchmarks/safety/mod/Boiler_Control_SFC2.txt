@@ -21,5 +21,5 @@ transitions = [
 { "src": "EmergencyStop", "tgt": "Shutdown", "guard": "emergency_resolved" },
 { "src": "TimeoutSafeStop", "tgt": "Shutdown", "guard": "timeout_resolved" }
 ]
-variables = [ init_done, temp_threshold_reached, pressure_not_ok, adjustment_done, pressure_ok, safety_log_completed, overtemp_detected, overpressure_detected, regulate_timeout, emergency_resolved, timeout_resolved, pressure_value, temperature_value, valve_position, safety_margin_ok ]
-initial_step = Init
+variables = ['init_done', 'temp_threshold_reached', 'pressure_not_ok', 'adjustment_done', 'pressure_ok', 'safety_log_completed', 'overtemp_detected', 'overpressure_detected', 'regulate_timeout', 'emergency_resolved', 'timeout_resolved', 'pressure_value', 'temperature_value', 'valve_position', 'safety_margin_ok']
+initial_step = 'Init'

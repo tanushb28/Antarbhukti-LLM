@@ -183,6 +183,16 @@ def refine_all(args, llm):
 
     reporter = GenReport()
 
+    path_parts = args.src_path.split(os.sep)
+    test_type = "unknown"
+    if "new_benchmarks" in path_parts:
+        try:
+            test_type_index = path_parts.index("new_benchmarks") + 1
+            if test_type_index < len(path_parts):
+                test_type = path_parts[test_type_index]
+        except (ValueError, IndexError):
+            pass
+
     if os.path.isfile(args.src_path):
         # This block runs for a single file.
         itr, iscontained, token_usage = refine_code(args.src_path, args.mod_path, llm, args.prompt_path, outdir)
@@ -191,7 +201,7 @@ def refine_all(args, llm):
         
         # Update Excel for the single file run inside the 'if' block.
         file_name = os.path.splitext(os.path.basename(args.src_path))[0]
-        reporter.generate_csv(file_name, token_usages_dict)
+        reporter.generate_csv(file_name, test_type, token_usages_dict)
     else:
         # This block runs for a directory.
         srcfiles = readfiles(args.src_path)
@@ -206,7 +216,7 @@ def refine_all(args, llm):
         
         # Update Excel for the entire directory run inside the 'else' block.
         file_name = os.path.basename(args.src_path)
-        reporter.generate_csv(file_name, total_token_usages)
+        reporter.generate_csv(file_name, test_type, total_token_usages)
 
 def run_all_llms(args):
     llm_names = [name.strip().lower() for name in args.llms.split(",") if name.strip()]

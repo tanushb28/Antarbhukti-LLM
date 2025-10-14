@@ -1,7 +1,7 @@
-Benchmark Name,Type,#LLM Iterations,,,,,#TokenCounts,,,,,Upgrade Rule Used
-,,GPT4o,Gemini,LLaMA,Claude,Perplexity,GPT4o,Gemini,LLaMA,Claude,Perplexity,
+Benchmark Name,Type,#LLM Iterations,Unnamed: 3_level_0,Unnamed: 4_level_0,Unnamed: 5_level_0,Unnamed: 6_level_0,#TokenCounts,Unnamed: 8_level_0,Unnamed: 9_level_0,Unnamed: 10_level_0,Unnamed: 11_level_0,Upgrade Rule Used
+Unnamed: 0_level_1,Unnamed: 1_level_1,GPT4o,Gemini,LLaMA,Claude,Perplexity,GPT4o,Gemini,LLaMA,Claude,Perplexity,Unnamed: 12_level_1
 Crane_Automation,reliability,Timeout,2,Timeout,2,,,,,,,Watchdog Monitoring
-Boiler_Control,reliability,1,1,1,1,,,,,,,Intermediate Logging
+Boiler_Control,reliability,1,1,1,1,,0.0,,0.0,0.0,0.0,Intermediate Logging
 Fuel_Dispenser_Logic,reliability,1,1,1,1,,,,,,,Input Validation
 HVAC_System,reliability,1,1,1,1,,,,,,,Watchdog Monitoring
 Lift_Control_System,reliability,1,1,1,1,,,,,,,Execution Bound Monitoring
@@ -20,14 +20,14 @@ Elevator_Controller,reliability,2,2,2,2,,,,,,,Input Validation
 Filling_and_Packaging_Line,reliability,1,1,1,1,,,,,,,Intermediate Logging
 Motor_Start_Stop_with_Interlocks,reliability,1,1,1,1,,,,,,,Watchdog Monitoring
 PID_Controlled_Process,reliability,2,2,2,2,,,,,,,Intermediate Logging
-Greenhouse_Monitoring_System,reliability,2,2,2,2,,,,,,,Input Validation
+Greenhouse_Monitoring_System,reliability,2,2,2,2,,869.0,11466.0,0.0,1165.0,841.0,Input Validation
 Packaging_Robot,reliability,1,1,1,1,,,,,,,Intermediate Logging
 Power_Distribution_Unit,reliability,2,2,Timeout,2,,,,,,,Input Validation
 Printing_Press_Controller,reliability,1,1,1,1,,,,,,,Intermediate Logging
-Baggage_Handling_System,safety,10,3,2,2,,,,,,,Safe State Logging
+Baggage_Handling_System,safety,10,3,2,2,,1712.0,10904.0,0.0,1087.0,786.0,Safe State Logging
 Welding_Line_Controller,safety,1,1,1,1,,,,,,,Input Safety Validation
 Water_Treatment_Plant_Controller,safety,1,1,1,1,,,,,,,Input Safety Validation
-Automated_Gate_System,safety,Timeout,Error: No valid code block found,Timeout,4,,,,,,,Timeout and Watchdog Safety
+Automated_Gate_System,safety,Timeout,Error: No valid code block found,Timeout,4,,14779.0,6549.0,0.0,3445.0,1342.0,Timeout and Watchdog Safety
 Wind_Turbine_Controller,safety,1,1,1,1,,,,,,,Timeout and Watchdog Safety
 Boiler_Control,safety,1,1,1,1,,,,,,,Safe State Logging
 Crane_Automation,safety,1,1,1,1,,,,,,,Emergency Stop Monitoring

@@ -48,7 +48,7 @@ class GPT4o(LLM_Mgr):
 
 class Gemini(LLM_Mgr):
     def __init__(self, api_key: str, model_name: str = "gemini-1.5-flash-001"):
-        super().__init__("Gemini-1.5-Flash", model_name, api_key)
+        super().__init__("Gemini", model_name, api_key)
         genai.configure(api_key=self.api_key)
         self.llm = genai.GenerativeModel(model_name=self.model_name)
 
@@ -109,7 +109,7 @@ class Claude(LLM_Mgr):
 
 class LLaMA(LLM_Mgr):
     def __init__(self, api_key: str, model_name: str = "llama3-8b-8192"):
-        super().__init__("LLaMA", model_name, api_key)
+        super().__init__("Llama", model_name, api_key)
         self.llm = Groq(api_key=self.api_key)
 
     # src/antarbhukti/llm_codegen.py

@@ -14,5 +14,5 @@ transitions = [
 { "src": "AdjustVentilation", "tgt": "LogData", "guard": "true" },
 { "src": "LogData", "tgt": "MonitorTemperature", "guard": "true" }
 ]
-variables = [ 'temp', 'humidity', 'threshold', 'soil_moisture', 'startup', 'new_reading', 'inputsValid', 'errorAcknowledged' ]
+variables = ['temp', 'humidity', 'threshold', 'soil_moisture', 'startup', 'new_reading', 'inputsValid', 'errorAcknowledged' ]
 initial_step = 'MonitorTemperature'
