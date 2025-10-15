@@ -24,7 +24,7 @@ Greenhouse_Monitoring_System,reliability,2,2,2,2,,869.0,11466.0,0.0,1165.0,841.0
 Packaging_Robot,reliability,1,1,1,1,,,,,,,Intermediate Logging
 Power_Distribution_Unit,reliability,2,2,Timeout,2,,,,,,,Input Validation
 Printing_Press_Controller,reliability,1,1,1,1,,,,,,,Intermediate Logging
-Baggage_Handling_System,safety,10,3,2,2,,1712.0,10904.0,0.0,1087.0,786.0,Safe State Logging
+Baggage_Handling_System,safety,10,3,2,2,,6642.0,15145.0,1717.0,1122.0,933.0,Safe State Logging
 Welding_Line_Controller,safety,1,1,1,1,,,,,,,Input Safety Validation
 Water_Treatment_Plant_Controller,safety,1,1,1,1,,,,,,,Input Safety Validation
 Automated_Gate_System,safety,Timeout,Error: No valid code block found,Timeout,4,,14779.0,6549.0,0.0,3445.0,1342.0,Timeout and Watchdog Safety
@@ -35,7 +35,7 @@ Fuel_Dispenser_Logic,safety,2,2,2,2,,,,,,,Input Safety Validation
 HVAC_System,safety,1,1,1,1,,,,,,,Emergency Stop Monitoring
 Lift_Control_System,safety,1,1,1,1,,,,,,,Timeout and Watchdog Safety
 Batch_Mixing_System,safety,1,1,1,1,,,,,,,Timeout and Watchdog Safety
-Conveyor_System_Controller,safety,2,2,2,2,,,,,,,Emergency Stop Monitoring
+Conveyor_System_Controller,safety,2,2,2,2,,979.0,8370.0,1040.0,1320.0,2186.0,Emergency Stop Monitoring
 Temperature_Control_System,safety,1,1,1,1,,,,,,,Safe State Logging
 Traffic_Light_Controller,safety,2,2,6,2,,,,,,,Timeout and Watchdog Safety
 Tank_Level_Control,safety,2,4,9,2,,,,,,,Input Safety Validation

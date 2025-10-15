@@ -120,16 +120,14 @@ class LLaMA(LLM_Mgr):
         try:
             completion = self.llm.chat.completions.create(
                 model=self.model_name,
-                # Corrected: Use a structured message list
                 messages=[
                     {"role": "system", "content": system_message},
                     {"role": "user", "content": user_message}
                 ],
-                stream=True,
+                stream=False,
             )
-            response_content = "".join(chunk.choices[0].delta.content for chunk in completion if chunk.choices[0].delta.content)
-            usage = completion.get_final_usage_metrics()
-            total_tokens = getattr(usage, "total_tokens", None)
+            response_content = completion.choices[0].message.content
+            total_tokens = completion.usage.total_tokens
             print(f"[{self.name}] Token usage - Total: {total_tokens}")
             return response_content, total_tokens
         except Exception as e:
@@ -162,6 +160,7 @@ class Perplexity(LLM_Mgr):
                     {"role": "system", "content": system_message},
                     {"role": "user", "content": user_message},
                 ],
+                max_tokens=self.max_tokens,
             )
             response_content = response.choices[0].message.content
             total_tokens = response.usage.total_tokens

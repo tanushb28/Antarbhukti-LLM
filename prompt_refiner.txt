@@ -6,16 +6,15 @@ Paths in Model 1 with NO equivalent path in Model 2
 From	      To	        Transitions	    Z3 Condition	   Z3 Data Transformation
 
 From	To	Transitions	Condition	Data Transformation
-RouteBaggage	LoadBaggage	['t_1']	(= routeAssigned true)	true
-ScanBaggage	RouteBaggage	['t_0']	(= barcodeValid true)	true
+Move	Stop	['t_1']	(= positionReached true)	true
 
 Here is the current SFC2 Python code:
-steps2 = [{'name': 'ScanBaggage', 'function': 'ReadBarcode'}, {'name': 'RouteBaggage', 'function': 'ActivateSorter'}, {'name': 'SafetyLog', 'function': 'RecordBaggageRouting'}, {'name': 'LoadBaggage', 'function': 'MoveToConveyor'}, {'name': 'SafetyError', 'function': 'HaltAndLogError'}]
-transitions2 = [{'src': 'ScanBaggage', 'tgt': 'RouteBaggage', 'guard': 'barcodeValid'}, {'src': 'RouteBaggage', 'tgt': 'SafetyLog', 'guard': 'routeAssigned'}, {'src': 'RouteBaggage', 'tgt': 'SafetyError', 'guard': 'routeAssigned == False'}, {'src': 'SafetyLog', 'tgt': 'LoadBaggage', 'guard': 'True'}, {'src': 'LoadBaggage', 'tgt': 'ScanBaggage', 'guard': 'True'}, {'src': 'SafetyError', 'tgt': 'ScanBaggage', 'guard': 'errorCleared'}]
+steps2 = [{'name': 'Idle', 'function': 'WaitForObject'}, {'name': 'Move', 'function': 'StartConveyor'}, {'name': 'Stop', 'function': 'StopConveyor'}, {'name': 'EmergencyStopCheck', 'function': 'MonitorJamAndCurrent'}, {'name': 'EmergencyStop', 'function': 'HaltConveyorAndLog'}, {'name': 'SafetyLog', 'function': 'RecordEvent'}]
+transitions2 = [{'src': 'Idle', 'tgt': 'Move', 'guard': 'objectDetected == true'}, {'src': 'Move', 'tgt': 'EmergencyStop', 'guard': 'jamDetected == true OR motorCurrentHigh == true'}, {'src': 'Move', 'tgt': 'EmergencyStopCheck', 'guard': 'true'}, {'src': 'Move', 'tgt': 'Stop', 'guard': 'positionReached == true AND NOT (jamDetected == true OR motorCurrentHigh == true)'}, {'src': 'EmergencyStopCheck', 'tgt': 'EmergencyStop', 'guard': 'jamDetected == true OR motorCurrentHigh == true'}, {'src': 'EmergencyStopCheck', 'tgt': 'Move', 'guard': 'NOT (jamDetected == true OR motorCurrentHigh == true) AND NOT (positionReached == true)'}, {'src': 'EmergencyStopCheck', 'tgt': 'Stop', 'guard': 'NOT (jamDetected == true OR motorCurrentHigh == true) AND positionReached == true'}, {'src': 'Stop', 'tgt': 'EmergencyStop', 'guard': 'jamDetected == true OR motorCurrentHigh == true'}, {'src': 'Stop', 'tgt': 'EmergencyStopCheck', 'guard': 'true'}, {'src': 'Stop', 'tgt': 'Idle', 'guard': 'objectCleared == true'}, {'src': 'EmergencyStop', 'tgt': 'SafetyLog', 'guard': 'true'}, {'src': 'SafetyLog', 'tgt': 'Idle', 'guard': 'emergencyCleared == true'}]
 
 Here is the SFC1 Python code for reference:
-steps1 = [{'name': 'ScanBaggage', 'function': 'ReadBarcode()'}, {'name': 'RouteBaggage', 'function': 'ActivateSorter()'}, {'name': 'LoadBaggage', 'function': 'MoveToConveyor()'}]
-transitions1 = [{'src': 'ScanBaggage', 'tgt': 'RouteBaggage', 'guard': 'barcodeValid == True'}, {'src': 'RouteBaggage', 'tgt': 'LoadBaggage', 'guard': 'routeAssigned == True'}, {'src': 'LoadBaggage', 'tgt': 'ScanBaggage', 'guard': 'True'}]
+steps1 = [{'name': 'Idle', 'function': 'WaitForObject'}, {'name': 'Move', 'function': 'StartConveyor'}, {'name': 'Stop', 'function': 'StopConveyor'}]
+transitions1 = [{'src': 'Idle', 'tgt': 'Move', 'guard': 'objectDetected == true'}, {'src': 'Move', 'tgt': 'Stop', 'guard': 'positionReached == true'}, {'src': 'Stop', 'tgt': 'Idle', 'guard': 'objectCleared == true'}]
 
 Please modify steps2 and transitions2 so that all above paths are covered and equivalence will hold. 
 Only output valid Python code for steps2 and transitions2, nothing else.
