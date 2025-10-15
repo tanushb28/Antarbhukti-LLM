@@ -71,7 +71,7 @@ initial_step = {initial_step}
 """
 
     # Prompt segments
-    role = "Act as a control software designer using IEC 61131-3 Sequential Function Charts (SFCs)."
+    role = "Act as a control software designer for IEC 61131-3 Sequential Function Charts (SFCs)."
     task = " Given an SFC (SFC1) representing a control process, your task is to generate an upgraded SFC (SFC2)."
     context = " The upgraded version must preserve the original behavior under nominal conditions and preserve compliance with IEC-61131-3."
     upgrade_spec = " Use the Structured Format to generate the upgraded SFC (SFC2)."

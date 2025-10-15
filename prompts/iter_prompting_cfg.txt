@@ -1,0 +1,55 @@
+prompt =
+    objective, context, input_data,
+    mod_guidelines,
+    output_format,
+    success_criteria ;
+
+objective =
+    "## Objective", description_text ;
+
+context =
+    "## Context", "-", sfc_definition,
+    "-", equivalence_goal, "-", missing_paths ;
+
+sfc_definition =
+    "**SFC (Sequential Function Chart)**:", description_text ;
+equivalence_goal =
+    "**Equivalence Goal**:", description_text ;
+missing_paths =
+    "**Missing Paths**:", description_text ;
+
+input_data =
+    "## Input Data",
+    non_equiv_paths_section,
+    sfc2_section,
+    sfc1_section ;
+
+non_equiv_paths_section =
+    "### Non-Equivalent Paths (SFC1 → SFC2)", code_block ;
+sfc2_section =
+    "### Current SFC2 Implementation", code_block ;
+sfc1_section =
+    "### Reference SFC1 Implementation", code_block ;
+
+mod_guidelines =
+    "### Code Modifications", list_item, { list_item } ;
+
+output_format =
+    "## Expected Output Format",
+    numbered_item, { numbered_item },
+    "### Example Output Format:", code_block ;
+
+success_criteria =
+    "## Success Criteria", list_item, { list_item } ;
+
+code_block =
+    "```", { line }, "```" ;
+
+description_text = string ;
+list_item = "-" , string ;
+numbered_item = digit, ".", string ;
+line = string ;
+
+string = { character } ;
+character = ? printable character ? ;
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
