@@ -36,26 +36,35 @@ class SFC(iec61131):
             
             # Extract steps - List[Dict[str, str]]
             steps_match = re.search(r'steps\d*\s*=\s*(\[.*?\])', content, re.DOTALL)
-            if steps_match:
-                self.steps = ast.literal_eval(steps_match.group(1))
-            else:
-                self.steps = []
-                print("Warning: No steps found in the file")
-            
-            # Extract transitions - List[Dict[str, str]]  
-            transitions_match = re.search(r'transitions\d*\s*=\s*(\[.*?\])', content, re.DOTALL)
-            if transitions_match:
-                self.transitions = ast.literal_eval(transitions_match.group(1))
-            else:
-                self.transitions = []
-                print("Warning: No transitions found in the file")
+            try:
+                if steps_match:
+                    self.steps = ast.literal_eval(steps_match.group(1))
+                else:
+                    self.steps = []
+                    print("Warning: No steps found in the file")
+            except (ValueError, SyntaxError) as e:
+                raise ValueError(f"Failed to parse steps: {e}")
 
-            # Extract variables - List[Dict[str, str]]
-            variables_match = re.search(r'variables\s*=\s*(\[.*?\])', content)
-            if variables_match:
-                self.variables = ast.literal_eval(variables_match.group(1))
-            else:
-                self.variables = []
+            # Extract transitions - List[Dict[str, str]]
+            try:
+                transitions_match = re.search(r'transitions\d*\s*=\s*(\[.*?\])', content, re.DOTALL)
+                if transitions_match:
+                    self.transitions = ast.literal_eval(transitions_match.group(1))
+                else:
+                    self.transitions = []
+                    print("Warning: No transitions found in the file")
+            except (ValueError, SyntaxError) as e:
+                raise ValueError(f"Failed to parse transitions: {e}")
+
+            # Extract variables - List[str]
+            try:
+                variables_match = re.search(r'variables\s*=\s*(\[.*?\])', content)
+                if variables_match:
+                    self.variables = ast.literal_eval(variables_match.group(1))
+                else:
+                    self.variables = []
+            except (ValueError, SyntaxError) as e:
+                raise ValueError(f"Failed to parse variables: {e}")
             
              # Extract initial step
             initial_step_match = re.search(r'initial_step\s*=\s*["\']([^"\']+)["\']', content)

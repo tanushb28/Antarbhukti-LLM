@@ -219,9 +219,9 @@ class GenReport:
         html += "</div></body></html>"
         return html
     
-    def generate_csv(self, file_name: str, test_type: str, token_usages: dict):
+    def generate_csv(self, file_name: str, test_type: str, llm_name: str, token_usage: int, iteration_info: dict):
         """
-        Updates a CSV file with the token usage for each LLM.
+        Updates a CSV file with token usage and iteration details for a specific LLM.
         This method is robust against file corruption and race conditions.
         """
         csv_file = "NewBenchmark - Sheet1.csv"
@@ -235,19 +235,41 @@ class GenReport:
 
             if not row_index.empty:
                 idx = row_index[0]
-                # Update the token count for the specific LLM
-                for llm_name, token_count in token_usages.items():
-                    llm_column_map = {
-                        'gpt4o': ('#TokenCounts', 'GPT4o'),
-                        'gemini': ('Unnamed: 8_level_0', 'Gemini'),
-                        'llama': ('Unnamed: 9_level_0', 'LLaMA'),
-                        'claude': ('Unnamed: 10_level_0', 'Claude'),
-                        'perplexity': ('Unnamed: 11_level_0', 'Perplexity')
-                    }
-                    
-                    column_to_update = llm_column_map.get(llm_name.lower())
-                    if column_to_update and column_to_update in df.columns:
-                        df.loc[idx, column_to_update] = token_count
+
+                # Map for token count columns
+                token_column_map = {
+                    'gpt4o': ('#TokenCounts', 'GPT4o'),
+                    'gemini': ('Unnamed: 8_level_0', 'Gemini'),
+                    'llama': ('Unnamed: 9_level_0', 'LLaMA'),
+                    'claude': ('Unnamed: 10_level_0', 'Claude'),
+                    'perplexity': ('Unnamed: 11_level_0', 'Perplexity')
+                }
+
+                # Map for iteration count columns
+                iteration_column_map = {
+                    'gpt4o': ('#LLM Iterations', 'GPT4o'),
+                    'gemini': ('Unnamed: 3_level_0', 'Gemini'),
+                    'llama': ('Unnamed: 4_level_0', 'LLaMA'),
+                    'claude': ('Unnamed: 5_level_0', 'Claude'),
+                    'perplexity': ('Unnamed: 6_level_0', 'Perplexity')
+                }
+
+                # Update token usage
+                token_col = token_column_map.get(llm_name.lower())
+                if token_col and token_col in df.columns:
+                    df.loc[idx, token_col] = token_usage
+
+                # Update iteration info
+                iteration_col = iteration_column_map.get(llm_name.lower())
+                if iteration_col and iteration_col in df.columns:
+                    status = iteration_info.get("status")
+                    if status == "success":
+                        df.loc[idx, iteration_col] = iteration_info.get("count", 0)
+                    elif status == "timeout":
+                        df.loc[idx, iteration_col] = "Timeout"
+                    elif status == "error":
+                        error_msg = iteration_info.get("message", "Unknown Error")
+                        df.loc[idx, iteration_col] = f"ERROR: {error_msg[:100]}" # Limit error message length
 
                 # Write the updated DataFrame back to the CSV file
                 df.to_csv(csv_file, index=False)

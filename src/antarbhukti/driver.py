@@ -134,48 +134,59 @@ def checkcontainment(src1,src2, dest_root="output"):
     return resp
 
 def refine_code(src, mod, llm:LLM_Mgr, prompt_template, dest_root):
-    # Create verifier and report generator instances
     verifier = Verifier()
-    # Load SFC models
     sfc1 = SFC()
     sfc2 = SFC()
-    sfc1.load(src)
-    sfc2.load(mod)
-    #basename2 = os.path.splitext(os.path.basename(mod))[0]
-    # Convert SFC models to Petri nets
+    try:
+        sfc1.load(src)
+        sfc2.load(mod)
+    except Exception as e:
+        return {"status": "error", "message": f"SFC loading failed: {e}", "token_usage": 0, "count": 0}
+
     pn1 = sfc1.to_pn()
     total_token_usage = 0
-    for iter_count in range(10):
-        # Convert SFC models to Petri nets
-        pn2 = sfc2.to_pn()
-        # Perform containment analysis
-        resp= verifier.check_pn_containment(sfc1, pn1, sfc2, pn2)
-        if not resp:
-            print(f"\n>>> Running {llm.name} to improve ...")
-            llm_prompt = llm.generate_prompt(sfc1, sfc2, verifier.get_unmatched_paths(), prompt_template_path=prompt_template)
-            if llm_prompt is None:  # No unmatched paths to improve
-                print("No unmatched paths to improve on.")
-                return (iter_count+1, False,total_token_usage)   
-            # Call LLM to improve SFC2 if needed
-            dest = gendestname(mod, dest_root+"/failed", iter_count)
-            os.makedirs(dest_root+"/failed", exist_ok=True)
-            improved,token_usage = llm.improve_code(llm_prompt, sfc2, dest)
-            if token_usage:
-                total_token_usage += token_usage
+    max_iterations = 10
 
-            if not improved:
-                print("No further improvement possible or LLM failed.")
-                return (iter_count+1, False,total_token_usage)      
-            sfc2 = SFC()
-            sfc2.load(dest)
-        else:
-            dest = gendestname(mod, dest_root+"/success", iter_count)
-            os.makedirs(dest_root+"/success", exist_ok=True)
+    for iter_count in range(max_iterations):
+        pn2 = sfc2.to_pn()
+        resp = verifier.check_pn_containment(sfc1, pn1, sfc2, pn2)
+
+        if resp:
+            dest = gendestname(mod, dest_root + "/success", iter_count)
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
             sfc2.save(dest)
-            return (iter_count+1, True,total_token_usage)
+            return {"status": "success", "count": iter_count + 1, "token_usage": total_token_usage}
+
+        print(f"\n>>> Running {llm.name} to improve ...")
+        llm_prompt = llm.generate_prompt(sfc1, sfc2, verifier.get_unmatched_paths(), prompt_template_path=prompt_template)
+        if llm_prompt is None:
+            msg = "Containment failed but no unmatched paths found."
+            print(msg)
+            return {"status": "error", "message": msg, "token_usage": total_token_usage, "count": iter_count + 1}
+
+        dest = gendestname(mod, dest_root + "/failed", iter_count)
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
         
-    print("No further improvement possible- max iteration reached.")
-    return (iter_count+1, False,total_token_usage)   
+        improved_status = llm.improve_code(llm_prompt, sfc2, dest)
+        token_usage = improved_status.get("token_usage", 0)
+        if token_usage:
+            total_token_usage += token_usage
+
+        if not improved_status.get("improved"): 
+            msg = improved_status.get("error", "LLM failed to improve code.")
+            print(msg)
+            return {"status": "error", "message": msg, "token_usage": total_token_usage, "count": iter_count + 1}
+
+        sfc2 = SFC()
+        try:
+            sfc2.load(dest)
+        except ValueError as e:
+            msg = f"Failed to load improved SFC from {dest}: {e}"
+            print(msg)
+            return {"status": "error", "message": msg, "token_usage": total_token_usage, "count": iter_count + 1}
+
+    print("Max iterations reached.")
+    return {"status": "timeout", "count": max_iterations, "token_usage": total_token_usage}   
 
 def refine_all(args, llm):
     outdir = args.result_root + "/" + llm.name
@@ -194,29 +205,24 @@ def refine_all(args, llm):
             pass
 
     if os.path.isfile(args.src_path):
-        # This block runs for a single file.
-        itr, iscontained, token_usage = refine_code(args.src_path, args.mod_path, llm, args.prompt_path, outdir)
-        token_usages_dict = {llm.name: token_usage}
-        print(f"No further improvement possible or LLM failed after {itr} iterations." if not iscontained else f"{args.mod_path} corrected after {itr} iterations and saved to {outdir}/success/{os.path.basename(args.mod_path)}")
-        
-        # Update Excel for the single file run inside the 'if' block.
         file_name = os.path.splitext(os.path.basename(args.src_path))[0]
-        reporter.generate_csv(file_name, test_type, token_usages_dict)
+        result = refine_code(args.src_path, args.mod_path, llm, args.prompt_path, outdir)
+        if result.get("status") == "success":
+            print(f"{args.mod_path} corrected after {result.get('count')} iterations and saved to {outdir}/success/{os.path.basename(args.mod_path)}")
+        else:
+            print(f"No further improvement possible or LLM failed after {result.get('count', 1)} iterations.")
+        reporter.generate_csv(file_name, test_type, llm.name, result.get("token_usage", 0), result)
     else:
-        # This block runs for a directory.
         srcfiles = readfiles(args.src_path)
         modfiles = readfiles(args.mod_path)
-        total_token_usages = {}
         for src, mod in zip(srcfiles, modfiles):
-            # Correctly unpack all three return values from refine_code
-            itr, iscontained, token_usage = refine_code(src, mod, llm, args.prompt_path, outdir)
-            # Add the token usage from this run to the total for the current LLM
-            total_token_usages[llm.name] = total_token_usages.get(llm.name, 0) + token_usage
-            print(f"No further improvement possible or LLM failed after {itr} iterations." if not iscontained else f"{mod} corrected after {itr} iterations and saved to {outdir}/success/{os.path.basename(mod)}")
-        
-        # Update Excel for the entire directory run inside the 'else' block.
-        file_name = os.path.basename(args.src_path)
-        reporter.generate_csv(file_name, test_type, total_token_usages)
+            file_name = os.path.splitext(os.path.basename(src))[0]
+            result = refine_code(src, mod, llm, args.prompt_path, outdir)
+            if result.get("status") == "success":
+                print(f"{mod} corrected after {result.get('count')} iterations and saved to {outdir}/success/{os.path.basename(mod)}")
+            else:
+                print(f"No further improvement possible or LLM failed after {result.get('count', 1)} iterations.")
+            reporter.generate_csv(file_name, test_type, llm.name, result.get("token_usage", 0), result)
 
 def run_all_llms(args):
     llm_names = [name.strip().lower() for name in args.llms.split(",") if name.strip()]

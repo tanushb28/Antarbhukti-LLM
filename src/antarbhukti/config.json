@@ -14,7 +14,7 @@
     {
         "llm_name": "gemini",
         "model_name": "gemini-2.5-flash",
-        "api_key": "AIzaSyDXbCqsRPESrfHkgKFUVKO98bnx6M2ndSI",
+        "api_key": "AIzaSyCN1ngm-PdPzEgcC4NKrIULIU3vhjnqhKw",
         "max_tokens": 1500,
         "max_retries": 5,
         "temperature": 0.2,

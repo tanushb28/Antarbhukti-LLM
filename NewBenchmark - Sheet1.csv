@@ -24,21 +24,21 @@ Greenhouse_Monitoring_System,reliability,2,2,2,2,,869.0,11466.0,0.0,1165.0,841.0
 Packaging_Robot,reliability,1,1,1,1,,,,,,,Intermediate Logging
 Power_Distribution_Unit,reliability,2,2,Timeout,2,,,,,,,Input Validation
 Printing_Press_Controller,reliability,1,1,1,1,,,,,,,Intermediate Logging
-Baggage_Handling_System,safety,10,3,2,2,,6642.0,15145.0,1717.0,1122.0,933.0,Safe State Logging
-Welding_Line_Controller,safety,1,1,1,1,,,,,,,Input Safety Validation
-Water_Treatment_Plant_Controller,safety,1,1,1,1,,,,,,,Input Safety Validation
-Automated_Gate_System,safety,Timeout,Error: No valid code block found,Timeout,4,,14779.0,6549.0,0.0,3445.0,1342.0,Timeout and Watchdog Safety
-Wind_Turbine_Controller,safety,1,1,1,1,,,,,,,Timeout and Watchdog Safety
-Boiler_Control,safety,1,1,1,1,,,,,,,Safe State Logging
-Crane_Automation,safety,1,1,1,1,,,,,,,Emergency Stop Monitoring
-Fuel_Dispenser_Logic,safety,2,2,2,2,,,,,,,Input Safety Validation
-HVAC_System,safety,1,1,1,1,,,,,,,Emergency Stop Monitoring
-Lift_Control_System,safety,1,1,1,1,,,,,,,Timeout and Watchdog Safety
-Batch_Mixing_System,safety,1,1,1,1,,,,,,,Timeout and Watchdog Safety
-Conveyor_System_Controller,safety,2,2,2,2,,979.0,8370.0,1040.0,1320.0,2186.0,Emergency Stop Monitoring
-Temperature_Control_System,safety,1,1,1,1,,,,,,,Safe State Logging
-Traffic_Light_Controller,safety,2,2,6,2,,,,,,,Timeout and Watchdog Safety
-Tank_Level_Control,safety,2,4,9,2,,,,,,,Input Safety Validation
+Baggage_Handling_System,safety,10,2,2,2,,8326.0,8437.0,1717.0,1122.0,933.0,Safe State Logging
+Welding_Line_Controller,safety,1,1,1,1,,0.0,0.0,,,,Input Safety Validation
+Water_Treatment_Plant_Controller,safety,1,1,1,1,,0.0,0.0,,,,Input Safety Validation
+Automated_Gate_System,safety,Timeout,5,Timeout,4,,14883.0,44899.0,0.0,3445.0,1342.0,Timeout and Watchdog Safety
+Wind_Turbine_Controller,safety,1,1,1,1,,0.0,0.0,,,,Timeout and Watchdog Safety
+Boiler_Control,safety,1,1,1,1,,0.0,0.0,,,,Safe State Logging
+Crane_Automation,safety,ERROR: SFC loading failed: Error parsing SFC file '/home/tanush/BITS/SOP/Antarbhukti-LLM/new_benchmarks/saf,ERROR: SFC loading failed: Error parsing SFC file '/home/tanush/BITS/SOP/Antarbhukti-LLM/new_benchmarks/saf,ERROR: SFC loading failed: Error parsing SFC file './new_benchmarks/safety/mod/Crane_Automation_SFC2.txt': ,ERROR: SFC loading failed: Error parsing SFC file './new_benchmarks/safety/mod/Crane_Automation_SFC2.txt': ,ERROR: SFC loading failed: Error parsing SFC file './new_benchmarks/safety/mod/Crane_Automation_SFC2.txt': ,0.0,0.0,0.0,0.0,0.0,Emergency Stop Monitoring
+Fuel_Dispenser_Logic,safety,2,2,2,2,2,863.0,4681.0,949.0,1148.0,875.0,Input Safety Validation
+HVAC_System,safety,3,ERROR: Error parsing LLM output: name 'transitions2' is not defined,1,1,,3621.0,10314.0,,,,Emergency Stop Monitoring
+Lift_Control_System,safety,3,3,1,1,,2098.0,10981.0,,,,Timeout and Watchdog Safety
+Batch_Mixing_System,safety,1,1,1,1,,0.0,0.0,0.0,0.0,0.0,Timeout and Watchdog Safety
+Conveyor_System_Controller,safety,2,2,2,2,,979.0,10269.0,1040.0,1320.0,2186.0,Emergency Stop Monitoring
+Temperature_Control_System,safety,1,1,1,1,,0.0,0.0,,,,Safe State Logging
+Traffic_Light_Controller,safety,2,2,6,2,,804.0,6985.0,2010.0,1073.0,846.0,Timeout and Watchdog Safety
+Tank_Level_Control,safety,2,2,9,2,,851.0,5089.0,,,,Input Safety Validation
 ,safety,2,Error: No valid code block found,3,2,,,,,,,
 Filling_and_Packaging_Line,safety,1,1,1,1,,,,,,,
 Motor_Start_Stop_with_Interlocks,safety,1,1,1,1,,,,,,,
