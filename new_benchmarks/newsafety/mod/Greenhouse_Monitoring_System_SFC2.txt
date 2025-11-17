@@ -1,0 +1,17 @@
+steps = [
+{"name": "MonitorTemperature", "function": "ReadSensor(temp)"},
+{"name": "CheckSensorHealth", "function": "VerifySensorFreshness()"},
+{"name": "AdjustVentilation", "function": "ControlFan(temp)"},
+{"name": "LogData", "function": "Log(temp, humidity)"},
+{"name": "TimeoutSafeStop", "function": "HaltActuatorsSafely()"}
+]
+transitions = [
+{"src": "MonitorTemperature", "tgt": "CheckSensorHealth", "guard": "True"},
+{"src": "CheckSensorHealth", "tgt": "AdjustVentilation", "guard": "sensorFresh == True"},
+{"src": "AdjustVentilation", "tgt": "LogData", "guard": "True"},
+{"src": "LogData", "tgt": "MonitorTemperature", "guard": "True"},
+{"src": "CheckSensorHealth", "tgt": "TimeoutSafeStop", "guard": "timeout_counter > timeout_limit"},
+{"src": "AdjustVentilation", "tgt": "TimeoutSafeStop", "guard": "fanOnTime > maxFanOnTime"}
+]
+variables = ['temp', 'humidity', 'threshold', 'timeout_counter', 'timeout_limit', 'fanOnTime', 'maxFanOnTime', 'sensorFresh']
+initial_step = 'MonitorTemperature'

@@ -8,7 +8,7 @@ class LLM_Mgr(ABC):
         self.llm = None
         self.api_key = api_key
         self.model_name = model_name
-        self.max_tokens= 1000 #Max tokens for the response
+        self.max_tokens= 4000 #Max tokens for the response
         self.max_retries = 3 #Max retries for LLM calls
         self.temperature = 0.0 # Temperature for LLM response variability
         self.top_p = 1.0  # Top-p sampling for LLM response
@@ -83,6 +83,10 @@ class LLM_Mgr(ABC):
         # print(llm_response)          # Print the model's response
         # print("==================")  
 
+        if self.name.lower() == "claude":
+            with open("claude_raw_output.txt", "w", encoding="utf-8") as f:
+                f.write(llm_response)
+
         # Save the model's response to a file for checking and debugging
         with open("llm_response.txt", "w") as f:
             f.write(llm_response)
@@ -142,12 +146,21 @@ class LLM_Mgr(ABC):
         match = re.search(r"```(?:python)?\s*([\s\S]*?)```", llm_output)
         if match:
             return match.group(1)  # Return code inside code block
-        # Fallback: collect lines starting with 'steps2' or 'transitions2'
-        lines = []
-        for line in llm_output.splitlines():
-            if line.strip().startswith("steps2") or line.strip().startswith("transitions2"):
-                lines.append(line)
-        return "\n".join(lines)
+        # Fallback for models that don't use markdown blocks
+        lines = llm_output.splitlines()
+        extracted_code = []
+        in_list = False
+        for line in lines:
+            stripped_line = line.strip()
+            if stripped_line.startswith("steps2") or stripped_line.startswith("transitions2"):
+                in_list = True
+            
+            if in_list:
+                extracted_code.append(line)
+                if stripped_line.endswith("]"):
+                    in_list = False
+
+        return "\n".join(extracted_code)
 
     @staticmethod
     def sfc2_code_to_python(sfc2_code_str):

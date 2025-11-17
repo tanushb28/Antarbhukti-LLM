@@ -1,45 +1,6 @@
-Benchmark Name,Type,#LLM Iterations,Unnamed: 3_level_0,Unnamed: 4_level_0,Unnamed: 5_level_0,Unnamed: 6_level_0,#TokenCounts,Unnamed: 8_level_0,Unnamed: 9_level_0,Unnamed: 10_level_0,Unnamed: 11_level_0,Upgrade Rule Used
-Unnamed: 0_level_1,Unnamed: 1_level_1,GPT4o,Gemini,LLaMA,Claude,Perplexity,GPT4o,Gemini,LLaMA,Claude,Perplexity,Unnamed: 12_level_1
-Crane_Automation,reliability,Timeout,2,Timeout,2,,,,,,,Watchdog Monitoring
-Boiler_Control,reliability,1,1,1,1,,0.0,,0.0,0.0,0.0,Intermediate Logging
-Fuel_Dispenser_Logic,reliability,1,1,1,1,,,,,,,Input Validation
-HVAC_System,reliability,1,1,1,1,,,,,,,Watchdog Monitoring
-Lift_Control_System,reliability,1,1,1,1,,,,,,,Execution Bound Monitoring
-Batch_Mixing_System,reliability,1,1,1,1,,,,,,,Execution Bound Monitoring
-Conveyor_System_Controller,reliability,1,1,1,1,,,,,,,Watchdog Monitoring
-Temperature_Control_System,reliability,1,1,1,1,,,,,,,Intermediate Logging
-Traffic_Light_Controller,reliability,1,1,1,1,,,,,,,Execution Bound Monitoring
-Tank_Level_Control,reliability,1,1,1,1,,,,,,,Input Validation
-Railway_Crossing_System,reliability,2,Error: No valid code block found,2,2,,,,,,,
-Silo_Management_System,reliability,2,Error: No valid code block found,2,2,,,,,,,
-Water_Treatment_Plant_Controller,reliability,1,1,1,1,,,,,,,
-Welding_Line_Controller,reliability,1,1,1,1,,,,,,,
-Wind_Turbine_Controller,reliability,2,Error: No valid code block found,2,2,,,,,,,
-Pump_Control_System,reliability,2,2,2,2,,,,,,,Watchdog Monitoring
-Elevator_Controller,reliability,2,2,2,2,,,,,,,Input Validation
-Filling_and_Packaging_Line,reliability,1,1,1,1,,,,,,,Intermediate Logging
-Motor_Start_Stop_with_Interlocks,reliability,1,1,1,1,,,,,,,Watchdog Monitoring
-PID_Controlled_Process,reliability,2,2,2,2,,,,,,,Intermediate Logging
-Greenhouse_Monitoring_System,reliability,2,2,2,2,,869.0,11466.0,0.0,1165.0,841.0,Input Validation
-Packaging_Robot,reliability,1,1,1,1,,,,,,,Intermediate Logging
-Power_Distribution_Unit,reliability,2,2,Timeout,2,,,,,,,Input Validation
-Printing_Press_Controller,reliability,1,1,1,1,,,,,,,Intermediate Logging
-Baggage_Handling_System,safety,10,2,2,2,,8326.0,8437.0,1717.0,1122.0,933.0,Safe State Logging
-Welding_Line_Controller,safety,1,1,1,1,,0.0,0.0,,,,Input Safety Validation
-Water_Treatment_Plant_Controller,safety,1,1,1,1,,0.0,0.0,,,,Input Safety Validation
-Automated_Gate_System,safety,Timeout,5,Timeout,4,,14883.0,44899.0,0.0,3445.0,1342.0,Timeout and Watchdog Safety
-Wind_Turbine_Controller,safety,1,1,1,1,,0.0,0.0,,,,Timeout and Watchdog Safety
-Boiler_Control,safety,1,1,1,1,,0.0,0.0,,,,Safe State Logging
-Crane_Automation,safety,ERROR: SFC loading failed: Error parsing SFC file '/home/tanush/BITS/SOP/Antarbhukti-LLM/new_benchmarks/saf,ERROR: SFC loading failed: Error parsing SFC file '/home/tanush/BITS/SOP/Antarbhukti-LLM/new_benchmarks/saf,ERROR: SFC loading failed: Error parsing SFC file './new_benchmarks/safety/mod/Crane_Automation_SFC2.txt': ,ERROR: SFC loading failed: Error parsing SFC file './new_benchmarks/safety/mod/Crane_Automation_SFC2.txt': ,ERROR: SFC loading failed: Error parsing SFC file './new_benchmarks/safety/mod/Crane_Automation_SFC2.txt': ,0.0,0.0,0.0,0.0,0.0,Emergency Stop Monitoring
-Fuel_Dispenser_Logic,safety,2,2,2,2,2,863.0,4681.0,949.0,1148.0,875.0,Input Safety Validation
-HVAC_System,safety,3,ERROR: Error parsing LLM output: name 'transitions2' is not defined,1,1,,3621.0,10314.0,,,,Emergency Stop Monitoring
-Lift_Control_System,safety,3,3,1,1,,2098.0,10981.0,,,,Timeout and Watchdog Safety
-Batch_Mixing_System,safety,1,1,1,1,,0.0,0.0,0.0,0.0,0.0,Timeout and Watchdog Safety
-Conveyor_System_Controller,safety,2,2,2,2,,979.0,10269.0,1040.0,1320.0,2186.0,Emergency Stop Monitoring
-Temperature_Control_System,safety,1,1,1,1,,0.0,0.0,,,,Safe State Logging
-Traffic_Light_Controller,safety,2,2,6,2,,804.0,6985.0,2010.0,1073.0,846.0,Timeout and Watchdog Safety
-Tank_Level_Control,safety,2,2,9,2,,851.0,5089.0,,,,Input Safety Validation
-,safety,2,Error: No valid code block found,3,2,,,,,,,
-Filling_and_Packaging_Line,safety,1,1,1,1,,,,,,,
-Motor_Start_Stop_with_Interlocks,safety,1,1,1,1,,,,,,,
-PID_Controlled_Process,safety,2,Error: No valid code block found,2,2,,,,,,,
+Benchmark Name,Type,GPT4o_iter,Gemini_iter,LLaMA_iter,Claude_iter,Perplexity_iter,GPT4o_tokens,Gemini_tokens,LLaMA_tokens,Claude_tokens,Perplexity_tokens,GPT4o_time,Gemini_time,LLaMA_time,Claude_time,Perplexity_time
+Chemical_Reactor_Controller,testsafety,2,2,2,ERROR: No valid code block found,2,733,4345,781,0,719,3.26,20.51,1.15,0.67,3.9
+Elevator_Controller,testsafety,2,2,2,ERROR: No valid code block found,2,986,8770,1010,0,970,3.32,40.18,1.15,0.5,7.21
+Filling_and_Packaging_Line,testsafety,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0
+Grain_Sorting_Machine,testsafety,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0
+Greenhouse_Monitoring_System,testsafety,2,2,2,ERROR: No valid code block found,2,803,3169,828,0,788,2.6,14.61,1.1,0.47,3.47

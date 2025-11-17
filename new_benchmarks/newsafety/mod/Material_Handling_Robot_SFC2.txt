@@ -1,0 +1,21 @@
+steps = [
+    {"name": "Idle", "function": "WaitCommand"},
+    {"name": "Pick", "function": "GripObject"},
+    {"name": "Move", "function": "NavigateToLocation"},
+    {"name": "Place", "function": "ReleaseObject"},
+    {"name": "Return", "function": "ReturnToBase"},
+    {"name": "SafetyMonitor", "function": "CheckExecutionCounter"},
+    {"name": "TimeoutSafeStop", "function": "ParkRobotSafely"}
+]
+transitions = [
+    {"src": "Idle", "tgt": "Pick", "guard": "command_received"},
+    {"src": "Pick", "tgt": "Move", "guard": "object_gripped"},
+    {"src": "Move", "tgt": "Place", "guard": "target_reached"},
+    {"src": "Place", "tgt": "Return", "guard": "object_released"},
+    {"src": "Return", "tgt": "Idle", "guard": "base_reached"},
+    {"src": "Move", "tgt": "SafetyMonitor", "guard": "execution_counter > safe_threshold"},
+    {"src": "SafetyMonitor", "tgt": "TimeoutSafeStop", "guard": "execution_counter_exceeded"},
+    {"src": "TimeoutSafeStop", "tgt": "Idle", "guard": "reset_command"}
+]
+variables = ['command_received', 'object_gripped', 'target_reached', 'object_released', 'base_reached', 'execution_counter', 'safe_threshold', 'execution_counter_exceeded', 'reset_command']
+initial_step = 'Idle'

@@ -14,8 +14,11 @@ from llm_mgr import LLM_Mgr
 from llm_codegen import instantiate_llms
 import shutil
 import os
-
+import time
 from openpyxl import Workbook, load_workbook
+from genreport import create_newbenchmark_csv_if_missing
+
+create_newbenchmark_csv_if_missing("NewBenchmark - Sheet1.csv")
 
 # def update_token_usage_excel(file_name: str, token_usages: dict):
 #     """
@@ -133,7 +136,8 @@ def checkcontainment(src1,src2, dest_root="output"):
     shutil.move(src2, destsfc2)
     return resp
 
-def refine_code(src, mod, llm:LLM_Mgr, prompt_template, dest_root):
+def refine_code(src, mod, llm: LLM_Mgr, prompt_template, dest_root):
+    import time
     verifier = Verifier()
     sfc1 = SFC()
     sfc2 = SFC()
@@ -141,11 +145,12 @@ def refine_code(src, mod, llm:LLM_Mgr, prompt_template, dest_root):
         sfc1.load(src)
         sfc2.load(mod)
     except Exception as e:
-        return {"status": "error", "message": f"SFC loading failed: {e}", "token_usage": 0, "count": 0}
+        return {"status": "error", "message": f"SFC loading failed: {e}", "token_usage": 0, "count": 0, "llm_time": 0}
 
     pn1 = sfc1.to_pn()
     total_token_usage = 0
     max_iterations = 10
+    llm_time_taken = 0  # Track total LLM time
 
     for iter_count in range(max_iterations):
         pn2 = sfc2.to_pn()
@@ -155,27 +160,35 @@ def refine_code(src, mod, llm:LLM_Mgr, prompt_template, dest_root):
             dest = gendestname(mod, dest_root + "/success", iter_count)
             os.makedirs(os.path.dirname(dest), exist_ok=True)
             sfc2.save(dest)
-            return {"status": "success", "count": iter_count + 1, "token_usage": total_token_usage}
+            print(f"Time taken by {llm.name}: {llm_time_taken:.2f} seconds")
+            return {"status": "success", "count": iter_count + 1, "token_usage": total_token_usage, "llm_time": llm_time_taken}
 
         print(f"\n>>> Running {llm.name} to improve ...")
+        start_time = time.time()
         llm_prompt = llm.generate_prompt(sfc1, sfc2, verifier.get_unmatched_paths(), prompt_template_path=prompt_template)
+        llm_time_taken += time.time() - start_time  # Add prompt generation time
+
         if llm_prompt is None:
             msg = "Containment failed but no unmatched paths found."
             print(msg)
-            return {"status": "error", "message": msg, "token_usage": total_token_usage, "count": iter_count + 1}
+            print(f"Time taken by {llm.name}: {llm_time_taken:.2f} seconds")
+            return {"status": "error", "message": msg, "token_usage": total_token_usage, "count": iter_count + 1, "llm_time": llm_time_taken}
 
         dest = gendestname(mod, dest_root + "/failed", iter_count)
         os.makedirs(os.path.dirname(dest), exist_ok=True)
-        
+        start_time = time.time()
         improved_status = llm.improve_code(llm_prompt, sfc2, dest)
+        llm_time_taken += time.time() - start_time  # Add LLM call time
+
         token_usage = improved_status.get("token_usage", 0)
         if token_usage:
             total_token_usage += token_usage
 
-        if not improved_status.get("improved"): 
+        if not improved_status.get("improved"):
             msg = improved_status.get("error", "LLM failed to improve code.")
             print(msg)
-            return {"status": "error", "message": msg, "token_usage": total_token_usage, "count": iter_count + 1}
+            print(f"Time taken by {llm.name}: {llm_time_taken:.2f} seconds")
+            return {"status": "error", "message": msg, "token_usage": total_token_usage, "count": iter_count + 1, "llm_time": llm_time_taken}
 
         sfc2 = SFC()
         try:
@@ -183,53 +196,74 @@ def refine_code(src, mod, llm:LLM_Mgr, prompt_template, dest_root):
         except ValueError as e:
             msg = f"Failed to load improved SFC from {dest}: {e}"
             print(msg)
-            return {"status": "error", "message": msg, "token_usage": total_token_usage, "count": iter_count + 1}
+            print(f"Time taken by {llm.name}: {llm_time_taken:.2f} seconds")
+            return {"status": "error", "message": msg, "token_usage": total_token_usage, "count": iter_count + 1, "llm_time": llm_time_taken}
 
     print("Max iterations reached.")
-    return {"status": "timeout", "count": max_iterations, "token_usage": total_token_usage}   
-
-def refine_all(args, llm):
-    outdir = args.result_root + "/" + llm.name
-    os.makedirs(outdir, exist_ok=True)
-
-    reporter = GenReport()
-
-    path_parts = args.src_path.split(os.sep)
-    test_type = "unknown"
-    if "new_benchmarks" in path_parts:
-        try:
-            test_type_index = path_parts.index("new_benchmarks") + 1
-            if test_type_index < len(path_parts):
-                test_type = path_parts[test_type_index]
-        except (ValueError, IndexError):
-            pass
-
-    if os.path.isfile(args.src_path):
-        file_name = os.path.splitext(os.path.basename(args.src_path))[0]
-        result = refine_code(args.src_path, args.mod_path, llm, args.prompt_path, outdir)
-        if result.get("status") == "success":
-            print(f"{args.mod_path} corrected after {result.get('count')} iterations and saved to {outdir}/success/{os.path.basename(args.mod_path)}")
-        else:
-            print(f"No further improvement possible or LLM failed after {result.get('count', 1)} iterations.")
-        reporter.generate_csv(file_name, test_type, llm.name, result.get("token_usage", 0), result)
-    else:
-        srcfiles = readfiles(args.src_path)
-        modfiles = readfiles(args.mod_path)
-        for src, mod in zip(srcfiles, modfiles):
-            file_name = os.path.splitext(os.path.basename(src))[0]
-            result = refine_code(src, mod, llm, args.prompt_path, outdir)
-            if result.get("status") == "success":
-                print(f"{mod} corrected after {result.get('count')} iterations and saved to {outdir}/success/{os.path.basename(mod)}")
-            else:
-                print(f"No further improvement possible or LLM failed after {result.get('count', 1)} iterations.")
-            reporter.generate_csv(file_name, test_type, llm.name, result.get("token_usage", 0), result)
+    print(f"Time taken by {llm.name}: {llm_time_taken:.2f} seconds")
+    return {"status": "timeout", "count": max_iterations, "token_usage": total_token_usage, "llm_time": llm_time_taken}
 
 def run_all_llms(args):
     llm_names = [name.strip().lower() for name in args.llms.split(",") if name.strip()]
     llms_config = read_config_file(args.config_path)
-    llms= instantiate_llms(llm_names, llms_config )
-    for llm in llms:
-        refine_all(args, llm)
+    llms = instantiate_llms(llm_names, llms_config)
+    reporter = GenReport()
+
+    if os.path.isdir(args.src_path):
+        src_files = readfiles(args.src_path)
+        mod_files = readfiles(args.mod_path)
+
+        for src, mod in zip(src_files, mod_files):
+            file_name = os.path.splitext(os.path.basename(src))[0]
+            path_parts = src.split(os.sep)
+            test_type = "unknown"
+            if "new_benchmarks" in path_parts:
+                try:
+                    test_type_index = path_parts.index("new_benchmarks") + 1
+                    if test_type_index < len(path_parts):
+                        test_type = path_parts[test_type_index]
+                except (ValueError, IndexError):
+                    pass
+
+            all_results = {}
+            for llm in llms:
+                outdir = args.result_root + "/" + llm.name
+                os.makedirs(outdir, exist_ok=True)
+                result = refine_code(src, mod, llm, args.prompt_path, outdir)
+                all_results[llm.name] = result
+                
+                if result.get("status") == "success":
+                    print(f"{mod} corrected by {llm.name} after {result.get('count')} iterations and saved to {outdir}/success/{os.path.basename(mod)}")
+                else:
+                    print(f"For {mod}, {llm.name} failed after {result.get('count', 1)} iterations.")
+            
+            reporter.generate_csv(file_name, test_type, all_results)
+
+    else: # Single file mode
+        file_name = os.path.splitext(os.path.basename(args.src_path))[0]
+        path_parts = args.src_path.split(os.sep)
+        test_type = "unknown"
+        if "new_benchmarks" in path_parts:
+            try:
+                test_type_index = path_parts.index("new_benchmarks") + 1
+                if test_type_index < len(path_parts):
+                    test_type = path_parts[test_type_index]
+            except (ValueError, IndexError):
+                pass
+
+        all_results = {}
+        for llm in llms:
+            outdir = args.result_root + "/" + llm.name
+            os.makedirs(outdir, exist_ok=True)
+            result = refine_code(args.src_path, args.mod_path, llm, args.prompt_path, outdir)
+            all_results[llm.name] = result
+
+            if result.get("status") == "success":
+                print(f"{args.mod_path} corrected by {llm.name} after {result.get('count')} iterations and saved to {outdir}/success/{os.path.basename(args.mod_path)}")
+            else:
+                print(f"For {args.mod_path}, {llm.name} failed after {result.get('count', 1)} iterations.")
+
+        reporter.generate_csv(file_name, test_type, all_results)
 
 def main():
     args = parse_args()

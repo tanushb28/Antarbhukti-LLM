@@ -154,14 +154,23 @@ class Perplexity(LLM_Mgr):
     def _get_response_and_tokens(self, system_message: str, user_message: str):
         """A private helper method to handle the API call and token counting."""
         try:
+            messages = [
+                {"role": "system", "content": system_message},
+                {"role": "user", "content": user_message},
+            ]
+            
+            # Log the request
+            # print(f"[Perplexity Request] Model: {self.model_name}, Max Tokens: {self.max_tokens}, Messages: {messages}")
+
             response = self.llm.chat.completions.create(
                 model=self.model_name,
-                messages=[
-                    {"role": "system", "content": system_message},
-                    {"role": "user", "content": user_message},
-                ],
+                messages=messages,
                 max_tokens=self.max_tokens,
             )
+
+            # Log the full raw response
+            # print(f"[Perplexity Response] Full object: {response}")
+
             response_content = response.choices[0].message.content
             total_tokens = response.usage.total_tokens
             print(f"[{self.name}] Token usage - Total: {total_tokens}")

@@ -5,6 +5,19 @@ import json
 import csv
 import pandas as pd
 
+def create_newbenchmark_csv_if_missing(csv_file="NewBenchmark - Sheet1.csv"):
+    if not os.path.exists(csv_file):
+        # Define the multi-level columns
+        columns = [
+            "Benchmark Name", "Type",
+            "GPT4o_iter", "Gemini_iter", "LLaMA_iter", "Claude_iter", "Perplexity_iter",
+            "GPT4o_tokens", "Gemini_tokens", "LLaMA_tokens", "Claude_tokens", "Perplexity_tokens",
+            "GPT4o_time", "Gemini_time", "LLaMA_time", "Claude_time", "Perplexity_time"
+        ]
+        df = pd.DataFrame(columns=columns)
+        df.to_csv(csv_file, index=False)
+        print(f"Created new blank {csv_file}")
+
 class GenReport:
     """Report generation and utility functions for Petri Net analysis"""
     
@@ -218,41 +231,51 @@ class GenReport:
             html += "<span class='notcontained'>There are paths in Model 1 that are not matched in Model 2 (Containment does NOT hold).</span>"
         html += "</div></body></html>"
         return html
-    
-    def generate_csv(self, file_name: str, test_type: str, llm_name: str, token_usage: int, iteration_info: dict):
-        """
-        Updates a CSV file with token usage and iteration details for a specific LLM.
-        This method is robust against file corruption and race conditions.
-        """
-        csv_file = "NewBenchmark - Sheet1.csv"
-        
-        try:
-            # Read the existing data from the CSV, using a multi-level header
-            df = pd.read_csv(csv_file, header=[0, 1])
 
-            # Find the index of the row to update
-            row_index = df[(df[('Benchmark Name', 'Unnamed: 0_level_1')] == file_name) & (df[('Type', 'Unnamed: 1_level_1')] == test_type)].index
+    
+    def generate_csv(self, file_name: str, test_type: str, all_results: dict):
+        csv_file = "NewBenchmark - Sheet1.csv"
+        try:
+            df = pd.read_csv(csv_file)  # <--- single-level header
+
+            row_index = df[(df["Benchmark Name"] == file_name) & (df["Type"] == test_type)].index
+
+            token_column_map = {
+                'gpt4o': "GPT4o_tokens",
+                'gemini': "Gemini_tokens",
+                'llama': "LLaMA_tokens",
+                'claude': "Claude_tokens",
+                'perplexity': "Perplexity_tokens"
+            }
+            iteration_column_map = {
+                'gpt4o': "GPT4o_iter",
+                'gemini': "Gemini_iter",
+                'llama': "LLaMA_iter",
+                'claude': "Claude_iter",
+                'perplexity': "Perplexity_iter"
+            }
+            time_column_map = {
+                'gpt4o': "GPT4o_time",
+                'gemini': "Gemini_time",
+                'llama': "LLaMA_time",
+                'claude': "Claude_time",
+                'perplexity': "Perplexity_time"
+            }
 
             if not row_index.empty:
                 idx = row_index[0]
+            else:
+                # Create a new row with all columns empty
+                new_row = pd.Series({col: "" for col in df.columns}, name=len(df))
+                new_row["Benchmark Name"] = file_name
+                new_row["Type"] = test_type
+                df = pd.concat([df, new_row.to_frame().T], ignore_index=True)
+                idx = df.index[-1]
 
-                # Map for token count columns
-                token_column_map = {
-                    'gpt4o': ('#TokenCounts', 'GPT4o'),
-                    'gemini': ('Unnamed: 8_level_0', 'Gemini'),
-                    'llama': ('Unnamed: 9_level_0', 'LLaMA'),
-                    'claude': ('Unnamed: 10_level_0', 'Claude'),
-                    'perplexity': ('Unnamed: 11_level_0', 'Perplexity')
-                }
-
-                # Map for iteration count columns
-                iteration_column_map = {
-                    'gpt4o': ('#LLM Iterations', 'GPT4o'),
-                    'gemini': ('Unnamed: 3_level_0', 'Gemini'),
-                    'llama': ('Unnamed: 4_level_0', 'LLaMA'),
-                    'claude': ('Unnamed: 5_level_0', 'Claude'),
-                    'perplexity': ('Unnamed: 6_level_0', 'Perplexity')
-                }
+            for llm_name, result in all_results.items():
+                token_usage = result.get("token_usage", 0)
+                iteration_info = result
+                time_taken = result.get("llm_time", "")
 
                 # Update token usage
                 token_col = token_column_map.get(llm_name.lower())
@@ -266,16 +289,23 @@ class GenReport:
                     if status == "success":
                         df.loc[idx, iteration_col] = iteration_info.get("count", 0)
                     elif status == "timeout":
+                        df[iteration_col] = df[iteration_col].astype(object)
                         df.loc[idx, iteration_col] = "Timeout"
                     elif status == "error":
+                        df[iteration_col] = df[iteration_col].astype(object)
                         error_msg = iteration_info.get("message", "Unknown Error")
-                        df.loc[idx, iteration_col] = f"ERROR: {error_msg[:100]}" # Limit error message length
+                        df.loc[idx, iteration_col] = f"ERROR: {error_msg[:100]}"
 
-                # Write the updated DataFrame back to the CSV file
-                df.to_csv(csv_file, index=False)
-                print(f"Updated token usage in {csv_file} for {file_name} ({test_type})")
-            else:
-                print(f"Could not find a matching row for {file_name} ({test_type}) in {csv_file}")
+                # Update time taken
+                time_col = time_column_map.get(llm_name.lower())
+                if time_col and time_col in df.columns:
+                    if isinstance(time_taken, (float, int)):
+                        df.loc[idx, time_col] = round(time_taken, 2)
+                    else:
+                        df.loc[idx, time_col] = time_taken
+
+            df.to_csv(csv_file, index=False)
+            print(f"Updated CSV for {file_name} ({test_type})")
 
         except FileNotFoundError:
             print(f"Error: The file {csv_file} was not found.")
