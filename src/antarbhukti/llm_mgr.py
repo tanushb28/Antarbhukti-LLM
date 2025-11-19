@@ -79,59 +79,77 @@ class LLM_Mgr(ABC):
     def improve_code(self, prompt, modified, sfc2_path):
         # Send the prompt to the LLM and get the response
         llm_response, token_usage = self._do_improve(prompt)
-        # print("=== LLM OUTPUT ===")  
-        # print(llm_response)          # Print the model's response
-        # print("==================")  
 
+        # Save the raw output for debugging
         if self.name.lower() == "claude":
             with open("claude_raw_output.txt", "w", encoding="utf-8") as f:
                 f.write(llm_response)
 
-        # Save the model's response to a file for checking and debugging
-        with open("llm_response.txt", "w") as f:
-            f.write(llm_response)
+        # Check for API error in the response
+        if "Error code:" in llm_response or "not_found_error" in llm_response:
+            error_msg = llm_response.strip()
+            print("\n[Claude API Error]")
+            print("Model Not Found or Invalid API Key.")
+            print("Raw error message from Claude API:")
+            #print(error_msg)
+            return {
+                "improved": False,
+                "error": error_msg,
+                "token_usage": token_usage,
+                "llm_time": 0
+            }
 
         # Extract the code block (steps2, transitions2) from the LLM response
         code_block = self.extract_code_block(llm_response)
-        if not code_block:  
-            return {"improved": False, "error": "No valid code block found", "token_usage": token_usage}
-        try:
-            # Execute the extracted code to get updated steps2 and transitions2
-            steps2, transitions2 = self.sfc2_code_to_python(code_block)
-        except Exception as e:  # Handle code parsing errors
-            return {"improved": False, "error": f"Error parsing LLM output: {e}", "token_usage": token_usage}
+        if not code_block:
+            print("No valid code block found.")
+            return {
+                "improved": False,
+                "error": "No valid code block found.",
+                "token_usage": token_usage,
+                "llm_time": 0
+            }
 
-        # Helper function to format a list of dicts as Python code
+        # Evaluate the code block to get steps2 and transitions2
+        local_vars = {}
+        try:
+            exec(code_block, {}, local_vars)
+            steps2 = local_vars.get("steps2")
+            transitions2 = local_vars.get("transitions2")
+            if steps2 is None or transitions2 is None:
+                raise ValueError("steps2 or transitions2 not found in code block.")
+        except Exception as e:
+            error_msg = f"Error parsing LLM output: {e}"
+            print(error_msg)
+            return {
+                "improved": False,
+                "error": error_msg,
+                "token_usage": token_usage,
+                "llm_time": 0
+            }
+
+        # Helper functions to format output
         def format_list_of_dicts(name, lst):
-            lines = [f"{name} = ["]
-            for idx, obj in enumerate(lst):
-                comma = "," if idx < len(lst) - 1 else ""
-                items = []
-                for k, v in obj.items():
-                    if isinstance(v, str):
-                        items.append(f'"{k}": "{v}"')  # String value
-                    else:
-                        items.append(f'"{k}": {repr(v)}')  # Non-string value
-                lines.append("        {" + ", ".join(items) + "}" + comma)
+            import json
+            lines = [f"{name} = [\n"]
+            for d in lst:
+                lines.append("    " + json.dumps(d) + ",\n")
             lines.append("    ]\n")
-            return "\n".join(lines)
-        # Take it from stackoverflow.com/questions/70618695/how-to-format-a-list-of-dictionaries-as-python-code
-        
-        # Helper function to format a list as Python code
+            return "".join(lines)
+
         def format_list(name, lst):
             vals = ", ".join(f'"{v}"' for v in lst)
             return f"{name} = [{vals}]\n"
 
-        # Helper function to format a string assignment
         def format_string(name, value):
             return f"{name} = \"{value}\"\n"
 
         # Save the improved SFC2 to file for the next iteration
         with open(sfc2_path, "w") as f:
-            f.write(format_list_of_dicts("steps", steps2))  
-            f.write(format_list_of_dicts("transitions", transitions2)) 
-            f.write(format_list("variables", modified.variables)) 
-            f.write(format_string("initial_step", modified.initial_step))  
+            f.write(format_list_of_dicts("steps", steps2))
+            f.write(format_list_of_dicts("transitions", transitions2))
+            f.write(format_list("variables", modified.variables))
+            f.write(format_string("initial_step", modified.initial_step))
 
         return {"improved": True, "token_usage": token_usage}
 

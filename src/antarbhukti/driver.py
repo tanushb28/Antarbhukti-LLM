@@ -18,7 +18,11 @@ import time
 from openpyxl import Workbook, load_workbook
 from genreport import create_newbenchmark_csv_if_missing
 
-create_newbenchmark_csv_if_missing("NewBenchmark - Sheet1.csv")
+# Get the absolute path of the CSV file immediately
+BENCHMARK_CSV_FILE = os.path.abspath("NewBenchmark_Sheet1.csv")
+
+#BENCHMARK_CSV_FILE = "NewBenchmark_Sheet1.csv"
+create_newbenchmark_csv_if_missing(BENCHMARK_CSV_FILE)
 
 # def update_token_usage_excel(file_name: str, token_usages: dict):
 #     """
@@ -207,7 +211,7 @@ def run_all_llms(args):
     llm_names = [name.strip().lower() for name in args.llms.split(",") if name.strip()]
     llms_config = read_config_file(args.config_path)
     llms = instantiate_llms(llm_names, llms_config)
-    reporter = GenReport()
+    reporter = GenReport(BENCHMARK_CSV_FILE)
 
     if os.path.isdir(args.src_path):
         src_files = readfiles(args.src_path)

@@ -1,6 +1,0 @@
-Benchmark Name,Type,GPT4o_iter,Gemini_iter,LLaMA_iter,Claude_iter,Perplexity_iter,GPT4o_tokens,Gemini_tokens,LLaMA_tokens,Claude_tokens,Perplexity_tokens,GPT4o_time,Gemini_time,LLaMA_time,Claude_time,Perplexity_time
-Chemical_Reactor_Controller,testsafety,2,2,2,ERROR: No valid code block found,2,733,4345,781,0,719,3.26,20.51,1.15,0.67,3.9
-Elevator_Controller,testsafety,2,2,2,ERROR: No valid code block found,2,986,8770,1010,0,970,3.32,40.18,1.15,0.5,7.21
-Filling_and_Packaging_Line,testsafety,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0
-Grain_Sorting_Machine,testsafety,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0
-Greenhouse_Monitoring_System,testsafety,2,2,2,ERROR: No valid code block found,2,803,3169,828,0,788,2.6,14.61,1.1,0.47,3.47
