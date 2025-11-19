@@ -175,3 +175,5 @@ generated/
 
 # Ignore output directory
 output/
+.history/
+.~lock.*#

@@ -1,0 +1,16 @@
+steps = [
+{"name": "Start", "function": "WaitStartSignal"},
+{"name": "FetchBox", "function": "PickEmptyBox"},
+{"name": "FillBox", "function": "PlaceItems"},
+{"name": "CloseBox", "function": "FoldAndSeal"},
+{"name": "Dispatch", "function": "MoveToConveyor"}
+]
+transitions = [
+{"src": "Start", "tgt": "FetchBox", "guard": "start_signal"},
+{"src": "FetchBox", "tgt": "FillBox", "guard": "box_picked"},
+{"src": "FillBox", "tgt": "CloseBox", "guard": "items_placed"},
+{"src": "CloseBox", "tgt": "Dispatch", "guard": "box_closed"},
+{"src": "Dispatch", "tgt": "Start", "guard": "box_dispatched"}
+]
+variables = ['start_signal', 'box_picked', 'items_placed', 'box_closed', 'box_dispatched']
+initial_step = 'Start'

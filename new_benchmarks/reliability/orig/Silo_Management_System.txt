@@ -1,0 +1,12 @@
+steps = [
+{"name": "MeasureLevel", "function": "ReadSiloSensor()"},
+{"name": "FillSilo", "function": "StartFilling()"},
+{"name": "StopFilling", "function": "StopFilling()"}
+]
+transitions = [
+{"src": "MeasureLevel", "tgt": "FillSilo", "guard": "level < minLevel"},
+{"src": "FillSilo", "tgt": "StopFilling", "guard": "level >= maxLevel"},
+{"src": "StopFilling", "tgt": "MeasureLevel", "guard": "True"}
+]
+variables = ['level', 'minLevel', 'maxLevel']
+initial_step = 'MeasureLevel'

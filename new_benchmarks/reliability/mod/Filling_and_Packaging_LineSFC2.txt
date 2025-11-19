@@ -1,0 +1,25 @@
+steps = [
+{ "name": "Start", "function": "InitializeSystem" },
+{ "name": "Fill", "function": "ActivateFiller" },
+{ "name": "LogFill", "function": "LogStage" },
+{ "name": "CheckFill", "function": "VerifyFillLevel" },
+{ "name": "LogCheckFill", "function": "LogStage" },
+{ "name": "Seal", "function": "SealPackage" },
+{ "name": "LogSeal", "function": "LogStage" },
+{ "name": "Label", "function": "ApplyLabel" },
+{ "name": "LogLabel", "function": "LogStage" },
+{ "name": "End", "function": "ConveyOut" }
+]
+transitions = [
+{ "src": "Start", "tgt": "Fill", "guard": "system_ready" },
+{ "src": "Fill", "tgt": "LogFill", "guard": "filling_done" },
+{ "src": "LogFill", "tgt": "CheckFill", "guard": "log_done" },
+{ "src": "CheckFill", "tgt": "LogCheckFill", "guard": "level_ok or level_not_ok" },
+{ "src": "LogCheckFill", "tgt": "Seal", "guard": "level_ok and log_done" },
+{ "src": "Seal", "tgt": "LogSeal", "guard": "sealing_done" },
+{ "src": "LogSeal", "tgt": "Label", "guard": "log_done" },
+{ "src": "Label", "tgt": "LogLabel", "guard": "label_ok" },
+{ "src": "LogLabel", "tgt": "End", "guard": "log_done" }
+]
+variables = [ 'system_ready', 'filling_done', 'level_ok', 'sealing_done', 'label_ok', 'level_not_ok', 'log_done', 'cycle_no', 'item_count', 'error_flags' ]
+initial_step = 'Start'

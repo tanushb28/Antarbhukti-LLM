@@ -2,12 +2,40 @@ import subprocess
 import base64
 import os
 import json
+import csv
+import pandas as pd
+
+def create_newbenchmark_csv_if_missing(csv_file):
+    if not os.path.exists(csv_file):
+        # Define the multi-level columns
+        columns = [
+            "Benchmark Name", "Type",
+            "GPT4o_iter", "Gemini_iter", "LLaMA_iter", "Claude_iter", "Perplexity_iter",
+            "GPT4o_tokens", "Gemini_tokens", "LLaMA_tokens", "Claude_tokens", "Perplexity_tokens",
+            "GPT4o_time", "Gemini_time", "LLaMA_time", "Claude_time", "Perplexity_time"
+        ]
+        df = pd.DataFrame(columns=columns)
+        df.to_csv(csv_file, index=False)
+        # print("[DEBUG] Created CSV at:", os.path.abspath(csv_file))
+        # print("[DEBUG] Files in directory after creation:", os.listdir(os.path.dirname(os.path.abspath(csv_file))))
+        print(f"Created new blank {csv_file}")
+
+
+def get_llm_names_from_config(config_path="config.json"):
+    with open(config_path, "r") as f:
+        config = json.load(f)
+    llm_names = []
+    for entry in config:
+        if isinstance(entry, dict) and "llm_name" in entry:
+            llm_names.append(entry["llm_name"].lower())
+    return llm_names
 
 class GenReport:
     """Report generation and utility functions for Petri Net analysis"""
     
-    def __init__(self):
-        pass
+    def __init__(self, csv_file_path):
+        self.csv_file_path = csv_file_path
+        # print("[DEBUG] GenReport initialized with CSV path:", os.path.abspath(self.csv_file_path))
     
     def sfc_to_dot(self, sfc, dot_filename="sfc.dot"):
         with open(dot_filename, "w") as f:
@@ -216,3 +244,88 @@ class GenReport:
             html += "<span class='notcontained'>There are paths in Model 1 that are not matched in Model 2 (Containment does NOT hold).</span>"
         html += "</div></body></html>"
         return html
+
+    
+    def generate_csv(self, file_name: str, test_type: str, all_results: dict):
+        csv_file = self.csv_file_path
+        #fix
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        config_path = os.path.join(base_dir, "config.json")
+
+        try:
+            #print("Attempting to read CSV from:", os.path.abspath(csv_file))
+            df = pd.read_csv(csv_file)  
+
+            row_index = df[(df["Benchmark Name"] == file_name) & (df["Type"] == test_type)].index
+
+            # Dynamically get LLM names from config
+            #config_path = "config.json" #dont need this line (its overrwriting my set path.)
+            llm_names = get_llm_names_from_config(config_path)
+
+            # Build column maps dynamically
+            # Map lowercase config names to your specific CSV header format
+            def format_header_name(name):
+                name_lower = name.lower()
+                if name_lower == "gpt4o":
+                    return "GPT4o"
+                elif name_lower == "llama":
+                    return "LLaMA"
+                else:
+                    # Default behavior for Gemini, Claude, Perplexity (e.g., "gemini" -> "Gemini")
+                    return name.capitalize()
+
+            # Build column maps using the formatter
+            token_column_map = {llm: f"{format_header_name(llm)}_tokens" for llm in llm_names}
+            iteration_column_map = {llm: f"{format_header_name(llm)}_iter" for llm in llm_names}
+            time_column_map = {llm: f"{format_header_name(llm)}_time" for llm in llm_names}
+
+
+            if not row_index.empty:
+                idx = row_index[0]
+            else:
+                # Create a new row with all columns empty
+                new_row = pd.Series({col: "" for col in df.columns}, name=len(df))
+                new_row["Benchmark Name"] = file_name
+                new_row["Type"] = test_type
+                df = pd.concat([df, new_row.to_frame().T], ignore_index=True)
+                idx = df.index[-1]
+
+            for llm_name, result in all_results.items():
+                token_usage = result.get("token_usage", 0)
+                iteration_info = result
+                time_taken = result.get("llm_time", "")
+
+                # Update token usage
+                token_col = token_column_map.get(llm_name.lower())
+                if token_col and token_col in df.columns:
+                    df.loc[idx, token_col] = token_usage
+
+                # Update iteration info
+                iteration_col = iteration_column_map.get(llm_name.lower())
+                if iteration_col and iteration_col in df.columns:
+                    status = iteration_info.get("status")
+                    if status == "success":
+                        df.loc[idx, iteration_col] = iteration_info.get("count", 0)
+                    elif status == "timeout":
+                        df[iteration_col] = df[iteration_col].astype(object)
+                        df.loc[idx, iteration_col] = "Timeout"
+                    elif status == "error":
+                        df[iteration_col] = df[iteration_col].astype(object)
+                        error_msg = iteration_info.get("message", "Unknown Error")
+                        df.loc[idx, iteration_col] = f"ERROR: {error_msg[:100]}"
+
+                # Update time taken
+                time_col = time_column_map.get(llm_name.lower())
+                if time_col and time_col in df.columns:
+                    if isinstance(time_taken, (float, int)):
+                        df.loc[idx, time_col] = round(time_taken, 2)
+                    else:
+                        df.loc[idx, time_col] = time_taken
+
+            df.to_csv(csv_file, index=False)
+            print(f"Updated CSV for {file_name} ({test_type})")
+
+        except FileNotFoundError as e:
+            print(f"Error: A required file was not found. Details: {e}")
+        except Exception as e:
+            print(f"An error occurred: {e}")

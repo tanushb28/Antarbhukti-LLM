@@ -1,0 +1,17 @@
+steps = [
+{"name": "MeasureLevel", "function": "ReadSiloSensor()"},
+{"name": "EmergencyStopCheck", "function": "CheckForOverflowOrValveMalfunction()"},
+{"name": "FillSilo", "function": "StartFilling()"},
+{"name": "StopFilling", "function": "StopFilling()"},
+{"name": "EmergencyStop", "function": "HaltFillingSafely()"}
+]
+transitions = [
+{"src": "MeasureLevel", "tgt": "EmergencyStopCheck", "guard": "True"},
+{"src": "EmergencyStopCheck", "tgt": "FillSilo", "guard": "unsafeCondition == False and level < minLevel"},
+{"src": "FillSilo", "tgt": "StopFilling", "guard": "level >= maxLevel"},
+{"src": "StopFilling", "tgt": "MeasureLevel", "guard": "True"},
+{"src": "EmergencyStopCheck", "tgt": "EmergencyStop", "guard": "unsafeCondition == True"},
+{"src": "FillSilo", "tgt": "EmergencyStop", "guard": "unsafeCondition == True"}
+]
+variables = ['level', 'minLevel', 'maxLevel', 'unsafeCondition']
+initial_step = 'MeasureLevel'

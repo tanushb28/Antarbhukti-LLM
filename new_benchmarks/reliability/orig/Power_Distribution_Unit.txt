@@ -1,0 +1,12 @@
+steps = [
+{"name": "MonitorLoad", "function": "ReadPowerUsage()"},
+{"name": "BalanceLoad", "function": "RedistributeLoad()"},
+{"name": "LogStatus", "function": "LogCurrentLoad()"}
+]
+transitions = [
+{"src": "MonitorLoad", "tgt": "BalanceLoad", "guard": "load > maxLoad"},
+{"src": "BalanceLoad", "tgt": "LogStatus", "guard": "True"},
+{"src": "LogStatus", "tgt": "MonitorLoad", "guard": "True"}
+]
+variables = ['load', 'maxLoad']
+initial_step = 'MonitorLoad'

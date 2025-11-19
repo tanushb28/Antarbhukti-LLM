@@ -1,0 +1,23 @@
+steps = [
+{"name": "Start", "function": "InitializeSystem"},
+{"name": "Fill", "function": "ActivateFiller"},
+{"name": "CheckFill", "function": "VerifyFillLevel"},
+{"name": "CheckInterlocks", "function": "ValidateSensors()"},
+{"name": "InterlockFault", "function": "HaltLineAndAlert()"},
+{"name": "Seal", "function": "SealPackage"},
+{"name": "Label", "function": "ApplyLabel"},
+{"name": "End", "function": "ConveyOut"}
+]
+
+transitions = [
+{"src": "Start", "tgt": "Fill", "guard": "system_ready"},
+{"src": "Fill", "tgt": "CheckFill", "guard": "filling_done"},
+{"src": "CheckFill", "tgt": "CheckInterlocks", "guard": "True"},
+{"src": "CheckInterlocks", "tgt": "InterlockFault", "guard": "interlock_ok == False"},
+{"src": "CheckInterlocks", "tgt": "Seal", "guard": "interlock_ok == True and level_ok"},
+{"src": "Seal", "tgt": "Label", "guard": "sealing_done"},
+{"src": "Label", "tgt": "End", "guard": "label_ok"}
+]
+
+variables = ['system_ready', 'filling_done', 'level_ok', 'sealing_done', 'label_ok', 'interlock_ok']
+initial_step = 'Start'

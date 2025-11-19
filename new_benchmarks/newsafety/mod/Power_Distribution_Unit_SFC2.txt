@@ -1,0 +1,23 @@
+steps = [
+    {"name": "SafetyCheckInput", "function": "ValidateVoltageCurrentRange"},
+    {"name": "SafetyError", "function": "LogAndHaltOperation"},
+    {"name": "MonitorLoad", "function": "ReadPowerUsage"},
+    {"name": "BalanceLoad", "function": "RedistributeLoad"},
+    {"name": "LogStatus", "function": "LogCurrentLoad"}
+]
+
+transitions = [
+    {"src": "SafetyCheckInput", "tgt": "MonitorLoad", "guard": "inputsInSafeRange == true"},
+    {"src": "SafetyCheckInput", "tgt": "SafetyError", "guard": "inputsInSafeRange == false"},
+    {"src": "MonitorLoad", "tgt": "BalanceLoad", "guard": "load > maxLoad"},
+    {"src": "BalanceLoad", "tgt": "LogStatus", "guard": "true"},
+    {"src": "LogStatus", "tgt": "SafetyCheckInput", "guard": "true"}
+]
+
+variables = [
+    'load', 'maxLoad', 'voltage', 'current',
+    'safeVoltageMin', 'safeVoltageMax', 'safeCurrentMin', 'safeCurrentMax',
+    'inputsInSafeRange'
+]
+
+initial_step = 'SafetyCheckInput'

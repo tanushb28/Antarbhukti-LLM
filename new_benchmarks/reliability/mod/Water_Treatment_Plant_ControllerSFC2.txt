@@ -1,0 +1,19 @@
+steps = [
+{ "name": "Intake", "function": "OpenIntakeValve" },
+{ "name": "Filter", "function": "StartFiltering" },
+{ "name": "ValidateInput", "function": "ValidateConcentrationPHLevel(concentration, pH, level)" },
+{ "name": "ValidationError", "function": "LogAndHaltDosingFiltering" },
+{ "name": "ChemicalAdd", "function": "InjectChemicals" },
+{ "name": "Storage", "function": "SendToStorage" }
+]
+transitions = [
+{ "src": "Intake", "tgt": "Filter", "guard": "intake_done" },
+{ "src": "Filter", "tgt": "ValidateInput", "guard": "filter_complete" },
+{ "src": "ValidateInput", "tgt": "ChemicalAdd", "guard": "inputsValid == true" },
+{ "src": "ValidateInput", "tgt": "ValidationError", "guard": "inputsValid == false" },
+{ "src": "ValidationError", "tgt": "Intake", "guard": "errorAcknowledged == true" },
+{ "src": "ChemicalAdd", "tgt": "Storage", "guard": "chemical_injected" }
+]
+variables = [ 'intake_done', 'filter_complete', 'chemical_injected', 'concentration', 'pH', 'level', 'inputsValid', 'errorAcknowledged' ]
+initial_step = 'Intake'
+

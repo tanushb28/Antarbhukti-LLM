@@ -8,7 +8,7 @@ class LLM_Mgr(ABC):
         self.llm = None
         self.api_key = api_key
         self.model_name = model_name
-        self.max_tokens= 1000 #Max tokens for the response
+        self.max_tokens= 4000 #Max tokens for the response
         self.max_retries = 3 #Max retries for LLM calls
         self.temperature = 0.0 # Temperature for LLM response variability
         self.top_p = 1.0  # Top-p sampling for LLM response
@@ -78,61 +78,80 @@ class LLM_Mgr(ABC):
 
     def improve_code(self, prompt, modified, sfc2_path):
         # Send the prompt to the LLM and get the response
-        llm_response = self._do_improve(prompt)
-        # print("=== LLM OUTPUT ===")  
-        # print(llm_response)          # Print the model's response
-        # print("==================")  
+        llm_response, token_usage = self._do_improve(prompt)
 
-        # Save the model's response to a file for checking and debugging
-        with open("llm_response.txt", "w") as f:
-            f.write(llm_response)
+        # Save the raw output for debugging
+        if self.name.lower() == "claude":
+            with open("claude_raw_output.txt", "w", encoding="utf-8") as f:
+                f.write(llm_response)
+
+        # Check for API error in the response
+        if "Error code:" in llm_response or "not_found_error" in llm_response:
+            error_msg = llm_response.strip()
+            print("\n[Claude API Error]")
+            print("Model Not Found or Invalid API Key.")
+            print("Raw error message from Claude API:")
+            #print(error_msg)
+            return {
+                "improved": False,
+                "error": error_msg,
+                "token_usage": token_usage,
+                "llm_time": 0
+            }
 
         # Extract the code block (steps2, transitions2) from the LLM response
         code_block = self.extract_code_block(llm_response)
-        if not code_block:  
-            print("No valid code block found in LLM output.")
-            return None
-        try:
-            # Execute the extracted code to get updated steps2 and transitions2
-            steps2, transitions2 = self.sfc2_code_to_python(code_block)
-        except Exception as e:  # Handle code parsing errors
-            print(f"Error parsing LLM output: {e}")
-            return False
+        if not code_block:
+            print("No valid code block found.")
+            return {
+                "improved": False,
+                "error": "No valid code block found.",
+                "token_usage": token_usage,
+                "llm_time": 0
+            }
 
-        # Helper function to format a list of dicts as Python code
+        # Evaluate the code block to get steps2 and transitions2
+        local_vars = {}
+        try:
+            exec(code_block, {}, local_vars)
+            steps2 = local_vars.get("steps2")
+            transitions2 = local_vars.get("transitions2")
+            if steps2 is None or transitions2 is None:
+                raise ValueError("steps2 or transitions2 not found in code block.")
+        except Exception as e:
+            error_msg = f"Error parsing LLM output: {e}"
+            print(error_msg)
+            return {
+                "improved": False,
+                "error": error_msg,
+                "token_usage": token_usage,
+                "llm_time": 0
+            }
+
+        # Helper functions to format output
         def format_list_of_dicts(name, lst):
-            lines = [f"{name} = ["]
-            for idx, obj in enumerate(lst):
-                comma = "," if idx < len(lst) - 1 else ""
-                items = []
-                for k, v in obj.items():
-                    if isinstance(v, str):
-                        items.append(f'"{k}": "{v}"')  # String value
-                    else:
-                        items.append(f'"{k}": {repr(v)}')  # Non-string value
-                lines.append("        {" + ", ".join(items) + "}" + comma)
+            import json
+            lines = [f"{name} = [\n"]
+            for d in lst:
+                lines.append("    " + json.dumps(d) + ",\n")
             lines.append("    ]\n")
-            return "\n".join(lines)
-        # Take it from stackoverflow.com/questions/70618695/how-to-format-a-list-of-dictionaries-as-python-code
-        
-        # Helper function to format a list as Python code
+            return "".join(lines)
+
         def format_list(name, lst):
             vals = ", ".join(f'"{v}"' for v in lst)
             return f"{name} = [{vals}]\n"
 
-        # Helper function to format a string assignment
         def format_string(name, value):
             return f"{name} = \"{value}\"\n"
 
         # Save the improved SFC2 to file for the next iteration
         with open(sfc2_path, "w") as f:
-            f.write(format_list_of_dicts("steps", steps2))  
-            f.write(format_list_of_dicts("transitions", transitions2)) 
-            f.write(format_list("variables", modified.variables)) 
-            f.write(format_string("initial_step", modified.initial_step))  
-#        print(f"Updated SFC2 saved to {sfc2_path}")
+            f.write(format_list_of_dicts("steps", steps2))
+            f.write(format_list_of_dicts("transitions", transitions2))
+            f.write(format_list("variables", modified.variables))
+            f.write(format_string("initial_step", modified.initial_step))
 
-        return True  # Indicate that improvement was successfully applied
+        return {"improved": True, "token_usage": token_usage}
 
     # def improve_sfc(self, prompt):
     #     response = self.llm.invoke([HumanMessage(content=prompt)])  # Send the prompt to the LLM and get response
@@ -145,12 +164,21 @@ class LLM_Mgr(ABC):
         match = re.search(r"```(?:python)?\s*([\s\S]*?)```", llm_output)
         if match:
             return match.group(1)  # Return code inside code block
-        # Fallback: collect lines starting with 'steps2' or 'transitions2'
-        lines = []
-        for line in llm_output.splitlines():
-            if line.strip().startswith("steps2") or line.strip().startswith("transitions2"):
-                lines.append(line)
-        return "\n".join(lines)
+        # Fallback for models that don't use markdown blocks
+        lines = llm_output.splitlines()
+        extracted_code = []
+        in_list = False
+        for line in lines:
+            stripped_line = line.strip()
+            if stripped_line.startswith("steps2") or stripped_line.startswith("transitions2"):
+                in_list = True
+            
+            if in_list:
+                extracted_code.append(line)
+                if stripped_line.endswith("]"):
+                    in_list = False
+
+        return "\n".join(extracted_code)
 
     @staticmethod
     def sfc2_code_to_python(sfc2_code_str):

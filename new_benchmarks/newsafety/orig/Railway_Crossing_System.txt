@@ -1,0 +1,12 @@
+steps = [
+{"name": "DetectTrain", "function": "SensorDetect(train)"},
+{"name": "CloseGate", "function": "ActivateGate(close)"},
+{"name": "OpenGate", "function": "ActivateGate(open)"}
+]
+transitions = [
+{"src": "DetectTrain", "tgt": "CloseGate", "guard": "train == True"},
+{"src": "CloseGate", "tgt": "OpenGate", "guard": "train == False"},
+{"src": "OpenGate", "tgt": "DetectTrain", "guard": "True"}
+]
+variables = ['train']
+initial_step = 'DetectTrain'

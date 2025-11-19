@@ -1,0 +1,17 @@
+steps = [
+{ "name": "MonitorWindSpeed", "function": "ReadWindSensor()" },
+{ "name": "AdjustBlades", "function": "SetBladeAngle()" },
+{ "name": "GeneratePower", "function": "StartGenerator()" },
+{ "name": "SafeAbort", "function": "FeatherAndHalt" }
+]
+transitions = [
+{ "src": "MonitorWindSpeed", "tgt": "AdjustBlades", "guard": "windSpeed > threshold and (cycle_count < cycle_threshold) and (runtime_ok == true)" },
+{ "src": "MonitorWindSpeed", "tgt": "SafeAbort", "guard": "(cycle_count >= cycle_threshold) or (runtime_ok == false)" },
+{ "src": "AdjustBlades", "tgt": "GeneratePower", "guard": "true" },
+{ "src": "GeneratePower", "tgt": "MonitorWindSpeed", "guard": "true" },
+{ "src": "AdjustBlades", "tgt": "SafeAbort", "guard": "(cycle_count >= cycle_threshold) or (runtime_ok == false)" },
+{ "src": "GeneratePower", "tgt": "SafeAbort", "guard": "(cycle_count >= cycle_threshold) or (runtime_ok == false)" },
+{ "src": "SafeAbort", "tgt": "MonitorWindSpeed", "guard": "alert_acknowledged == true" }
+]
+variables = [ 'windSpeed', 'threshold', 'cycle_count', 'cycle_threshold', 'runtime_ok', 'saved_state']
+initial_step = 'MonitorWindSpeed'

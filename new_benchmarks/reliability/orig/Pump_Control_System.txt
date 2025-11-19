@@ -1,0 +1,12 @@
+steps = [
+{"name": "Idle", "function": "MonitorLevel"},
+{"name": "PumpOn", "function": "StartPump"},
+{"name": "PumpOff", "function": "StopPump"}
+]
+transitions = [
+{"src": "Idle", "tgt": "PumpOn", "guard": "level < LOW"},
+{"src": "PumpOn", "tgt": "PumpOff", "guard": "level >= HIGH"},
+{"src": "PumpOff", "tgt": "Idle", "guard": "level <= NORMAL"}
+]
+variables = ['level', 'LOW', 'HIGH', 'NORMAL']
+initial_step = 'Idle'

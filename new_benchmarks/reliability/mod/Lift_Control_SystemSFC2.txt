@@ -1,0 +1,15 @@
+steps = [
+    {"name": "WaitCall", "function": "MonitorFloorRequest"},
+    {"name": "MoveLift", "function": "DriveToFloor"},
+    {"name": "OpenDoor", "function": "UnlockDoors"},
+    {"name": "SafeAbort", "function": "HaltAndPreserveState"}
+]
+transitions = [
+    {"src": "WaitCall", "tgt": "MoveLift", "guard": "callReceived == true"},
+    {"src": "MoveLift", "tgt": "OpenDoor", "guard": "arrived == true"},
+    {"src": "OpenDoor", "tgt": "WaitCall", "guard": "doorClosed == true"},
+    {"src": "MoveLift", "tgt": "SafeAbort", "guard": "travelTimeExceeded == true"},
+    {"src": "OpenDoor", "tgt": "SafeAbort", "guard": "doorOpenTimeExceeded == true"}
+]
+variables = ["callReceived", "arrived", "doorClosed", "travelTimeExceeded", "doorOpenTimeExceeded"]
+initial_step = "WaitCall"
