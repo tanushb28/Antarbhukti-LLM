@@ -6,18 +6,15 @@ Paths in Model 1 with NO equivalent path in Model 2
 From	      To	        Transitions	    Z3 Condition	   Z3 Data Transformation
 
 From	To	Transitions	Condition	Data Transformation
-CloseGate	WaitVehicle	['t_3']	gate_closed	true
-OpenGate	WaitPass	['t_1']	gate_opened	true
-WaitPass	CloseGate	['t_2']	vehicle_passed	true
-WaitVehicle	OpenGate	['t_0']	vehicle_detected	true
+Return	Idle	['t_4']	base_reached	true
 
 Here is the current SFC2 Python code:
-steps2 = [{'name': 'WaitVehicle', 'function': 'DetectVehicle'}, {'name': 'SafetyCheckInput', 'function': 'ValidateSensors'}, {'name': 'OpenGate', 'function': 'RaiseGate'}, {'name': 'WaitPass', 'function': 'MonitorPass'}, {'name': 'CloseGate', 'function': 'LowerGate'}, {'name': 'TimeoutSafeStop', 'function': 'HaltGateMovementSafely'}, {'name': 'SafetyLog', 'function': 'RecordGateEvent'}, {'name': 'SafetyError', 'function': 'StopAndLogError'}]
-transitions2 = [{'src': 'WaitVehicle', 'tgt': 'SafetyCheckInput', 'guard': "vehicle_detected == 'True'"}, {'src': 'SafetyCheckInput', 'tgt': 'OpenGate', 'guard': "sensorsOK == 'True'"}, {'src': 'SafetyCheckInput', 'tgt': 'SafetyError', 'guard': "not (sensorsOK == 'True')"}, {'src': 'OpenGate', 'tgt': 'TimeoutSafeStop', 'guard': "open_timeout_counter > MAX_OPEN_DURATION or watchdog_triggered == 'True'"}, {'src': 'OpenGate', 'tgt': 'WaitPass', 'guard': "gate_opened == 'True' and open_timeout_counter <= MAX_OPEN_DURATION"}, {'src': 'WaitPass', 'tgt': 'CloseGate', 'guard': "vehicle_passed == 'True'"}, {'src': 'CloseGate', 'tgt': 'TimeoutSafeStop', 'guard': "close_timeout_counter > MAX_CLOSE_DURATION or watchdog_triggered == 'True'"}, {'src': 'CloseGate', 'tgt': 'SafetyLog', 'guard': "gate_closed == 'True' and close_timeout_counter <= MAX_CLOSE_DURATION"}, {'src': 'TimeoutSafeStop', 'tgt': 'SafetyLog', 'guard': "'True'"}, {'src': 'SafetyLog', 'tgt': 'WaitVehicle', 'guard': "'True'"}, {'src': 'SafetyError', 'tgt': 'SafetyLog', 'guard': "'True'"}]
+steps2 = [{'name': 'Idle', 'function': 'WaitCommand'}, {'name': 'Pick', 'function': 'GripObject'}, {'name': 'Move', 'function': 'NavigateToLocation'}, {'name': 'Place', 'function': 'ReleaseObject'}, {'name': 'Return', 'function': 'ReturnToBase'}, {'name': 'SafeAbort', 'function': 'ParkAndStoreState'}]
+transitions2 = [{'src': 'Idle', 'tgt': 'Pick', 'guard': 'command_received'}, {'src': 'Pick', 'tgt': 'Move', 'guard': 'object_gripped'}, {'src': 'Move', 'tgt': 'Place', 'guard': 'target_reached'}, {'src': 'Place', 'tgt': 'Return', 'guard': 'object_released'}, {'src': 'Return', 'tgt': 'Idle', 'guard': 'base_reached and loop_count < loop_threshold and cycle_time_ok == true'}, {'src': 'Return', 'tgt': 'SafeAbort', 'guard': 'base_reached and loop_count >= loop_threshold or cycle_time_ok == false'}, {'src': 'Pick', 'tgt': 'SafeAbort', 'guard': 'loop_count >= loop_threshold or cycle_time_ok == false'}, {'src': 'Move', 'tgt': 'SafeAbort', 'guard': 'loop_count >= loop_threshold or cycle_time_ok == false'}, {'src': 'Place', 'tgt': 'SafeAbort', 'guard': 'loop_count >= loop_threshold or cycle_time_ok == false'}]
 
 Here is the SFC1 Python code for reference:
-steps1 = [{'name': 'WaitVehicle', 'function': 'DetectVehicle'}, {'name': 'OpenGate', 'function': 'RaiseGate'}, {'name': 'WaitPass', 'function': 'MonitorPass'}, {'name': 'CloseGate', 'function': 'LowerGate'}]
-transitions1 = [{'src': 'WaitVehicle', 'tgt': 'OpenGate', 'guard': 'vehicle_detected'}, {'src': 'OpenGate', 'tgt': 'WaitPass', 'guard': 'gate_opened'}, {'src': 'WaitPass', 'tgt': 'CloseGate', 'guard': 'vehicle_passed'}, {'src': 'CloseGate', 'tgt': 'WaitVehicle', 'guard': 'gate_closed'}]
+steps1 = [{'name': 'Idle', 'function': 'WaitCommand'}, {'name': 'Pick', 'function': 'GripObject'}, {'name': 'Move', 'function': 'NavigateToLocation'}, {'name': 'Place', 'function': 'ReleaseObject'}, {'name': 'Return', 'function': 'ReturnToBase'}]
+transitions1 = [{'src': 'Idle', 'tgt': 'Pick', 'guard': 'command_received'}, {'src': 'Pick', 'tgt': 'Move', 'guard': 'object_gripped'}, {'src': 'Move', 'tgt': 'Place', 'guard': 'target_reached'}, {'src': 'Place', 'tgt': 'Return', 'guard': 'object_released'}, {'src': 'Return', 'tgt': 'Idle', 'guard': 'base_reached'}]
 
 Please modify steps2 and transitions2 so that all above paths are covered and equivalence will hold. 
 Only output valid Python code for steps2 and transitions2, nothing else.

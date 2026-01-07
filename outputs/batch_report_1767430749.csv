@@ -1,0 +1,2 @@
+Benchmark Name,Type,GPT4o_iter,Gemini_iter,LLaMA_iter,Claude_iter,Perplexity_iter,GPT4o_tokens,Gemini_tokens,LLaMA_tokens,Claude_tokens,Perplexity_tokens,GPT4o_time,Gemini_time,LLaMA_time,Claude_time,Perplexity_time
+Crane_Automation,unknown,Timeout,2,ERROR: Failed to load improved SFC from /home/tanush/BITS/SOP/Antarbhukti-LLM/outputs/Llama/failed/Crane_Au,7,5,10930,3397,5971,9458,4302,22.79,11.67,6.34,41.23,16.87

@@ -1,0 +1,16 @@
+steps = [
+    {"name": "DetectTrain", "function": "SensorDetect(train)"},
+    {"name": "CloseGate", "function": "ActivateGate(close)"},
+    {"name": "OpenGate", "function": "ActivateGate(open)"},
+    {"name": "SafeAbort", "function": "StopGateAndAlert"},
+    ]
+transitions = [
+    {"src": "DetectTrain", "tgt": "CloseGate", "guard": "train == True"},
+    {"src": "CloseGate", "tgt": "OpenGate", "guard": "train == False"},
+    {"src": "CloseGate", "tgt": "SafeAbort", "guard": "(gate_down_time_exceeded == True) or (gate_down_cycles >= max_gate_cycles)"},
+    {"src": "OpenGate", "tgt": "DetectTrain", "guard": "True"},
+    {"src": "OpenGate", "tgt": "SafeAbort", "guard": "(gate_up_time_exceeded == True) or (gate_up_cycles >= max_gate_cycles)"},
+    {"src": "SafeAbort", "tgt": "DetectTrain", "guard": "alert_acknowledged == True"},
+    ]
+variables = ["train", "gate_down_complete", "gate_up_complete", "gate_down_time_exceeded", "gate_up_time_exceeded", "gate_down_cycles", "gate_up_cycles", "max_gate_cycles", "alert_acknowledged"]
+initial_step = "DetectTrain"

@@ -1,0 +1,46 @@
+[gpt4o] Initialized with model: gpt-4o
+[gemini] Initialized with model: gemini-2.5-flash
+[llama] Initialized with model: meta-llama/llama-4-scout-17b-16e-instruct
+[claude] Initialized with model: claude-sonnet-4-5-20250929
+[perplexity] Initialized with model: sonar-pro
+
+>>> Running GPT4o to improve ...
+[GPT4o] Token usage - Total: 979, Cost: $0.00506
+Time taken by GPT4o: 3.16 seconds
+/home/tanush/BITS/SOP/Antarbhukti-LLM/uploads/new/Conveyor_System_Controller_SFC2.txt corrected by GPT4o after 2 iterations and saved to outputs/GPT4o/success/Conveyor_System_Controller_SFC2.txt
+
+>>> Running Gemini to improve ...
+[Gemini] Token usage - Total: 9695
+Time taken by Gemini: 47.75 seconds
+/home/tanush/BITS/SOP/Antarbhukti-LLM/uploads/new/Conveyor_System_Controller_SFC2.txt corrected by Gemini after 2 iterations and saved to outputs/Gemini/success/Conveyor_System_Controller_SFC2.txt
+
+>>> Running Llama to improve ...
+[Llama] Token usage - Total: 1007
+
+>>> Running Llama to improve ...
+[Llama] Token usage - Total: 1045
+
+>>> Running Llama to improve ...
+[Llama] Token usage - Total: 1091
+
+>>> Running Llama to improve ...
+[Llama] Token usage - Total: 1128
+
+>>> Running Llama to improve ...
+[Llama] Token usage - Total: 1262
+
+>>> Running Llama to improve ...
+[Llama] Token usage - Total: 1123
+Time taken by Llama: 13.71 seconds
+/home/tanush/BITS/SOP/Antarbhukti-LLM/uploads/new/Conveyor_System_Controller_SFC2.txt corrected by Llama after 7 iterations and saved to outputs/Llama/success/Conveyor_System_Controller_SFC2.txt
+
+>>> Running Claude to improve ...
+[Claude] Token usage - Total: 1325
+Time taken by Claude: 8.25 seconds
+/home/tanush/BITS/SOP/Antarbhukti-LLM/uploads/new/Conveyor_System_Controller_SFC2.txt corrected by Claude after 2 iterations and saved to outputs/Claude/success/Conveyor_System_Controller_SFC2.txt
+
+>>> Running Perplexity to improve ...
+[Perplexity] Token usage - Total: 949
+Time taken by Perplexity: 31.15 seconds
+/home/tanush/BITS/SOP/Antarbhukti-LLM/uploads/new/Conveyor_System_Controller_SFC2.txt corrected by Perplexity after 2 iterations and saved to outputs/Perplexity/success/Conveyor_System_Controller_SFC2.txt
+Updated CSV for Conveyor_System_Controller (unknown)

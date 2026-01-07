@@ -1,0 +1,19 @@
+steps = [
+    {"name": "MeasureLevel", "function": "ReadSiloSensor()"},
+    {"name": "WatchdogCheck", "function": "ValidateLevelSensors()"},
+    {"name": "WatchdogError", "function": "StopAndLogOverflowRisk()"},
+    {"name": "FillSilo", "function": "StartFilling()"},
+    {"name": "StopFilling", "function": "StopFilling()"},
+    ]
+transitions = [
+    {"src": "MeasureLevel", "tgt": "FillSilo", "guard": "level < minLevel"},
+    {"src": "MeasureLevel", "tgt": "WatchdogCheck", "guard": "level >= minLevel"},
+    {"src": "WatchdogCheck", "tgt": "StopFilling", "guard": "watchdog_ok == true and level >= maxLevel"},
+    {"src": "WatchdogCheck", "tgt": "MeasureLevel", "guard": "watchdog_ok == true and level >= minLevel and level < maxLevel"},
+    {"src": "WatchdogCheck", "tgt": "WatchdogError", "guard": "watchdog_ok == false"},
+    {"src": "WatchdogError", "tgt": "MeasureLevel", "guard": "error_ack == true"},
+    {"src": "FillSilo", "tgt": "StopFilling", "guard": "level >= maxLevel"},
+    {"src": "StopFilling", "tgt": "MeasureLevel", "guard": "true"},
+    ]
+variables = ["level", "minLevel", "maxLevel", "watchdog_ok", "error_ack"]
+initial_step = "MeasureLevel"

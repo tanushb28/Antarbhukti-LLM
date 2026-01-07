@@ -1,0 +1,22 @@
+steps = [
+    {"name": "Idle", "function": "WaitCommand"},
+    {"name": "Pick", "function": "GripObject"},
+    {"name": "Move", "function": "NavigateToLocation"},
+    {"name": "Place", "function": "ReleaseObject"},
+    {"name": "Return", "function": "ReturnToBase"},
+    {"name": "SafeAbort", "function": "ParkAndStoreState"},
+    ]
+transitions = [
+    {"src": "Idle", "tgt": "Pick", "guard": "command_received"},
+    {"src": "Pick", "tgt": "Move", "guard": "object_gripped"},
+    {"src": "Move", "tgt": "Place", "guard": "target_reached"},
+    {"src": "Place", "tgt": "Return", "guard": "object_released"},
+    {"src": "Return", "tgt": "Idle", "guard": "base_reached"},
+    {"src": "Return", "tgt": "Idle", "guard": "base_reached and loop_count < loop_threshold and cycle_time_ok == true"},
+    {"src": "Return", "tgt": "SafeAbort", "guard": "base_reached and loop_count >= loop_threshold or cycle_time_ok == false"},
+    {"src": "Pick", "tgt": "SafeAbort", "guard": "loop_count >= loop_threshold or cycle_time_ok == false"},
+    {"src": "Move", "tgt": "SafeAbort", "guard": "loop_count >= loop_threshold or cycle_time_ok == false"},
+    {"src": "Place", "tgt": "SafeAbort", "guard": "loop_count >= loop_threshold or cycle_time_ok == false"},
+    ]
+variables = ["command_received", "object_gripped", "target_reached", "object_released", "base_reached", "loop_count", "loop_threshold", "cycle_time_ok", "saved_pose", "saved_state"]
+initial_step = "Idle"

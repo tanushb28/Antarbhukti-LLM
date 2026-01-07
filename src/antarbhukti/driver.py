@@ -19,8 +19,15 @@ from openpyxl import Workbook, load_workbook
 from genreport import create_newbenchmark_csv_if_missing
 
 # Get the absolute path of the CSV file immediately
-BENCHMARK_CSV_FILE = os.path.abspath("NewBenchmark_Sheet1.csv")
-
+# --- CHANGE START: Dynamic CSV Path ---
+# Check for environment variable passed from Streamlit (or other runners)
+# If not found, fall back to the default "NewBenchmark_Sheet1.csv"
+env_csv_path = os.environ.get("BENCHMARK_CSV_PATH")
+if env_csv_path:
+    BENCHMARK_CSV_FILE = os.path.abspath(env_csv_path)
+else:
+    BENCHMARK_CSV_FILE = os.path.abspath("NewBenchmark_Sheet1.csv")
+# --- CHANGE END ---
 #BENCHMARK_CSV_FILE = "NewBenchmark_Sheet1.csv"
 create_newbenchmark_csv_if_missing(BENCHMARK_CSV_FILE)
 

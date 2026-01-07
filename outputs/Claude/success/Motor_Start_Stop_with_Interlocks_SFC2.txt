@@ -1,0 +1,23 @@
+# Generated SFC data
+# Extracted from: /home/tanush/BITS/SOP/Antarbhukti-LLM/uploads/pair_2/new/Motor_Start_Stop_with_Interlocks_SFC2.txt
+
+steps = [
+    {'name': 'Idle', 'function': 'WaitStart'},
+    {'name': 'StartMotor', 'function': 'MotorOn'},
+    {'name': 'StopMotor', 'function': 'MotorOff'},
+    {'name': 'EmergencyStopCheck', 'function': 'MonitorInterlocks'},
+    {'name': 'EmergencyStop', 'function': 'ImmediateMotorHalt'},
+]
+
+transitions = [
+    {'src': 'Idle', 'tgt': 'StartMotor', 'guard': 'startCommand == true and interlockOk == true'},
+    {'src': 'StartMotor', 'tgt': 'StopMotor', 'guard': 'stopCommand == true'},
+    {'src': 'StopMotor', 'tgt': 'Idle', 'guard': 'motorStopped == true'},
+    {'src': 'StartMotor', 'tgt': 'EmergencyStopCheck', 'guard': 'interlockOk == false'},
+    {'src': 'EmergencyStopCheck', 'tgt': 'EmergencyStop', 'guard': 'unsafe_state_detected'},
+    {'src': 'EmergencyStop', 'tgt': 'Idle', 'guard': 'resetCommand == true'},
+]
+
+variables = ['startCommand', 'stopCommand', 'interlockOk', 'motorStopped', 'unsafe_state_detected', 'resetCommand']
+
+initial_step = 'Idle'

@@ -1,0 +1,21 @@
+# Generated SFC data
+# Extracted from: /home/tanush/BITS/SOP/Antarbhukti-LLM/uploads/pair_2/new/Railway_Crossing_System_SFC2.txt
+
+steps = [
+    {'name': 'DetectTrain', 'function': 'SensorDetect(train)'},
+    {'name': 'CloseGate', 'function': 'ActivateGate(close)'},
+    {'name': 'OpenGate', 'function': 'ActivateGate(open)'},
+    {'name': 'TimeoutSafeStop', 'function': 'HaltSystemAndRaiseAlert()'},
+]
+
+transitions = [
+    {'src': 'DetectTrain', 'tgt': 'CloseGate', 'guard': 'train == True'},
+    {'src': 'CloseGate', 'tgt': 'OpenGate', 'guard': 'train == False'},
+    {'src': 'OpenGate', 'tgt': 'DetectTrain', 'guard': 'True'},
+    {'src': 'CloseGate', 'tgt': 'TimeoutSafeStop', 'guard': 'timeout_counter > maxCloseTime'},
+    {'src': 'OpenGate', 'tgt': 'TimeoutSafeStop', 'guard': 'timeout_counter > maxOpenTime'},
+]
+
+variables = ['train', 'timeout_counter', 'maxCloseTime', 'maxOpenTime']
+
+initial_step = 'DetectTrain'

@@ -1,2 +1,12 @@
 Benchmark Name,Type,GPT4o_iter,Gemini_iter,LLaMA_iter,Claude_iter,Perplexity_iter,GPT4o_tokens,Gemini_tokens,LLaMA_tokens,Claude_tokens,Perplexity_tokens,GPT4o_time,Gemini_time,LLaMA_time,Claude_time,Perplexity_time
-Tank_Level_Control,safety,2,2,2,2,2,851,8001,870,1143,845,2.94,37.64,1.22,9.09,6.31
+Tank_Level_Control,safety,2,2.0,2.0,2.0,2.0,851,8001.0,870.0,1143.0,845.0,2.94,37.64,1.22,9.09,6.31
+Automated_Gate_System,unknown,Timeout,,,,,14750,,,,,44.69,,,,
+Baggage_Handling_System,unknown,6,,,,,4921,,,,,14.86,,,,
+Chemical_Reactor_Controller,testsafety,2,2.0,2.0,2.0,2.0,733,5455.0,773.0,1050.0,733.0,4.61,35.6,2.35,7.55,5.3
+Chemical_Reactor_Controller,unknown,ERROR: No valid code block found.,,,,,714,,,,,24.36,,,,
+Crane_Automation,unknown,ERROR: SFC loading failed: Error parsing SFC file '/home/tanush/BITS/SOP/Antarbhukti-LLM/uploads/new/Crane_,,,,,0,,,,,0.0,,,,
+Conveyor_System_Controller_SFC2,unknown,1,,,,,0,,,,,0.0,,,,
+Conveyor_System_Controller,unknown,2,2.0,7.0,2.0,2.0,979,9695.0,6656.0,1325.0,949.0,3.16,47.75,13.71,8.25,31.15
+Boiler_Control,unknown,1,,,,,0,,,,,0.0,,,,
+Fuel_Dispenser_Logic,unknown,1,,,,,0,,,,,0.0,,,,
+Elevator_Controller,unknown,2,,,,,1090,,,,,10.04,,,,

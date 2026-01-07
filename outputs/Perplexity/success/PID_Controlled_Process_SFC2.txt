@@ -1,0 +1,20 @@
+# Generated SFC data
+# Extracted from: /home/tanush/BITS/SOP/Antarbhukti-LLM/uploads/pair_0/new/PID_Controlled_Process_SFC2.txt
+
+steps = [
+    {'name': 'ReadInput', 'function': 'ReadSensor'},
+    {'name': 'ComputePID', 'function': 'ApplyPID'},
+    {'name': 'ApplyOutput', 'function': 'SetActuator'},
+    {'name': 'SafetyLog', 'function': 'RecordSafetyParameters'},
+]
+
+transitions = [
+    {'src': 'ReadInput', 'tgt': 'ComputePID', 'guard': 'true'},
+    {'src': 'ComputePID', 'tgt': 'ApplyOutput', 'guard': 'true'},
+    {'src': 'ApplyOutput', 'tgt': 'SafetyLog', 'guard': 'cycleTimeElapsed == true'},
+    {'src': 'SafetyLog', 'tgt': 'ReadInput', 'guard': 'loggingComplete == true'},
+]
+
+variables = ['sensorValue', 'outputValue', 'cycleTimeElapsed', 'loggingComplete', 'error', 'control_signal', 'safe_bounds']
+
+initial_step = 'ReadInput'

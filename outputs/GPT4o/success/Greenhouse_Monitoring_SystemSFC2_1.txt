@@ -1,0 +1,25 @@
+# Generated SFC data
+# Extracted from: /home/tanush/BITS/SOP/Antarbhukti-LLM/outputs/GPT4o/failed/Greenhouse_Monitoring_SystemSFC2.txt
+
+steps = [
+    {'name': 'MonitorTemperature', 'function': 'ReadSensor(temp)'},
+    {'name': 'ValidateInput', 'function': 'ValidateEnvInputs(temp, humidity, soil_moisture)'},
+    {'name': 'ValidationError', 'function': 'LogAndBlockActuation'},
+    {'name': 'AdjustVentilation', 'function': 'ControlFan(temp)'},
+    {'name': 'LogData', 'function': 'Log(temp, humidity)'},
+]
+
+transitions = [
+    {'src': 'MonitorTemperature', 'tgt': 'ValidateInput', 'guard': 'startup == true or new_reading == true'},
+    {'src': 'ValidateInput', 'tgt': 'AdjustVentilation', 'guard': 'inputsValid == true and temp > threshold'},
+    {'src': 'ValidateInput', 'tgt': 'LogData', 'guard': 'inputsValid == true and temp <= threshold'},
+    {'src': 'ValidateInput', 'tgt': 'ValidationError', 'guard': 'inputsValid == false'},
+    {'src': 'ValidationError', 'tgt': 'MonitorTemperature', 'guard': 'errorAcknowledged == true'},
+    {'src': 'AdjustVentilation', 'tgt': 'LogData', 'guard': 'true'},
+    {'src': 'LogData', 'tgt': 'MonitorTemperature', 'guard': 'true'},
+    {'src': 'MonitorTemperature', 'tgt': 'AdjustVentilation', 'guard': 'temp > threshold'},
+]
+
+variables = ['temp', 'humidity', 'threshold', 'soil_moisture', 'startup', 'new_reading', 'inputsValid', 'errorAcknowledged']
+
+initial_step = 'MonitorTemperature'
