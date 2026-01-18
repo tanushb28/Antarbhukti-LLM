@@ -171,6 +171,20 @@ def refine_code(src, mod, llm: LLM_Mgr, prompt_template, dest_root):
             dest = gendestname(mod, dest_root + "/success", iter_count)
             os.makedirs(os.path.dirname(dest), exist_ok=True)
             sfc2.save(dest)
+            try:
+                # Instantiate report generator
+                gen_report = GenReport(BENCHMARK_CSV_FILE)
+                # Generate HTML using the state from the verifier
+                html_content = check_pn_containment_html(verifier, gen_report, sfc1, pn1, sfc2, pn2)
+                
+                # Save .html file with same basename as the .txt file
+                html_dest = os.path.splitext(dest)[0] + ".html"
+                with open(html_dest, "w", encoding="utf-8") as f:
+                    f.write(html_content)
+                print(f"Generated detailed HTML report: {html_dest}")
+            except Exception as e:
+                print(f"Warning: Failed to generate HTML report: {e}")
+                
             print(f"Time taken by {llm.name}: {llm_time_taken:.2f} seconds")
             return {"status": "success", "count": iter_count + 1, "token_usage": total_token_usage, "llm_time": llm_time_taken}
 

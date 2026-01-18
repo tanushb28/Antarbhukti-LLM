@@ -1,0 +1,6 @@
+Benchmark Name,Type,GPT4o_iter,Gemini_iter,LLaMA_iter,Claude_iter,Perplexity_iter,GPT4o_tokens,Gemini_tokens,LLaMA_tokens,Claude_tokens,Perplexity_tokens,GPT4o_time,Gemini_time,LLaMA_time,Claude_time,Perplexity_time
+Chemical_Reactor_Controller,unknown,2,,,,,733,,,,,2.85,,,,
+Elevator_Controller,unknown,2,,,,,986,,,,,3.52,,,,
+Filling_and_Packaging_Line,unknown,1,,,,,0,,,,,0.0,,,,
+Grain_Sorting_Machine,unknown,1,,,,,0,,,,,0.0,,,,
+Greenhouse_Monitoring_System,unknown,2,,,,,803,,,,,5.04,,,,

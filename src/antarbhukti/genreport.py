@@ -35,7 +35,7 @@ class GenReport:
     
     def __init__(self, csv_file_path):
         self.csv_file_path = csv_file_path
-        # print("[DEBUG] GenReport initialized with CSV path:", os.path.abspath(self.csv_file_path))
+        #print("[DEBUG] GenReport initialized with CSV path:", os.path.abspath(self.csv_file_path))
     
     def sfc_to_dot(self, sfc, dot_filename="sfc.dot"):
         with open(dot_filename, "w") as f:
@@ -179,35 +179,71 @@ class GenReport:
         html += "<html><head><title>Petri Net Model Containment Report</title>"
         html += """
         <style>
-        body { font-family: Arial, sans-serif; }
-        .contained { color: green; font-weight: bold; }
-        .notcontained { color: red; font-weight: bold; }
-        table { border-collapse: collapse; margin-bottom: 2em; }
-        th, td { border: 1px solid #aaa; padding: 5px 10px; }
-        th { background: #e4edfa; }
-        .section { margin-top: 2em; }
-        .path-table th, .path-table td { font-size: 13px; }
-        pre { margin: 0; }
-        .imgblock { margin: 1em 0; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #0E1117; 
+            color: #FAFAFA; 
+            margin: 20px;
+        }
+        h1, h2 { color: #4DB6AC; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .contained { color: #00E676; font-weight: bold; padding: 10px; border: 1px solid #00E676; border-radius: 5px; display: inline-block; }
+        .notcontained { color: #FF5252; font-weight: bold; padding: 10px; border: 1px solid #FF5252; border-radius: 5px; display: inline-block; }
+        
+        /* Table Styling */
+        table { border-collapse: collapse; width: 100%; margin-bottom: 2em; background-color: #161B22; }
+        th, td { border: 1px solid #30363D; padding: 12px 15px; text-align: left; }
+        th { background-color: #21262D; color: #58A6FF; font-weight: 600; }
+        tr:nth-child(even) { background-color: #0D1117; }
+        
+        .section { margin-top: 3em; background: #161B22; padding: 20px; border-radius: 8px; border: 1px solid #30363D; }
+        pre { margin: 0; white-space: pre-wrap; word-wrap: break-word; color: #A5D6FF; font-family: 'Consolas', 'Courier New', monospace; }
+        
+        /* Diagram Grid - Full Width & Vertical Stacking */
+        .diagram-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            align-items: center;
+            width: 100%;
+        }
+        .diagram-box {
+            background-color: #ffffff; /* White background strictly for images so black text is visible */
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            width: 90%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .diagram-box b { color: #333; font-size: 1.2rem; display: block; margin-bottom: 10px; }
+        .imgblock { max-width: 100%; height: auto; border: 1px solid #ddd; }
         </style></head><body>
         """
-        html += "<h1>Petri Net Model Containment Report</h1>"
-        html += "<div class='section'><h2>Model Diagrams</h2><table><tr>"
+        html += "<h1>⚡ Petri Net Model Containment Report</h1>"
+        
+        # Modified Diagram Layout: Vertical Stacking with White Backgrounds
+        html += "<div class='section'><h2>Model Diagrams</h2><div class='diagram-container'>"
         for key, label in [
-            ("sfc1", "SFC 1"), ("pn1", "PN 1"), ("sfc2", "SFC 2"), ("pn2", "PN 2")
+            ("sfc1", "Original SFC (Source)"), ("pn1", "Original Petri Net"), 
+            ("sfc2", "Modified SFC (Target)"), ("pn2", "Modified Petri Net")
         ]:
-            html += f"<td style='text-align:center;'><b>{label}</b><br>"
             b64 = img_paths.get(key, None)
+            html += f"<div class='diagram-box'><b>{label}</b>"
             if b64:
-                html += f"<img class='imgblock' src='data:image/png;base64,{b64}' style='max-width:300px; max-height:300px;'/></td>"
+                html += f"<img class='imgblock' src='data:image/png;base64,{b64}'/>"
             else:
-                html += "<span style='color:red'>Image not found</span></td>"
-        html += "</tr></table></div>"
+                html += "<span style='color:red'>Image not found</span>"
+            html += "</div>"
+        html += "</div></div>"
+
         html += "<div class='section'><h2>Cut-Points</h2>"
-        html += "<b>Model 1 Cut-Points:</b> " + ", ".join(self.html_escape(x) for x in cutpoints1) + "<br>"
-        html += "<b>Model 2 Cut-Points:</b> " + ", ".join(self.html_escape(x) for x in cutpoints2) + "</div>"
+        html += "<p><b>Model 1 Cut-Points:</b> " + ", ".join(self.html_escape(x) for x in cutpoints1) + "</p>"
+        html += "<p><b>Model 2 Cut-Points:</b> " + ", ".join(self.html_escape(x) for x in cutpoints2) + "</p></div>"
+        
         def path_table(paths, title):
             s = f"<div class='section'><h2>{title}</h2>"
+            if not paths:
+                s += "<p><i>No paths found.</i></p></div>"
+                return s
             s += "<table class='path-table'><tr><th>From</th><th>To</th><th>Transitions</th><th>Condition</th><th>Data Transformation</th></tr>"
             for p in paths:
                 s += "<tr>"
@@ -218,15 +254,17 @@ class GenReport:
                 s += "</tr>"
             s += "</table></div>"
             return s
+            
         html += path_table(paths1, "Model 1 Cut-Point Paths")
         html += path_table(paths2, "Model 2 Cut-Point Paths")
+        
         html += "<div class='section'><h2>Path Mapping (Model 1 to Model 2)</h2>"
         if matches1:
             html += "<table class='path-table'><tr><th>Model 1 Path</th><th>Model 2 Path</th><th>Condition</th><th>Data Transformation</th></tr>"
             for p1, p2 in matches1:
                 html += "<tr>"
-                html += f"<td>{self.html_escape(p1['from'])}&rarr;{self.html_escape(p1['to'])} ({self.html_escape(p1['transitions'])})</td>"
-                html += f"<td>{self.html_escape(p2['from'])}&rarr;{self.html_escape(p2['to'])} ({self.html_escape(p2['transitions'])})</td>"
+                html += f"<td>{self.html_escape(p1['from'])}&rarr;{self.html_escape(p1['to'])} <br><small>({self.html_escape(p1['transitions'])})</small></td>"
+                html += f"<td>{self.html_escape(p2['from'])}&rarr;{self.html_escape(p2['to'])} <br><small>({self.html_escape(p2['transitions'])})</small></td>"
                 html += f"<td><pre>{self.html_escape(p1['cond'])}</pre></td>"
                 html += f"<td><pre>{self.html_escape(p1['subst'])}</pre></td>"
                 html += "</tr>"
@@ -234,9 +272,11 @@ class GenReport:
         else:
             html += "<div>No matched paths found.</div>"
         html += "</div>"
+        
         if unmatched1:
-            html += "<div class='section'><h2>Paths in Model 1 with NO equivalent path in Model 2</h2>"
+            html += "<div class='section' style='border-color: #FF5252;'><h2>⚠️ Paths in Model 1 with NO equivalent path in Model 2</h2>"
             html += path_table(unmatched1, "")
+            
         html += "<div class='section'><h2>Containment Result</h2>"
         if contained:
             html += "<span class='contained'>All paths of Model 1 are equivalent to some path of Model 2 (Model 1 is contained in Model 2).</span>"

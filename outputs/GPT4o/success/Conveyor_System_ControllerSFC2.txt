@@ -1,5 +1,5 @@
 # Generated SFC data
-# Extracted from: /home/tanush/BITS/SOP/Antarbhukti-LLM/uploads/pair_0/new/Conveyor_System_ControllerSFC2.txt
+# Extracted from: /home/tanush/BITS/SOP/Antarbhukti-LLM/uploads/job_0/new/Conveyor_System_ControllerSFC2.txt
 
 steps = [
     {'name': 'Idle', 'function': 'WaitForObject'},

@@ -1,0 +1,29 @@
+# Generated SFC data
+# Extracted from: /home/tanush/BITS/SOP/Antarbhukti-LLM/outputs/Claude/failed/Lift_Control_System_SFC2_1.txt
+
+steps = [
+    {'name': 'WaitCall', 'function': 'MonitorFloorRequest'},
+    {'name': 'MoveLift', 'function': 'DriveToFloor'},
+    {'name': 'OpenDoor', 'function': 'UnlockDoors'},
+    {'name': 'SafetyWatchdog', 'function': 'CheckTimeouts'},
+    {'name': 'TimeoutSafeStop', 'function': 'ExecuteSafeStop'},
+    {'name': 'SafetyLog', 'function': 'LogSafetyEvent'},
+    {'name': 'SafeShutdown', 'function': 'ShutdownLift'},
+]
+
+transitions = [
+    {'src': 'WaitCall', 'tgt': 'MoveLift', 'guard': 'callReceived == True'},
+    {'src': 'MoveLift', 'tgt': 'OpenDoor', 'guard': 'arrived == True'},
+    {'src': 'OpenDoor', 'tgt': 'WaitCall', 'guard': 'doorClosed == True'},
+    {'src': 'MoveLift', 'tgt': 'SafetyWatchdog', 'guard': 'travel_time_exceeded'},
+    {'src': 'OpenDoor', 'tgt': 'SafetyWatchdog', 'guard': 'door_time_exceeded'},
+    {'src': 'SafetyWatchdog', 'tgt': 'TimeoutSafeStop', 'guard': 'timeout_counter > threshold or watchdog_triggered'},
+    {'src': 'SafetyWatchdog', 'tgt': 'MoveLift', 'guard': 'watchdog_ok and not travel_time_exceeded'},
+    {'src': 'TimeoutSafeStop', 'tgt': 'SafetyLog', 'guard': 'true'},
+    {'src': 'SafetyLog', 'tgt': 'SafeShutdown', 'guard': 'log_complete'},
+    {'src': 'SafeShutdown', 'tgt': 'WaitCall', 'guard': 'manual_reset'},
+]
+
+variables = ['callReceived', 'arrived', 'doorClosed', 'travel_time_exceeded', 'door_time_exceeded', 'timeout_counter', 'threshold', 'watchdog_triggered', 'watchdog_ok', 'log_complete', 'manual_reset']
+
+initial_step = 'WaitCall'

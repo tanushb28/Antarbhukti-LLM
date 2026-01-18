@@ -1,5 +1,5 @@
 # Generated SFC data
-# Extracted from: /home/tanush/BITS/SOP/Antarbhukti-LLM/uploads/job_2/new/Filling_and_Packaging_Line_SFC2.txt
+# Extracted from: /home/tanush/BITS/SOP/Antarbhukti-LLM/outputs/Claude/failed/Filling_and_Packaging_Line_SFC2.txt
 
 steps = [
     {'name': 'Start', 'function': 'InitializeSystem'},
@@ -10,6 +10,9 @@ steps = [
     {'name': 'Seal', 'function': 'SealPackage'},
     {'name': 'Label', 'function': 'ApplyLabel'},
     {'name': 'End', 'function': 'ConveyOut'},
+    {'name': 'CollectGrain', 'function': 'RouteSortedGrains()'},
+    {'name': 'FeedGrain', 'function': 'ActivateFeeder()'},
+    {'name': 'SortGrain', 'function': 'StartSorting()'},
 ]
 
 transitions = [
@@ -20,6 +23,9 @@ transitions = [
     {'src': 'CheckInterlocks', 'tgt': 'Seal', 'guard': 'interlock_ok == True and level_ok'},
     {'src': 'Seal', 'tgt': 'Label', 'guard': 'sealing_done'},
     {'src': 'Label', 'tgt': 'End', 'guard': 'label_ok'},
+    {'src': 'CollectGrain', 'tgt': 'FeedGrain', 'guard': 'True'},
+    {'src': 'FeedGrain', 'tgt': 'SortGrain', 'guard': 'grainPresent == True'},
+    {'src': 'SortGrain', 'tgt': 'CollectGrain', 'guard': 'sortingDone == True'},
 ]
 
 variables = ['system_ready', 'filling_done', 'level_ok', 'sealing_done', 'label_ok', 'interlock_ok']

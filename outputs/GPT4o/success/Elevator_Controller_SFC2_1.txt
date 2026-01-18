@@ -1,0 +1,27 @@
+# Generated SFC data
+# Extracted from: /home/tanush/BITS/SOP/Antarbhukti-LLM/outputs/GPT4o/failed/Elevator_Controller_SFC2.txt
+
+steps = [
+    {'name': 'Idle', 'function': 'WaitRequest'},
+    {'name': 'SafetyCheckInput', 'function': 'ValidateInputs()'},
+    {'name': 'SafetyError', 'function': 'LogAndHalt()'},
+    {'name': 'MoveUp', 'function': 'ElevatorUp'},
+    {'name': 'MoveDown', 'function': 'ElevatorDown'},
+    {'name': 'OpenDoor', 'function': 'OpenDoors'},
+]
+
+transitions = [
+    {'src': 'Idle', 'tgt': 'SafetyCheckInput', 'guard': 'requestedFloor != currentFloor'},
+    {'src': 'Idle', 'tgt': 'MoveUp', 'guard': 'requestedFloor > currentFloor'},
+    {'src': 'Idle', 'tgt': 'MoveDown', 'guard': 'requestedFloor < currentFloor'},
+    {'src': 'SafetyCheckInput', 'tgt': 'SafetyError', 'guard': 'inputsValid == False'},
+    {'src': 'SafetyCheckInput', 'tgt': 'MoveUp', 'guard': 'inputsValid == True and requestedFloor > currentFloor'},
+    {'src': 'SafetyCheckInput', 'tgt': 'MoveDown', 'guard': 'inputsValid == True and requestedFloor < currentFloor'},
+    {'src': 'MoveUp', 'tgt': 'OpenDoor', 'guard': 'currentFloor == requestedFloor'},
+    {'src': 'MoveDown', 'tgt': 'OpenDoor', 'guard': 'currentFloor == requestedFloor'},
+    {'src': 'OpenDoor', 'tgt': 'Idle', 'guard': 'doorTimerElapsed == true'},
+]
+
+variables = ['currentFloor', 'requestedFloor', 'doorTimerElapsed', 'inputsValid']
+
+initial_step = 'Idle'

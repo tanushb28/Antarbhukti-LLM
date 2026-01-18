@@ -24,18 +24,6 @@
         "stop": null
     },
     {
-        "llm_name": "grok",
-        "model_name": "grok-beta",
-        "api_key": "your-grok-api-key-here",
-        "max_tokens": 1500,
-        "max_retries": 5,
-        "temperature": 0.2,
-        "top_p": 0.9,
-        "top_k": 10,
-        "n": 1,
-        "stop": null
-    },
-    {
         "llm_name": "llama",
         "model_name": "meta-llama/llama-4-scout-17b-16e-instruct",
         "api_key": "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",

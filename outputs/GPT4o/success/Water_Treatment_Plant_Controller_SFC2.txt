@@ -1,5 +1,5 @@
 # Generated SFC data
-# Extracted from: /home/tanush/BITS/SOP/Antarbhukti-LLM/uploads/pair_2/new/Water_Treatment_Plant_Controller_SFC2.txt
+# Extracted from: /home/tanush/BITS/SOP/Antarbhukti-LLM/uploads/job_0/new/Water_Treatment_Plant_Controller_SFC2.txt
 
 steps = [
     {'name': 'Intake', 'function': 'OpenIntakeValve'},
