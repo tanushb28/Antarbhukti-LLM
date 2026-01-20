@@ -177,3 +177,10 @@ generated/
 output/
 .history/
 .~lock.*#
+
+# Ignore runtime outputs
+outputs/
+uploads/
+
+#securing secrets
+src/antarbhukti/config.json

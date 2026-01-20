@@ -3,10 +3,13 @@
 Antarbhukti — Enterprise Verification Platform
 UI/UX Updated: Dashboard-First, Metrics-Driven, Sales-Ready.
 Fixed: Dashboard fits on one screen (compact layout).
+Fixed: Strips Markdown (```python) from LLM output in Upgrade Designer.
+Feature: Upgrade Designer (Direct GPT-4o Integration) with Multi-Select UI Demo Mode.
 """
 
 import streamlit as st
 import os
+import sys
 import subprocess
 import datetime
 import shutil
@@ -18,6 +21,12 @@ import json
 import pandas as pd
 import altair as alt
 import streamlit.components.v1 as components
+
+# --- PATH SETUP: Ensure we can find src ---
+current_dir = os.path.dirname(os.path.abspath(__file__))
+src_path = os.path.join(current_dir, "src")
+if src_path not in sys.path:
+    sys.path.append(src_path)
 
 # ---------------------------
 # Config & Page Setup
@@ -31,6 +40,173 @@ def load_config():
         return []
     with open(cfg_path, "r", encoding="utf-8") as f:
         return json.load(f)
+
+# ---------------------------
+# DATA: Upgrade Templates
+# ---------------------------
+UPGRADE_DATA = {
+    "Reliability": {
+        "header": """You are an expert in control software design using IEC 61131-3 Sequential Function Charts (SFCs).
+Given an SFC (SFC1) representing a control process, your task is to generate an upgraded version (SFC2) that improves system reliability.
+The upgrade must embed reliability concerns while preserving the original behavior under nominal conditions.
+
+---
+
+**SFC1: Original Control Logic**
+{sfc_code}
+
+---
+
+**Reliability Requirements**
+""",
+        "footer": """---
+
+**Instructions for Generating SFC2**
+
+Use the structured format below to define the upgraded SFC (SFC2):
+
+steps = [
+    { "name": StepName1, "function": FunctionName1 },
+    ...
+]
+transitions = [
+    { "src": StepNameX, "tgt": StepNameY, "guard": GuardCondition1 },
+    ...
+]
+variables = [ var1, var2, ..., additionalVarsIfNeeded ]
+initial_step = StepName1
+
+---
+
+**SFC-Specific Guidelines for Upgradation**
+
+1. *SFC Semantics Compliance*
+   - Follow IEC 61131-3 execution semantics: steps hold active states; transitions must be evaluated between cycles.
+   - Transitions should only occur when all preceding steps are active and the guard condition evaluates to true.
+
+2. *Determinism and Safety*
+   - Ensure transitions are deterministic and do not cause ambiguous behavior.
+   - Avoid conflicting parallel branches unless explicitly required.
+
+3. *Guard Conditions*
+   - Guards must be side-effect-free and should not modify variable states.
+
+4. *Modularity and Naming*
+   - Introduce reliability-specific steps (e.g., ErrorHandler, Log, Retry, SafeAbort) clearly and consistently.
+   - Avoid overloading existing steps.
+
+5. *State Preservation*
+   - Ensure that the upgraded SFC preserves functional equivalence under fault-free execution.
+   - Use logging or backup steps to preserve state before transitions into non-recoverable paths.
+
+6. *Control Flow Validity*
+   - Every step must have a valid exit transition.
+   - Do not leave the system in a deadlock or non-terminal state unless it's an intended final state.
+
+7. *Minimal Disruption Principle*
+   - Do not restructure the original logic unless required to fulfill the reliability requirements.
+   - Prefer incremental additions (guards, new steps, safe exits) over refactoring core paths.
+
+---
+
+Return only the upgraded SFC2 in the format above. Adherence to IEC SFC rules, and full coverage of all reliability requirements.""",
+        "rules": {
+            "Input Validation": {
+                "when": "If any input variable is out of valid range at the beginning of execution.",
+                "action": "Add a ValidateInput step. If validation fails, transition to a ValidationError step that logs the failure and halts control flow."
+            },
+            "Execution Bound (Iteration or Time)": {
+                "when": "A control loop executes beyond a configured maximum count (e.g., 10 iterations).",
+                "action": "Use a variable (e.g., count) to track iterations. If count >= threshold, divert to a SafeAbort step that stores current state and stops execution."
+            },
+            "Intermediate Logging": {
+                "when": "After every critical step (e.g., computation, actuator command).",
+                "action": "Insert a Log step that records key internal states (n, result, etc.) to support traceability and debugging."
+            },
+            "Watchdog Monitoring": {
+                "when": "A variable (e.g., n, temperature, etc.) becomes undefined, negative, or out of operational range during execution.",
+                "action": "Add a guard or WatchdogCheck step. If abnormal state is detected, transition to WatchdogError."
+            }
+        }
+    },
+    "Safety": {
+        "header": """You are an expert in control software design using IEC 61131-3 Sequential Function Charts (SFCs).
+Given an SFC (SFC1) representing a control process, your task is to generate an upgraded version (SFC2) that improves system safety.
+The upgrade must embed safety concerns while preserving the original behavior under nominal conditions.
+
+---
+
+**SFC1: Original Control Logic**
+{sfc_code}
+
+---
+
+**Safety Requirements (When Language)**
+""",
+        "footer": """---
+
+**Instructions for Generating SFC2**
+Use the structured format below to define the upgraded SFC (SFC2):
+
+steps = [
+{ "name": StepName1, "function": FunctionName1 },
+...
+]
+transitions = [
+{ "src": StepNameX, "tgt": StepNameY, "guard": GuardCondition1 },
+...
+]
+variables = [ var1, var2, ..., additionalVarsIfNeeded ]
+initial_step = StepName1
+
+---
+
+**SFC-Specific Guidelines for Upgradation**
+
+1. SFC Semantics Compliance
+Follow IEC 61131-3 execution semantics. Transitions should only occur when all preceding steps are active and the guard condition evaluates to true.
+
+2. Determinism and Safety
+Ensure transitions are deterministic and do not cause ambiguous behavior.
+
+3. Guard Conditions
+Guards must be side-effect-free and should not modify variable states.
+
+4. Modularity and Naming
+Introduce safety-specific steps (e.g., SafetyCheckInput, SafetyLog, TimeoutSafeStop, EmergencyStop) clearly and consistently.
+
+5. State Preservation
+Ensure that the upgraded SFC preserves functional equivalence under fault-free execution. Use logging or backup steps to preserve state before transitions into non-recoverable safety paths.
+
+6. Control Flow Validity
+Every step must have a valid exit transition. Do not leave the system in a deadlock.
+
+7. Minimal Disruption Principle
+Do not restructure the original logic unless required to fulfill the safety requirements. Prefer incremental additions over refactoring core paths.
+
+---
+
+Return only the upgraded SFC2 in the format above. Adherence to IEC SFC rules, and full coverage of all safety requirements.""",
+        "rules": {
+            "Input Safety Validation": {
+                "when": "At the beginning of execution or before any safety-relevant actuation, if any safety-critical input (e.g., sensor values) is missing, undefined, or outside safe bounds.",
+                "action": "Add a SafetyCheckInput step to validate the inputs; on failure, transition to SafetyError that logs the issue and safely halts or inhibits actuation."
+            },
+            "Timeout and Watchdog Safety": {
+                "when": "If a motion, mixing, or signal cycle exceeds its safe time or repetition limit, or a monitored variable becomes undefined/out-of-range during execution.",
+                "action": "Track a timeout_counter and apply watchdog checks; when limits are exceeded or abnormal states detected, transition to TimeoutSafeStop that safely halts the process and preserves state where applicable."
+            },
+            "Safe State Logging": {
+                "when": "After each safety-relevant cycle or control action that can impact a safety boundary or margin.",
+                "action": "Insert a SafetyLog step that records key parameters (e.g., measurements, setpoints, actuator states, and safety margin/status) to provide auditability and diagnostics."
+            },
+            "Emergency Stop Monitoring": {
+                "when": "If an immediate unsafe condition is detected (e.g., jam, overload, collision risk, critical sensor fault, runaway condition).",
+                "action": "Add an EmergencyStopCheck; when triggered, transition to EmergencyStop that immediately halts the system safely and records the fault."
+            }
+        }
+    }
+}
 
 # --- CSS: Enterprise Styling (Compact) ---
 st.markdown("""
@@ -174,6 +350,68 @@ def load_historical_data(result_root="outputs"):
     return pd.DataFrame()
 
 # ---------------------------
+# Helper: DIRECT LLM Call (Fixes "Simulation Mode" & "```python")
+# ---------------------------
+def generate_sfc_upgrade(prompt_text, llm_name="gpt4o"):
+    """
+    Directly calls OpenAI API using the key from config.json.
+    Strips markdown code blocks from the response.
+    """
+    try:
+        # 1. Load Config
+        config_list = load_config()
+        # Find config for selected LLM (or default to GPT-4o)
+        target_config = next((item for item in config_list if item["llm_name"].lower() == llm_name.lower()), None)
+        
+        if not target_config:
+             # Fallback: look for ANY gpt4o config if specific one wasn't found
+            target_config = next((item for item in config_list if "gpt" in item["llm_name"].lower()), None)
+            
+        if not target_config:
+            return "Error: No configuration found for LLM in config.json."
+
+        api_key = target_config.get("api_key")
+        model_name = target_config.get("model_name")
+        
+        # 2. Call OpenAI (Specific fix for GPT-4o request)
+        if "gpt" in llm_name.lower() or "openai" in llm_name.lower():
+            try:
+                from openai import OpenAI
+                client = OpenAI(api_key=api_key)
+                
+                response = client.chat.completions.create(
+                    model=model_name,
+                    messages=[
+                        {"role": "system", "content": "You are a PLC coding expert. Output only valid Python/SFC code structures. Do NOT wrap output in markdown blocks."},
+                        {"role": "user", "content": prompt_text}
+                    ],
+                    temperature=0.2
+                )
+                
+                raw_content = response.choices[0].message.content
+                
+                # --- FIX: Clean Markdown ---
+                # Remove ```python at start and ``` at end if present
+                clean_content = re.sub(r"^```[a-zA-Z]*\n", "", raw_content.strip())
+                clean_content = re.sub(r"\n```$", "", clean_content.strip())
+                
+                return clean_content
+
+            except ImportError:
+                return "Error: 'openai' library not installed. Please run 'pip install openai'."
+            except Exception as e:
+                return f"OpenAI API Error: {str(e)}"
+        
+        # 3. Handle Other Models (Basic Placeholder)
+        elif "claude" in llm_name.lower():
+             return "# Claude support requires 'anthropic' lib. For this demo, please select GPT-4o."
+        
+        return f"# Driver for {llm_name} not directly implemented in this UI tab. Please use GPT-4o."
+
+    except Exception as e:
+        return f"Critical Error in Generation: {str(e)}"
+
+# ---------------------------
 # Sidebar State & Settings
 # ---------------------------
 if "uploaded_orig_files" not in st.session_state:
@@ -182,6 +420,10 @@ if "uploaded_mod_files" not in st.session_state:
     st.session_state.uploaded_mod_files = []
 if "current_batch_csv" not in st.session_state:
     st.session_state.current_batch_csv = None
+if "gen_prompt" not in st.session_state:
+    st.session_state.gen_prompt = ""
+if "gen_code" not in st.session_state:
+    st.session_state.gen_code = ""
 
 config_list = load_config()
 llm_names = [c.get("llm_name", "unknown") for c in config_list] if config_list else ["gpt4o"]
@@ -208,8 +450,9 @@ def add_log_text(logs, msg, panel):
 # ---------------------------
 # MAIN TABS
 # ---------------------------
-tab_dash, tab_upload, tab_run, tab_report = st.tabs([
-    "📊 Executive Dashboard", 
+tab_dash, tab_design, tab_upload, tab_run, tab_report = st.tabs([
+    "📊 Executive Dashboard",
+    "✨ Upgrade Designer",
     "📂 Workstation", 
     "🚀 Processing Engine", 
     "📝 Reports"
@@ -271,7 +514,124 @@ with tab_dash:
         c3.metric("Avg. Time", "0s")
         c4.metric("Avg. Tokens", "0")
 
-# --- TAB 2: WORKSTATION (UPLOAD) ---
+# --- TAB 2: UPGRADE DESIGNER (MULTI-SELECT UI DEMO) ---
+with tab_design:
+    st.header("✨ Upgrade Designer")
+    st.markdown("Design and generate a compliant SFC upgrade using AI-assisted Prompt Engineering.")
+    
+    col_d1, col_d2 = st.columns([1, 1])
+    
+    with col_d1:
+        st.subheader("1. Source & Intent")
+        # File Input
+        sfc1_file = st.file_uploader("Upload Original SFC (SFC1)", type=["txt", "st"], key="design_upload")
+        
+        st.markdown("**Upgrade Objective**")
+        # 1. Fake Multi-Select for Objective (Safety/Reliability)
+        # We allow checking both, but logic prioritizes Safety if both are checked (or just flips based on action).
+        # We default Reliability to True.
+        obj_safety = st.checkbox("Safety", key="obj_safety")
+        obj_reliability = st.checkbox("Reliability", value=True, key="obj_reliability")
+        
+        # LOGIC: Determine which set of rules to SHOW. 
+        # If Safety is checked, show Safety rules. If only Reliability, show Reliability rules.
+        # This keeps the UI responsive to user clicks.
+        if obj_safety:
+            upgrade_type = "Safety"
+        else:
+            upgrade_type = "Reliability"
+            
+        st.markdown(f"**Select {upgrade_type} Tactics**")
+        available_rules = list(UPGRADE_DATA[upgrade_type]["rules"].keys())
+        
+        # 2. Fake Multi-Select for Tactics
+        # We iterate and render checkboxes. 
+        # The 'selected_rule_name' will be the LAST one checked in the list (simple logic).
+        selected_rule_name = None
+        
+        # If none checked, we default to the first one logically but maybe not visually? 
+        # Let's check the first one by default visually too so it's not empty.
+        
+        for i, rule in enumerate(available_rules):
+            # Default the first rule to Checked so we always have a valid state
+            default_chk = (i == 0)
+            is_checked = st.checkbox(rule, value=default_chk, key=f"rule_{upgrade_type}_{i}")
+            
+            if is_checked:
+                selected_rule_name = rule
+        
+        # Fallback: If user unchecks all, force the first one logically (so code doesn't break)
+        if not selected_rule_name:
+            selected_rule_name = available_rules[0]
+
+        # Get default text for the selected rule (Single Select Logic)
+        default_when = UPGRADE_DATA[upgrade_type]["rules"][selected_rule_name]["when"]
+        default_action = UPGRADE_DATA[upgrade_type]["rules"][selected_rule_name]["action"]
+
+    with col_d2:
+        st.subheader("2. Requirement Definition")
+        st.info(f"Edit the specific requirements for **'{selected_rule_name}'** to guide the LLM.")
+        
+        # Text areas update based on the *last checked* rule
+        user_when = st.text_area("When (Condition)", value=default_when, height=100)
+        user_action = st.text_area("Action (Logic)", value=default_action, height=100)
+        
+        # Generate Button
+        if st.button("Generate Upgrade Prompt & Code", type="primary"):
+            if sfc1_file is None:
+                st.error("Please upload an SFC1 file first.")
+            else:
+                # 1. Read SFC Content
+                sfc_content = sfc1_file.getvalue().decode("utf-8")
+                
+                # 2. Construct Prompt (Single Select Logic)
+                template = UPGRADE_DATA[upgrade_type]
+                header = template["header"].format(sfc_code=sfc_content)
+                footer = template["footer"]
+                
+                # Insert ONLY the user selected rule
+                rule_block = f"1. {selected_rule_name}\n\nWhen: {user_when}\nAction: {user_action}\n"
+                
+                full_prompt = f"{header}\n{rule_block}\n{footer}"
+                st.session_state.gen_prompt = full_prompt
+                
+                # 3. Call LLM (DIRECT CALL)
+                target_llm = selected_llms[0] if selected_llms else "gpt4o"
+                with st.spinner(f"Generating Code using {target_llm}..."):
+                    generated_code = generate_sfc_upgrade(full_prompt, target_llm)
+                    st.session_state.gen_code = generated_code
+                
+                st.success("Generation Complete!")
+
+    # --- Results Area ---
+    if st.session_state.gen_prompt:
+        st.divider()
+        st.subheader("3. Generated Artifacts")
+        
+        col_res1, col_res2 = st.columns(2)
+        
+        with col_res1:
+            st.markdown("**Generated Prompt (Input)**")
+            with st.expander("View Full Prompt", expanded=False):
+                st.text(st.session_state.gen_prompt)
+            st.download_button(
+                "📥 Download Prompt (.txt)", 
+                st.session_state.gen_prompt, 
+                file_name=f"prompt_{upgrade_type.lower()}.txt"
+            )
+            
+        with col_res2:
+            st.markdown("**Generated SFC2 (Output)**")
+            with st.expander("View Generated Code", expanded=True):
+                st.code(st.session_state.gen_code, language="python")
+            st.download_button(
+                "📥 Download SFC2 (.txt)", 
+                st.session_state.gen_code, 
+                file_name=f"{sfc1_file.name.split('.')[0]}_upgraded.txt" if sfc1_file else "sfc2.txt"
+            )
+            st.caption("Download this file and upload it to the 'Workstation' tab to verify.")
+
+# --- TAB 3: WORKSTATION (UPLOAD) ---
 with tab_upload:
     st.header("📂 Bulk File Staging")
     
@@ -313,7 +673,7 @@ with tab_upload:
         else:
             st.success("✅ Ready to Process.")
 
-# --- TAB 3: PROCESSING ENGINE ---
+# --- TAB 4: PROCESSING ENGINE ---
 with tab_run:
     st.header("🚀 Verification Engine")
     
@@ -379,7 +739,7 @@ with tab_run:
                     progress_bar.progress((i + 1) / len(valid_pairs))
                 st.success("Batch Queue Processed Successfully!")
 
-# --- TAB 4: REPORTS ---
+# --- TAB 5: REPORTS ---
 with tab_report:
     st.header("📝 Reports & Analysis")
     st.markdown("### 1. Current Batch Metrics")

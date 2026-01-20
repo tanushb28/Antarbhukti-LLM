@@ -2,7 +2,7 @@
     {
         "llm_name": "gpt4o",
         "model_name": "gpt-4o",
-        "api_key": "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",
+        "api_key": "ENTER_YOUR_API_KEY_HERE",
         "max_tokens": 1500,
         "max_retries": 5,
         "temperature": 0.3,
@@ -14,7 +14,7 @@
     {
         "llm_name": "gemini",
         "model_name": "gemini-2.5-flash",
-        "api_key": "AIzaSyCN1ngm-PdPzEgcC4NKrIULIU3vhjnqhKw",
+        "api_key": "ENTER_YOUR_API_KEY_HERE",
         "max_tokens": 1500,
         "max_retries": 5,
         "temperature": 0.2,
@@ -26,7 +26,7 @@
     {
         "llm_name": "llama",
         "model_name": "meta-llama/llama-4-scout-17b-16e-instruct",
-        "api_key": "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",
+        "api_key": "ENTER_YOUR_API_KEY_HERE",
         "max_tokens": 4096,
         "max_retries": 5,
         "temperature": 0.3,
@@ -38,7 +38,7 @@
     {
         "llm_name": "claude",
         "model_name": "claude-sonnet-4-5-20250929",
-        "api_key": "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",
+        "api_key": "ENTER_YOUR_API_KEY_HERE",
         "max_tokens": 4096,
         "max_retries": 5,
         "temperature": 0.3,
@@ -50,7 +50,7 @@
     {
         "llm_name": "perplexity",
         "model_name": "sonar-pro",                 
-        "api_key": "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", 
+        "api_key": "ENTER_YOUR_API_KEY_HERE", 
         "max_tokens": 1500,
         "max_retries": 5,
         "temperature": 0.3,
