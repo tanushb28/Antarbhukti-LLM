@@ -1,4 +1,0 @@
-Benchmark Name,Type,GPT4o_iter,Gemini_iter,LLaMA_iter,Claude_iter,Perplexity_iter,GPT4o_tokens,Gemini_tokens,LLaMA_tokens,Claude_tokens,Perplexity_tokens,GPT4o_time,Gemini_time,LLaMA_time,Claude_time,Perplexity_time
-Filling_and_Packaging_Line,unknown,,1,,1,1,,0,,0,0,,0.0,,0.0,0.0
-Grain_Sorting_Machine,unknown,,2,,2,2,,5389,,1447,1032,,25.43,,7.99,9.02
-Greenhouse_Monitoring_System,unknown,,2,,2,2,,4888,,1112,788,,21.8,,5.79,6.89

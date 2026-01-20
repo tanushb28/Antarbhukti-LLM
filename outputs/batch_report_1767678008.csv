@@ -1,4 +1,0 @@
-Benchmark Name,Type,GPT4o_iter,Gemini_iter,LLaMA_iter,Claude_iter,Perplexity_iter,GPT4o_tokens,Gemini_tokens,LLaMA_tokens,Claude_tokens,Perplexity_tokens,GPT4o_time,Gemini_time,LLaMA_time,Claude_time,Perplexity_time
-Boiler_Control,unknown,1,,,,,0,,,,,0.0,,,,
-Elevator_Controller,unknown,2,,,,,1090,,,,,3.98,,,,
-Material_Handling_Robot,unknown,2,,,,,1020,,,,,2.45,,,,

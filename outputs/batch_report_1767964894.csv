@@ -1,3 +1,0 @@
-Benchmark Name,Type,GPT4o_iter,Gemini_iter,LLaMA_iter,Claude_iter,Perplexity_iter,GPT4o_tokens,Gemini_tokens,LLaMA_tokens,Claude_tokens,Perplexity_tokens,GPT4o_time,Gemini_time,LLaMA_time,Claude_time,Perplexity_time
-Lift_Control_System,unknown,,3,,3,5,,12438,,2936,4627,,54.15,,13.68,21.95
-Tank_Level_Control,unknown,,2,,2,2,,13769,,1143,840,,58.55,,6.13,4.91
