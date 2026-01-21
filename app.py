@@ -35,6 +35,86 @@ if src_path not in sys.path:
 # ---------------------------
 st.set_page_config(page_title="LLMA Tool", page_icon="⚡", layout="wide")
 
+# --- HOSTING FIX: Reconstruct config.json from Secrets ---
+def ensure_config_exists():
+    config_dir = os.path.join(current_dir, "src", "antarbhukti")
+    config_path = os.path.join(config_dir, "config.json")
+    
+    # Only recreate if file is missing AND we have secrets (Cloud Environment)
+    if not os.path.exists(config_path) and "llm_credentials" in st.secrets:
+        secrets = st.secrets["llm_credentials"]
+        
+        # Exact structure based on your provided JSON
+        config_data = [
+            {
+                "llm_name": "gpt4o",
+                "model_name": "gpt-4o",
+                "api_key": secrets.get("gpt4o_key", ""),
+                "max_tokens": 1500,
+                "max_retries": 5,
+                "temperature": 0.3,
+                "top_p": 0.9,
+                "top_k": 10,
+                "n": 1,
+                "stop": None
+            },
+            {
+                "llm_name": "gemini",
+                "model_name": "gemini-2.5-flash",
+                "api_key": secrets.get("gemini_key", ""),
+                "max_tokens": 1500,
+                "max_retries": 5,
+                "temperature": 0.2,
+                "top_p": 1,
+                "top_k": 1,
+                "n": 1,
+                "stop": None
+            },
+            {
+                "llm_name": "llama",
+                "model_name": "meta-llama/llama-4-scout-17b-16e-instruct",
+                "api_key": secrets.get("llama_key", ""),
+                "max_tokens": 4096,
+                "max_retries": 5,
+                "temperature": 0.3,
+                "top_p": 1,
+                "top_k": 10,
+                "n": 1,
+                "stop": None
+            },
+            {
+                "llm_name": "claude",
+                "model_name": "claude-sonnet-4-5-20250929",
+                "api_key": secrets.get("claude_key", ""),
+                "max_tokens": 4096,
+                "max_retries": 5,
+                "temperature": 0.3,
+                "top_p": 1,
+                "top_k": 10,
+                "n": 1,
+                "stop": None
+            },
+            {
+                "llm_name": "perplexity",
+                "model_name": "sonar-pro",
+                "api_key": secrets.get("perplexity_key", ""),
+                "max_tokens": 1500,
+                "max_retries": 5,
+                "temperature": 0.3,
+                "top_p": 0.9,
+                "top_k": 10,
+                "n": 1,
+                "stop": None
+            }
+        ]
+        
+        os.makedirs(config_dir, exist_ok=True)
+        with open(config_path, "w") as f:
+            json.dump(config_data, f, indent=4)
+
+# Run this immediately on app launch
+ensure_config_exists()
+
 def load_config():
     app_dir = os.path.dirname(os.path.abspath(__file__))
     cfg_path = os.path.join(app_dir, "src", "antarbhukti", "config.json")
