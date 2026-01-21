@@ -859,7 +859,7 @@ with tab_run:
                             with open(prompt_file, "w") as ph: ph.write("Provide PLC upgrade rules.")
 
                         llm_arg = ",".join([x.lower() for x in selected_llms])
-                        cmd = ["python3", "-u", driver_path, "--src_path", old_dir, "--mod_path", new_dir, "--result_root", result_root, "--prompt_path", prompt_file, "--config_path", os.path.join(os.path.dirname(driver_path), "config.json"), "--llms", llm_arg]
+                        cmd = [sys.executable, "-u", driver_path, "--src_path", old_dir, "--mod_path", new_dir, "--result_root", result_root, "--prompt_path", prompt_file, "--config_path", os.path.join(os.path.dirname(driver_path), "config.json"), "--llms", llm_arg]
                         env_vars = os.environ.copy()
                         env_vars["BENCHMARK_CSV_PATH"] = session_csv_path
                         
