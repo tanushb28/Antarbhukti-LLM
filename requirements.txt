@@ -1,48 +1,33 @@
-#for streamlit:
+# Web App
 streamlit
 pandas
 altair
-openai
+openpyxl
+
+# LLM SDKs (Verified List)
+openai>=1.0.0
 google-generativeai
 anthropic
 groq
 
-# Core dependencies
+# Core Logic
 z3-solver>=4.12.0
 python-dotenv>=1.0.0
+graphviz>=0.20.0
 
-# LLM and Azure OpenAI dependencies
-openai>=1.0.0
+# LangChain
 langchain-openai>=0.1.0
 langchain-core>=0.1.0
 langchain-community>=0.0.20
 
-# Visualization dependencies
-graphviz>=0.20.0
-
-# Standard library dependencies (included with Python)
-# subprocess, base64, os, re, ast, html are built-in modules
-
-# Testing dependencies
+# Tools & Testing
 pytest>=7.0.0
 pytest-cov>=4.0.0
 pytest-mock>=3.10.0
-
-# Linting and code quality
 flake8>=6.0.0
 flake8-docstrings>=1.7.0
 black>=23.0.0
-
-# Security scanning
 bandit>=1.7.0
 safety>=2.3.0
-
-# Code formatting and import sorting
 isort>=5.12.0
-
-# Type checking
-mypy>=1.0.0 
-
-#For excel automation
-openpyxl==3.1.2
-pandas
+mypy>=1.0.0

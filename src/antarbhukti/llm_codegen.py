@@ -14,7 +14,8 @@ import google.generativeai as genai
 from groq import Groq
 # Claude (Anthropic) Library
 import anthropic
-from perplexity import Perplexity as PerplexityClient
+
+# --- FIX: Removed 'from perplexity import ...' to prevent crash ---
 
 class GPT4o(LLM_Mgr):
     def __init__(self, api_key: str, model_name: str = "gpt-4o"):
@@ -112,10 +113,6 @@ class LLaMA(LLM_Mgr):
         super().__init__("Llama", model_name, api_key)
         self.llm = Groq(api_key=self.api_key)
 
-    # src/antarbhukti/llm_codegen.py
-
-# ... (inside the LLaMA class)
-
     def _get_response_and_tokens(self, system_message: str, user_message: str):
         try:
             completion = self.llm.chat.completions.create(
@@ -135,44 +132,33 @@ class LLaMA(LLM_Mgr):
 
     def generate_code(self, prompt: str, src_code: str):
         system_message = "You are a helpful assistant for generating Sequential Function Chart (SFC) code."
-        # Corrected: Pass messages separately
         return self._get_response_and_tokens(system_message, f"{prompt}\n{src_code}")
 
     def _do_improve(self, prompt: str):
         system_message = "You are a helpful assistant for improving Sequential Function Chart (SFC) code."
-        # Corrected: Pass messages separately
         return self._get_response_and_tokens(system_message, prompt)
 
-# --- NEW PERPLEXITY CLASS ---
+# --- FIX: Updated Perplexity Class to use OpenAI SDK ---
 class Perplexity(LLM_Mgr):
-    def __init__(self, api_key: str, model_name="llama-3-sonar-large-32k-online"):
-        super().__init__("Perplexity", model_name,api_key)
-        # Initialize the official Perplexity client
-        self.llm = PerplexityClient(api_key=api_key)
-        #print(f"[{self.name}] Initialized with model: {self.model_name}")
+    def __init__(self, api_key: str, model_name="sonar-pro"):
+        super().__init__("Perplexity", model_name, api_key)
+        # Use standard OpenAI client pointing to Perplexity URL
+        self.client = openai.OpenAI(api_key=self.api_key, base_url="https://api.perplexity.ai")
 
     def _get_response_and_tokens(self, system_message: str, user_message: str):
-        """A private helper method to handle the API call and token counting."""
         try:
-            messages = [
-                {"role": "system", "content": system_message},
-                {"role": "user", "content": user_message},
-            ]
-            
-            # Log the request
-            # print(f"[Perplexity Request] Model: {self.model_name}, Max Tokens: {self.max_tokens}, Messages: {messages}")
-
-            response = self.llm.chat.completions.create(
+            response = self.client.chat.completions.create(
                 model=self.model_name,
-                messages=messages,
+                messages=[
+                    {"role": "system", "content": system_message},
+                    {"role": "user", "content": user_message},
+                ],
                 max_tokens=self.max_tokens,
+                temperature=self.temperature
             )
-
-            # Log the full raw response
-            # print(f"[Perplexity Response] Full object: {response}")
-
             response_content = response.choices[0].message.content
-            total_tokens = response.usage.total_tokens
+            # Perplexity usage stats are sometimes different, handle safely
+            total_tokens = response.usage.total_tokens if response.usage else 0
             print(f"[{self.name}] Token usage - Total: {total_tokens}")
             return response_content, total_tokens
         except Exception as e:
@@ -180,19 +166,14 @@ class Perplexity(LLM_Mgr):
             return f"Error: {str(e)}", None
 
     def generate_code(self, prompt: str, src_code: str):
-        """Generates new SFC code based on a prompt and source."""
         system_message = "You are a helpful assistant for generating Sequential Function Chart (SFC) code."
-        user_message = f"{prompt}\n{src_code}"
-        return self._get_response_and_tokens(system_message, user_message)
+        return self._get_response_and_tokens(system_message, f"{prompt}\n{src_code}")
 
     def _do_improve(self, prompt: str):
-        """Improves existing SFC code based on a detailed prompt."""
         system_message = "You are a helpful assistant for improving Sequential Function Chart (SFC) code."
-        # The prompt for improvement is the user message
         return self._get_response_and_tokens(system_message, prompt)
 
 def instantiate_llms(llm_names: list[str], llms_config: list):
-    # This function remains unchanged but will work with the corrected classes.
     if not llm_names:
         print("Error: No LLMs specified.")
         sys.exit(1)
@@ -212,7 +193,16 @@ def instantiate_llms(llm_names: list[str], llms_config: list):
 
     for name in llm_names:
         if name.lower() in config_map:
-            llm_name, model_name, api_key, max_tokens, _, temp, top_p, top_k, _, _ = config_map[name.lower()]
+            # Safe unpacking assuming standard config format
+            cfg = config_map[name.lower()]
+            llm_name = cfg[0]
+            model_name = cfg[1]
+            api_key = cfg[2]
+            max_tokens = cfg[3]
+            temp = cfg[5]
+            top_p = cfg[6]
+            top_k = cfg[7]
+            
             try:
                 if not api_key or not api_key.strip():
                     print(f"Warning: Empty API key for {llm_name}. Skipping...")
