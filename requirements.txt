@@ -6,7 +6,6 @@ openai
 google-generativeai
 anthropic
 groq
-perplexity-ai
 
 # Core dependencies
 z3-solver>=4.12.0
