@@ -1,0 +1,39 @@
+PROGRAM Temperature_Control
+  VAR
+    sensor_ok : BOOL;
+    temp_below_min : BOOL;
+    temp_above_max : BOOL;
+    temp_ok : BOOL;
+    heating_done : BOOL;
+    cooling_done : BOOL;
+    cycle_complete : BOOL;
+  END_VAR
+
+  STEP SenseTemp INITIAL ACTION ReadTemperature;
+  STEP CheckTemp ACTION EvaluateTemperature;
+  STEP Heat ACTION TurnOnHeater;
+  STEP Cool ACTION TurnOnCooler;
+  STEP Idle ACTION MaintainState;
+
+  TRANSITION FROM SenseTemp TO CheckTemp CONDITION
+    sensor_ok;
+
+  TRANSITION FROM CheckTemp TO Heat CONDITION
+    temp_below_min;
+
+  TRANSITION FROM CheckTemp TO Cool CONDITION
+    temp_above_max;
+
+  TRANSITION FROM CheckTemp TO Idle CONDITION
+    temp_ok;
+
+  TRANSITION FROM Heat TO SenseTemp CONDITION
+    heating_done;
+
+  TRANSITION FROM Cool TO SenseTemp CONDITION
+    cooling_done;
+
+  TRANSITION FROM Idle TO SenseTemp CONDITION
+    cycle_complete;
+
+END_PROGRAM

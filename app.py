@@ -5,6 +5,8 @@ UI/UX Updated: Dashboard-First, Metrics-Driven, Sales-Ready.
 Fixed: Dashboard fits on one screen (compact layout).
 Fixed: Strips Markdown (```python) from LLM output in Upgrade Designer.
 Feature: Upgrade Designer (Direct GPT-4o Integration) with Multi-Select UI Demo Mode.
+Feature: Auto-detection and conversion of OpenPLC XML/ST files using xmltotxt.py.
+Feature: Downloadable Intermediate SFC1 file (for Workstation pairing).
 """
 
 import streamlit as st
@@ -424,6 +426,8 @@ if "gen_prompt" not in st.session_state:
     st.session_state.gen_prompt = ""
 if "gen_code" not in st.session_state:
     st.session_state.gen_code = ""
+if "gen_sfc1" not in st.session_state:
+    st.session_state.gen_sfc1 = ""
 
 config_list = load_config()
 llm_names = [c.get("llm_name", "unknown") for c in config_list] if config_list else ["gpt4o"]
@@ -452,7 +456,7 @@ def add_log_text(logs, msg, panel):
 # ---------------------------
 tab_dash, tab_design, tab_upload, tab_run, tab_report = st.tabs([
     "📊 Executive Dashboard",
-    "✨ Upgrade Designer",
+    "Upgraded SFC Generator",
     "📂 Workstation", 
     "🚀 Processing Engine", 
     "📝 Reports"
@@ -516,15 +520,15 @@ with tab_dash:
 
 # --- TAB 2: UPGRADE DESIGNER (MULTI-SELECT UI DEMO) ---
 with tab_design:
-    st.header("✨ Upgrade Designer")
+    st.header("Upgraded SFC Generator")
     st.markdown("Design and generate a compliant SFC upgrade using AI-assisted Prompt Engineering.")
     
     col_d1, col_d2 = st.columns([1, 1])
     
     with col_d1:
         st.subheader("1. Source & Intent")
-        # File Input
-        sfc1_file = st.file_uploader("Upload Original SFC (SFC1)", type=["txt", "st"], key="design_upload")
+        # File Input - Updated to allow 'xml'
+        sfc1_file = st.file_uploader("Upload Original SFC (SFC1)", type=["txt", "st", "xml"], key="design_upload")
         
         st.markdown("**Upgrade Objective**")
         # 1. Fake Multi-Select for Objective (Safety/Reliability)
@@ -584,6 +588,44 @@ with tab_design:
                 # 1. Read SFC Content
                 sfc_content = sfc1_file.getvalue().decode("utf-8")
                 
+                # --- AUTO-CONVERSION LOGIC FOR OPENPLC XML/ST ---
+                # Check if it looks like OpenPLC Structured Text (xml or text content)
+                if "PROGRAM" in sfc_content and "END_PROGRAM" in sfc_content:
+                    try:
+                        # Write content to a temp file for the script to read
+                        temp_filename = "temp_convert_input.xml"
+                        with open(temp_filename, "w", encoding="utf-8") as tmp:
+                            tmp.write(sfc_content)
+                        
+                        # Call the external conversion script (xmltotxt.py)
+                        # We use sys.executable to ensure we use the same python env
+                        convert_cmd = [sys.executable, "xmltotxt.py", temp_filename]
+                        
+                        process = subprocess.run(
+                            convert_cmd, 
+                            capture_output=True, 
+                            text=True, 
+                            check=True
+                        )
+                        
+                        # The script prints the converted output to stdout
+                        sfc_content = process.stdout
+                        
+                        # Clean up
+                        if os.path.exists(temp_filename):
+                            os.remove(temp_filename)
+                            
+                        st.toast("✅ Auto-converted StructuredText to SFC format", icon="🔄")
+                        
+                    except subprocess.CalledProcessError as e:
+                        st.error(f"Conversion Script Failed: {e.stderr}")
+                        # Don't stop, maybe the raw content works? (Unlikely but safe to proceed with warning)
+                    except Exception as e:
+                        st.error(f"Error running conversion: {str(e)}")
+
+                # Capture Final SFC1 for Download (Converted or Original)
+                st.session_state.gen_sfc1 = sfc_content
+
                 # 2. Construct Prompt (Single Select Logic)
                 template = UPGRADE_DATA[upgrade_type]
                 header = template["header"].format(sfc_code=sfc_content)
@@ -614,11 +656,25 @@ with tab_design:
             st.markdown("**Generated Prompt (Input)**")
             with st.expander("View Full Prompt", expanded=False):
                 st.text(st.session_state.gen_prompt)
-            st.download_button(
-                "📥 Download Prompt (.txt)", 
-                st.session_state.gen_prompt, 
-                file_name=f"prompt_{upgrade_type.lower()}.txt"
-            )
+            
+            # Row for buttons
+            c_btn1, c_btn2 = st.columns([1, 1])
+            with c_btn1:
+                st.download_button(
+                    "📥 Download Prompt (.txt)", 
+                    st.session_state.gen_prompt, 
+                    file_name=f"prompt_{upgrade_type.lower()}.txt"
+                )
+            with c_btn2:
+                # NEW BUTTON: Download Converted Source
+                if st.session_state.gen_sfc1:
+                    src_name = sfc1_file.name.rsplit('.', 1)[0] + "_SFC.txt" if sfc1_file else "sfc1_converted.txt"
+                    st.download_button(
+                        "📥 Download Converted Original SFC (.txt)", 
+                        st.session_state.gen_sfc1, 
+                        file_name=src_name,
+                        help="Download the converted SFC1 text file to use in the Workstation tab."
+                    )
             
         with col_res2:
             st.markdown("**Generated SFC2 (Output)**")
