@@ -11,6 +11,11 @@ dependencies:
     - z3-solver>=4.12.0
     - python-dotenv>=1.0.0
     
+    # LLM SDKs (MISSING LINES ADDED HERE)
+    - google-generativeai>=0.3.0
+    - anthropic
+    - groq
+    
     # LLM and Azure OpenAI dependencies
     - openai>=1.0.0
     - langchain-openai>=0.1.0
@@ -38,4 +43,4 @@ dependencies:
     - isort>=5.12.0
     
     # Type checking
-    - mypy>=1.0.0 
+    - mypy>=1.0.0
