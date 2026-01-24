@@ -6,15 +6,16 @@ Paths in Model 1 with NO equivalent path in Model 2
 From	      To	        Transitions	    Z3 Condition	   Z3 Data Transformation
 
 From	To	Transitions	Condition	Data Transformation
-MonitorTemp	StopReaction	['t_1']	(> temp safeLimit)	true
+MoveLift	OpenDoor	['t_1']	(= arrived true)	true
+OpenDoor	WaitCall	['t_2']	(= doorClosed true)	true
 
 Here is the current SFC2 Python code:
-steps2 = [{'name': 'StartReaction', 'function': 'InitChemicals()'}, {'name': 'MonitorTemp', 'function': 'CheckTemperature()'}, {'name': 'EmergencyStopCheck', 'function': 'CheckEmergencyConditions()'}, {'name': 'EmergencyStop', 'function': 'ShutdownReactorSafely()'}, {'name': 'StopReaction', 'function': 'EndProcess()'}]
-transitions2 = [{'src': 'StartReaction', 'tgt': 'MonitorTemp', 'guard': 'reactionStarted == True'}, {'src': 'MonitorTemp', 'tgt': 'EmergencyStopCheck', 'guard': 'True'}, {'src': 'EmergencyStopCheck', 'tgt': 'EmergencyStop', 'guard': 'unsafeCondition == True'}, {'src': 'EmergencyStopCheck', 'tgt': 'StopReaction', 'guard': 'temp > safeLimit and unsafeCondition == False'}, {'src': 'StopReaction', 'tgt': 'StartReaction', 'guard': 'True'}]
+steps2 = [{'name': 'WaitCall', 'function': 'MonitorFloorRequest'}, {'name': 'MoveLift', 'function': 'DriveToFloor'}, {'name': 'OpenDoor', 'function': 'UnlockDoors'}, {'name': 'SafetyWatchdog', 'function': 'CheckTimeouts'}, {'name': 'TimeoutSafeStop', 'function': 'ExecuteSafeStop'}, {'name': 'SafetyLog', 'function': 'LogSafetyEvent'}, {'name': 'SafeShutdown', 'function': 'ShutdownLift'}]
+transitions2 = [{'src': 'WaitCall', 'tgt': 'MoveLift', 'guard': 'callReceived'}, {'src': 'MoveLift', 'tgt': 'OpenDoor', 'guard': 'arrived and not travel_time_exceeded'}, {'src': 'OpenDoor', 'tgt': 'WaitCall', 'guard': 'doorClosed and not door_time_exceeded'}, {'src': 'MoveLift', 'tgt': 'SafetyWatchdog', 'guard': 'travel_time_exceeded'}, {'src': 'OpenDoor', 'tgt': 'SafetyWatchdog', 'guard': 'door_time_exceeded'}, {'src': 'SafetyWatchdog', 'tgt': 'TimeoutSafeStop', 'guard': 'timeout_counter > threshold or watchdog_triggered'}, {'src': 'SafetyWatchdog', 'tgt': 'MoveLift', 'guard': 'watchdog_ok and not travel_time_exceeded'}, {'src': 'TimeoutSafeStop', 'tgt': 'SafetyLog', 'guard': 'true'}, {'src': 'SafetyLog', 'tgt': 'SafeShutdown', 'guard': 'log_complete'}, {'src': 'SafeShutdown', 'tgt': 'WaitCall', 'guard': 'manual_reset'}]
 
 Here is the SFC1 Python code for reference:
-steps1 = [{'name': 'StartReaction', 'function': 'InitChemicals()'}, {'name': 'MonitorTemp', 'function': 'CheckTemperature()'}, {'name': 'StopReaction', 'function': 'EndProcess()'}]
-transitions1 = [{'src': 'StartReaction', 'tgt': 'MonitorTemp', 'guard': 'reactionStarted == True'}, {'src': 'MonitorTemp', 'tgt': 'StopReaction', 'guard': 'temp > safeLimit'}, {'src': 'StopReaction', 'tgt': 'StartReaction', 'guard': 'True'}]
+steps1 = [{'name': 'WaitCall', 'function': 'MonitorFloorRequest()'}, {'name': 'MoveLift', 'function': 'DriveToFloor()'}, {'name': 'OpenDoor', 'function': 'UnlockDoors()'}]
+transitions1 = [{'src': 'WaitCall', 'tgt': 'MoveLift', 'guard': 'callReceived == True'}, {'src': 'MoveLift', 'tgt': 'OpenDoor', 'guard': 'arrived == True'}, {'src': 'OpenDoor', 'tgt': 'WaitCall', 'guard': 'doorClosed == True'}]
 
 Please modify steps2 and transitions2 so that all above paths are covered and equivalence will hold. 
 Only output valid Python code for steps2 and transitions2, nothing else.

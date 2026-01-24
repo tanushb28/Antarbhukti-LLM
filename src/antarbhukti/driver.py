@@ -166,7 +166,29 @@ def refine_code(src, mod, llm: LLM_Mgr, prompt_template, dest_root):
     for iter_count in range(max_iterations):
         pn2 = sfc2.to_pn()
         resp = verifier.check_pn_containment(sfc1, pn1, sfc2, pn2)
+        # --- NEW CODE START: Always Generate Report ---
+        try:
+            # Decide where to save: 'success' or 'failed' folder
+            status_folder = "success" if resp else "failed"
+            
+            # Create a temp report generator
+            gen_report = GenReport(BENCHMARK_CSV_FILE)
+            
+            # Generate the HTML content immediately
+            html_content = check_pn_containment_html(verifier, gen_report, sfc1, pn1, sfc2, pn2)
+            
+            # Save it
+            temp_dest = gendestname(mod, dest_root + f"/{status_folder}", iter_count)
+            html_dest = os.path.splitext(temp_dest)[0] + ".html"
+            os.makedirs(os.path.dirname(html_dest), exist_ok=True)
+            
+            with open(html_dest, "w", encoding="utf-8") as f:
+                f.write(html_content)
+            print(f"Generated report ({status_folder}): {html_dest}")
 
+        except Exception as e:
+            print(f"Warning: Failed to generate HTML report: {e}")
+        # --- NEW CODE END ---
         if resp:
             dest = gendestname(mod, dest_root + "/success", iter_count)
             os.makedirs(os.path.dirname(dest), exist_ok=True)

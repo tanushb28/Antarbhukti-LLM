@@ -1,4 +1,3 @@
-
 import subprocess
 import base64
 import os
@@ -8,7 +7,7 @@ import ast
 from sfc import SFC
 
 class Verifier:
-    """Petri Net Model Containment Verifier"""
+    """Petri Net Model Containment Verifier with Dynamic Type Inference"""
     
     def __init__(self):
         self.cutpoints1 = []
@@ -24,14 +23,15 @@ class Verifier:
         expr = expr.replace('True', 'true').replace('False', 'false')
         expr = expr.replace('true', 'True').replace('false', 'False')
         expr = expr.replace('%', ' % ')
-        expr = expr.replace('==', ' == ')
-        expr = expr.replace('!=', ' != ')
-        expr = expr.replace('>=', ' >= ')
-        expr = expr.replace('<=', ' <= ')
+        # Pads operators to ensure tokenization works
+        for op in ['==', '!=', '>=', '<=']:
+            expr = expr.replace(op, f' {op} ')
+        
         try:
             node = ast.parse(expr, mode='eval')
         except Exception:
             return expr
+            
         def walk(node):
             if isinstance(node, ast.Expression):
                 return walk(node.body)
@@ -45,33 +45,27 @@ class Verifier:
                 op = node.op
                 left = walk(node.left)
                 right = walk(node.right)
-                if isinstance(op, ast.Mod):
-                    return f"(mod {left} {right})"
-                if isinstance(op, ast.Add):
-                    return f"(+ {left} {right})"
-                if isinstance(op, ast.Sub):
-                    return f"(- {left} {right})"
-                if isinstance(op, ast.Mult):
-                    return f"(* {left} {right})"
-                if isinstance(op, ast.Div):
-                    return f"(/ {left} {right})"
+                op_map = {
+                    ast.Mod: 'mod', ast.Add: '+', ast.Sub: '-', 
+                    ast.Mult: '*', ast.Div: '/'
+                }
+                if type(op) in op_map:
+                    return f"({op_map[type(op)]} {left} {right})"
             if isinstance(node, ast.Compare):
                 left = walk(node.left)
                 if len(node.ops) == 1:
                     op = node.ops[0]
                     right = walk(node.comparators[0])
-                    if isinstance(op, ast.Eq):
-                        return f"(= {left} {right})"
-                    if isinstance(op, ast.NotEq):
-                        return f"(not (= {left} {right}))"
-                    if isinstance(op, ast.Lt):
-                        return f"(< {left} {right})"
-                    if isinstance(op, ast.LtE):
-                        return f"(<= {left} {right})"
-                    if isinstance(op, ast.Gt):
-                        return f"(> {left} {right})"
-                    if isinstance(op, ast.GtE):
-                        return f"(>= {left} {right})"
+                    op_map = {
+                        ast.Eq: '=', ast.NotEq: '!=', ast.Lt: '<',
+                        ast.LtE: '<=', ast.Gt: '>', ast.GtE: '>='
+                    }
+                    if type(op) in op_map:
+                        z3_op = op_map[type(op)]
+                        # Z3 uses 'not' for !=
+                        if z3_op == '!=':
+                            return f"(not (= {left} {right}))"
+                        return f"({z3_op} {left} {right})"
             if isinstance(node, ast.Name):
                 return node.id
             if isinstance(node, ast.Constant):
@@ -79,8 +73,6 @@ class Verifier:
             return ""
         out = walk(node)
         return out
-
-
 
     def find_cut_points(self, pn):
         out_transitions = {p: set() for p in pn["places"]}
@@ -213,36 +205,121 @@ class Verifier:
             dfs(cut, [], set(), cut)
         return paths
 
-    def z3_vars(self, variable_names):
-        return {v: z3.Int(v) for v in variable_names}
+    # --- UPDATED: Dynamic Type Inference ---
+    def infer_types_from_ast(self, ast_node, type_map):
+        """Recursively scan AST to infer variable types based on usage."""
+        if isinstance(ast_node, list):
+            if not ast_node:
+                return
+            head = ast_node[0]
+            args = ast_node[1:]
+            
+            # Logic Operators -> Arguments must be Bool
+            if head in ('and', 'or', 'not'):
+                for arg in args:
+                    self.infer_types_from_ast(arg, type_map)
+                    # If arg is a variable name, mark as Bool
+                    if isinstance(arg, str) and arg not in ('true', 'false') and not arg.isdigit():
+                        if arg not in type_map:
+                            type_map[arg] = z3.Bool
+            
+            # Numeric Comparisons/Ops -> Arguments must be Int
+            elif head in ('<', '<=', '>', '>=', '+', '-', '*', '/', 'mod'):
+                for arg in args:
+                    self.infer_types_from_ast(arg, type_map)
+                    if isinstance(arg, str) and arg not in ('true', 'false') and not arg.isdigit():
+                         # Prioritize usage; if already marked Bool, we have a conflict (bad code), 
+                         # but we overwrite to Int if it's explicitly numeric usage.
+                        type_map[arg] = z3.Int
+            
+            # Equality -> Recurse but don't force type unless known
+            elif head in ('=', '==', '!='):
+                for arg in args:
+                    self.infer_types_from_ast(arg, type_map)
+            else:
+                # Recurse for unknown heads
+                for arg in args:
+                    self.infer_types_from_ast(arg, type_map)
+
+        elif isinstance(ast_node, str):
+            # Base case: Just a string, do nothing until seen in context
+            pass
+
+    def guess_type_by_name(self, name):
+        """Heuristic fallback for variables with ambiguous usage."""
+        name_lower = name.lower()
+        # Common boolean prefixes/suffixes
+        if any(x in name_lower for x in ['is_', 'has_', '_ok', '_done', '_valid', '_active', '_enabled', '_error', '_alarm', 'check', 'start', 'stop']):
+            return z3.Bool
+        # Common integer substrings
+        if any(x in name_lower for x in ['cnt', 'count', 'timer', 'num', 'val', 'level', 'temp', 'pressure', 'speed']):
+            return z3.Int
+        # Default to Bool for logic-heavy SFCs (safer for guards)
+        return z3.Bool
+
+    def get_z3_vars_with_inference(self, variable_names, expr_list):
+        """Create Z3 variables with types inferred from usage."""
+        type_map = {}
+        
+        # 1. Parse all expressions to build ASTs and infer usage
+        for expr in expr_list:
+            if not expr: continue
+            try:
+                # Reuse the tokenizer/parser from parse_z3_expr logic
+                tokens = expr.replace('(', ' ( ').replace(')', ' ) ').split()
+                if not tokens: continue
+                
+                def parse_recur(toks):
+                    if not toks: raise ValueError
+                    t = toks.pop(0)
+                    if t == '(':
+                        L = []
+                        while toks and toks[0] != ')':
+                            L.append(parse_recur(toks))
+                        if toks: toks.pop(0) # pop )
+                        return L
+                    elif t == ')': raise ValueError
+                    return t
+                
+                ast_tree = parse_recur(tokens)
+                self.infer_types_from_ast(ast_tree, type_map)
+            except:
+                pass # Ignore parsing errors during inference
+
+        # 2. Build dictionary
+        z3_dict = {}
+        for v in variable_names:
+            if v in type_map:
+                z3_dict[v] = type_map[v](v)
+            else:
+                # Fallback Heuristic
+                z3_dict[v] = self.guess_type_by_name(v)(v)
+        return z3_dict
 
     def preprocess_condition_for_equivalence(self, expr):
         expr = expr.strip()
-        # Treat 'init' as 'true' for equivalence checking
         if expr == "init":
             return "true"
         return expr
 
     def parse_z3_expr(self, expr, variables):
+        # Local Tokenizer/Parser
         def tokenize(s):
             s = s.replace('(', ' ( ').replace(')', ' ) ')
             return s.split()
         def parse(tokens):
-            if not tokens:
-                raise SyntaxError("Unexpected EOF")
+            if not tokens: raise SyntaxError("Unexpected EOF")
             token = tokens.pop(0)
             if token == '(':
                 L = []
                 while tokens[0] != ')':
                     L.append(parse(tokens))
-                    if not tokens:
-                        raise SyntaxError("Missing ')'")
+                    if not tokens: raise SyntaxError("Missing ')'")
                 tokens.pop(0)
                 return L
-            elif token == ')':
-                raise SyntaxError("Unexpected ')'")
-            else:
-                return token
+            elif token == ')': raise SyntaxError("Unexpected ')'")
+            else: return token
+            
         def build(ast):
             if isinstance(ast, str):
                 if ast in variables:
@@ -250,71 +327,73 @@ class Verifier:
                 try:
                     return int(ast)
                 except ValueError:
-                    if ast.lower() == 'true':
-                        return z3.BoolVal(True)
-                    if ast.lower() == 'false':
-                        return z3.BoolVal(False)
-                    variables[ast] = z3.Int(ast)
-                    return variables[ast]
-                    #return ast
+                    lower = ast.lower()
+                    if lower == 'true': return z3.BoolVal(True)
+                    if lower == 'false': return z3.BoolVal(False)
+                    
+                    # FALLBACK for unknown variables (not in 'variables' dict)
+                    # Use naming heuristic + add to variables to keep consistency
+                    guessed_type = self.guess_type_by_name(ast)
+                    new_var = guessed_type(ast)
+                    variables[ast] = new_var
+                    return new_var
+
             if not isinstance(ast, list) or not ast:
                 return ast
             head = ast[0]
             args = ast[1:]
-            if head == 'and':
-                return z3.And(*[build(a) for a in args])
-            if head == 'or':
-                return z3.Or(*[build(a) for a in args])
-            if head == 'not':
-                return z3.Not(build(args[0]))
-            if head in ('=', '=='):
-                return build(args[0]) == build(args[1])
-            if head == '!=':
-                return build(args[0]) != build(args[1])
-            if head == '<':
-                return build(args[0]) < build(args[1])
-            if head == '<=':
-                return build(args[0]) <= build(args[1])
-            if head == '>':
-                return build(args[0]) > build(args[1])
-            if head == '>=':
-                return build(args[0]) >= build(args[1])
-            if head == '+':
-                return build(args[0]) + build(args[1])
-            if head == '-':
-                return build(args[0]) - build(args[1])
-            if head == '*':
-                return build(args[0]) * build(args[1])
-            if head == '/':
-                return build(args[0]) / build(args[1])
-            if head == 'mod':
-                return build(args[0]) % build(args[1])
+            
+            # Map operators to Z3
+            try:
+                if head == 'and': return z3.And(*[build(a) for a in args])
+                if head == 'or': return z3.Or(*[build(a) for a in args])
+                if head == 'not': return z3.Not(build(args[0]))
+                if head in ('=', '=='): return build(args[0]) == build(args[1])
+                if head == '!=': return build(args[0]) != build(args[1])
+                if head == '<': return build(args[0]) < build(args[1])
+                if head == '<=': return build(args[0]) <= build(args[1])
+                if head == '>': return build(args[0]) > build(args[1])
+                if head == '>=': return build(args[0]) >= build(args[1])
+                if head == '+': return build(args[0]) + build(args[1])
+                if head == '-': return build(args[0]) - build(args[1])
+                if head == '*': return build(args[0]) * build(args[1])
+                if head == '/': return build(args[0]) / build(args[1])
+                if head == 'mod': return build(args[0]) % build(args[1])
+            except Exception as e:
+                # Z3 type errors usually happen here
+                # print(f"Z3 Build Error in {head}: {e}") 
+                raise e
+                
             return z3.BoolVal(True)
+
         expr = expr.strip()
-        if expr == "true":
-            return z3.BoolVal(True)
-        if expr == "false":
-            return z3.BoolVal(False)
-        if expr in variables:
-            return variables[expr]
+        if expr == "true": return z3.BoolVal(True)
+        if expr == "false": return z3.BoolVal(False)
+        if expr in variables: return variables[expr]
+        
         try:
             ast_parsed = parse(tokenize(expr))
             return build(ast_parsed)
         except Exception as e:
-            print(f"Error parsing Z3 expr: {expr}, error: {e}")
+            # print(f"Error parsing Z3 expr: {expr}, error: {e}")
             return None
 
     def are_path_conditions_equivalent(self, cond1, cond2, variables):
-        # Preprocess the conditions to treat 'init' as 'true'
         cond1 = self.preprocess_condition_for_equivalence(cond1)
         cond2 = self.preprocess_condition_for_equivalence(cond2)
-        z3_vars_dict = self.z3_vars(variables)
+        
+        # --- FIX: INFER TYPES DYNAMICALLY ---
+        # Scan both conditions to see how variables are used
+        z3_vars_dict = self.get_z3_vars_with_inference(variables, [cond1, cond2])
+        
         e1 = self.parse_z3_expr(cond1, z3_vars_dict)
         e2 = self.parse_z3_expr(cond2, z3_vars_dict)
+        
         if e1 is None or e2 is None:
             return False
         if not (z3.is_expr(e1) and z3.is_expr(e2)):
             return False
+            
         s = z3.Solver()
         s.add(e1 != e2)
         return s.check() == z3.unsat
@@ -338,6 +417,8 @@ class Verifier:
         for v in allowed_vars:
             v1 = d1.get(v, None)
             v2 = d2.get(v, None)
+            # This is a string comparison, so Z3 types don't strictly matter here
+            # But parsing logic above ensures consistency
             if v1 != v2:
                 return False
         return True
@@ -389,9 +470,5 @@ class Verifier:
         return self.matches1
 
 if __name__ == "__main__":
-    ########################### Example Usage #####################################
-    # Main execution code has been moved to driver.py
-    # Run driver.py for a complete example of using Verifier and GenReport classes
     print("This module provides Verifier class for Petri Net containment analysis.")
     print("Run driver.py for a complete example of usage.")
-
