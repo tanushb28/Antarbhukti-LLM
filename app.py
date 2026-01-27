@@ -562,19 +562,17 @@ tab_dash, tab_design, tab_upload, tab_run, tab_report = st.tabs([
 with tab_dash:
     df_history = load_historical_data()
     
-    # 1. Total Verifications: Use CSV history (Counts every distinct run ever logged)
-    # This preserves your "200+" number
-    #total_verifications = len(df_history) if not df_history.empty else 0
-    
-    # 2. Success Rate: Use Filesystem Stats (Job-Grouped)
-    # This counts "Eventual Success" (100% logic)
-    #_, real_success_rate = get_filesystem_stats("outputs")
+    # 1. Get Real Stats from Disk
     total_unique_jobs, real_success_rate = get_filesystem_stats("outputs")
-
-    if not df_history.empty:
+    
+    # This ensures we start at 0/0/0/0 and update ONLY when real work is done.
+    if total_unique_jobs > 0 and not df_history.empty:
+        
+        # Calculate Averages from the CSV data (which now includes your new batch)
         avg_time = df_history['Time'].mean()
         avg_tokens = df_history['Tokens'].mean()
         
+        # Row 1: Metrics (Real Data)
         col1, col2, col3, col4 = st.columns(4)
         col1.metric("Total Verifications", f"{int(total_unique_jobs)}", delta="Unique Benchmarks")
         col2.metric("Success Rate", f"{real_success_rate:.0f}%", delta="Reliability")
@@ -583,6 +581,7 @@ with tab_dash:
         
         st.markdown("<div style='margin-bottom: 15px;'></div>", unsafe_allow_html=True)
         
+        # Row 2: Charts
         col_g1, col_g2 = st.columns([2, 1])
         with col_g1:
             st.markdown("**Time vs. Iteration Analysis**")
@@ -596,25 +595,29 @@ with tab_dash:
                 ).interactive().properties(height=300)
                 st.altair_chart(chart, use_container_width=True)
             else:
-                st.info("Insufficient data.")
+                st.info("Insufficient data for chart.")
 
         with col_g2:
             st.markdown("**Model Usage**")
             bar_data = df_history['Model'].value_counts().reset_index()
             bar_data.columns = ['Model', 'Count']
+            
             bar_chart = alt.Chart(bar_data).mark_bar().encode(
                 x=alt.X('Model', axis=alt.Axis(labelAngle=0)),
                 y='Count',
                 color='Model'
             ).properties(height=300)
             st.altair_chart(bar_chart, use_container_width=True)
+
     else:
-        st.info("No history found. Go to 'Workstation' to verify your first file.")
+        # EMPTY STATE: Show this on fresh boot (Clean 0/0/0/0)
+        st.info("Ready to Verify. Go to 'Workstation' to upload and run your first batch.")
+        
         c1, c2, c3, c4 = st.columns(4)
-        c1.metric("Total Verifications", "0")
-        c2.metric("Success Rate", "0%")
-        c3.metric("Avg. Time", "0s")
-        c4.metric("Avg. Tokens", "0")
+        c1.metric("Total Verifications", "0", delta="Ready")
+        c2.metric("Success Rate", "0%", delta="--")
+        c3.metric("Avg. Time", "0s", delta="--")
+        c4.metric("Avg. Tokens", "0", delta="--")
 
 # --- TAB 2: UPGRADE DESIGNER ---
 with tab_design:
