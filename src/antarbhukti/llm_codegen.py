@@ -3,19 +3,20 @@ import sys
 from abc import abstractmethod
 from llm_mgr import LLM_Mgr
 from codegenutil import read_config_file, parse_args
+
 # Open AI libraries
 import openai
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_community.callbacks import get_openai_callback
-# Gemini Library
+
+# --- REMOVED HEAVY DEPENDENCY: from langchain_community.callbacks import get_openai_callback ---
+
+# Gemini Library (Legacy SDK matching your code)
 import google.generativeai as genai
 # Groq Library for LLaMA
 from groq import Groq
 # Claude (Anthropic) Library
 import anthropic
-
-# --- FIX: Removed 'from perplexity import ...' to prevent crash ---
 
 class GPT4o(LLM_Mgr):
     def __init__(self, api_key: str, model_name: str = "gpt-4o"):
@@ -25,11 +26,16 @@ class GPT4o(LLM_Mgr):
 
     def _get_response_with_callbacks(self, messages):
         try:
-            with get_openai_callback() as callback:
-                response = self.llm.invoke(messages)
-                token_usage = callback.total_tokens
-                print(f"[{self.name}] Token usage - Total: {token_usage}, Cost: ${callback.total_cost:.5f}")
-                return response.content, token_usage
+            # Simplified invocation without the heavy callback manager
+            response = self.llm.invoke(messages)
+            
+            # Simple token extraction (if available in metadata)
+            token_usage = 0
+            if hasattr(response, 'response_metadata'):
+                token_usage = response.response_metadata.get('token_usage', {}).get('total_tokens', 0)
+            
+            print(f"[{self.name}] Token usage - Total: {token_usage}")
+            return response.content, token_usage
         except Exception as e:
             return f"Error: {str(e)}", None
 
@@ -50,13 +56,15 @@ class GPT4o(LLM_Mgr):
 class Gemini(LLM_Mgr):
     def __init__(self, api_key: str, model_name: str = "gemini-1.5-flash-001"):
         super().__init__("Gemini", model_name, api_key)
+        # Using legacy configure method
         genai.configure(api_key=self.api_key)
         self.llm = genai.GenerativeModel(model_name=self.model_name)
 
     def _get_response_and_tokens(self, content: str):
         try:
             response = self.llm.generate_content(content)
-            total_tokens = response.usage_metadata.total_token_count if hasattr(response, 'usage_metadata') else None
+            # Handle token counting safely
+            total_tokens = response.usage_metadata.total_token_count if hasattr(response, 'usage_metadata') else 0
             print(f"[{self.name}] Token usage - Total: {total_tokens}")
             return response.text, total_tokens
         except Exception as e:
@@ -138,7 +146,7 @@ class LLaMA(LLM_Mgr):
         system_message = "You are a helpful assistant for improving Sequential Function Chart (SFC) code."
         return self._get_response_and_tokens(system_message, prompt)
 
-# --- FIX: Updated Perplexity Class to use OpenAI SDK ---
+# --- PERPLEXITY CLASS (Corrected to use OpenAI SDK) ---
 class Perplexity(LLM_Mgr):
     def __init__(self, api_key: str, model_name="sonar-pro"):
         super().__init__("Perplexity", model_name, api_key)
@@ -157,7 +165,6 @@ class Perplexity(LLM_Mgr):
                 temperature=self.temperature
             )
             response_content = response.choices[0].message.content
-            # Perplexity usage stats are sometimes different, handle safely
             total_tokens = response.usage.total_tokens if response.usage else 0
             print(f"[{self.name}] Token usage - Total: {total_tokens}")
             return response_content, total_tokens
@@ -193,7 +200,6 @@ def instantiate_llms(llm_names: list[str], llms_config: list):
 
     for name in llm_names:
         if name.lower() in config_map:
-            # Safe unpacking assuming standard config format
             cfg = config_map[name.lower()]
             llm_name = cfg[0]
             model_name = cfg[1]
