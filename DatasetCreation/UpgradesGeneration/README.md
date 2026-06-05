@@ -21,7 +21,7 @@ UpgradesGeneration/
 ├── Dataset_Diagnostics/     # Scripts for mathematical verification and syntax sanitization
 │   ├── verify_dataset.py    # Strict Antarbhukti Petri-Net containment verifier
 │   └── zero_shot_eval.py    # Multi-model API testing harness
-├── PromptForUpgrades.txt    # The strict System Prompt & Upgrade Library ruleset
+├── PromptForUpgrades.txt    # The System Prompt & Upgrade Library ruleset
 └── [Pipeline Scripts]       # Python automation files (see Pipeline Phases below)
 
 ```
@@ -38,18 +38,18 @@ The pipeline is sequentially designed to handle generation, sanitation, splittin
 Scripts used to query LLMs (DeepSeek, Claude) to apply safety and reliability upgrades to the baseline OSCAT seeds.
 
 * **`deepseek_multithread.py`**: A high-concurrency script to hit the DeepSeek API, generating thousands of upgraded SFCs while managing rate limits and parsing strict XML/JSON outputs.
-* **`create_layer2_batch.py`**: Iterates over successful Layer 1 generations and applies a *second* distinct safety rule, creating complex, compositional logic upgrades.
-* **`CLAUDE_run_batch.py` & `CLAUDE_create_batch.py**`: Equivalent batch-processing scripts optimized for the Anthropic Claude API architecture.
+* **`create_layer2_batch.py`**: Iterates over successful Layer 1 generations and applies a *second* distinct safety rule. 
+* **`CLAUDE_run_batch.py` & `CLAUDE_create_batch.py**`: Equivalent batch-processing scripts optimized for the Anthropic Claude API architecture.(used previously before switching to DeepSeek)
 * **`rescue_batch.py`**: A utility script to sweep for corrupted or truncated API responses and re-queue them for generation.
 
 ### Phase 2: Data Sanitation & Triplet Formatting
 
 Raw LLM outputs often contain markdown hallucinations or missing tags. These scripts enforce strict dataset uniformity.
 
-* **`layer1_cleaner.py`**: Acts as a quarantine bouncer. Sweeps the generation folders and evicts any files that failed to generate valid JSON or hit token limit cutoffs mid-generation.
+* **`layer1_cleaner.py`**: Sweeps the generation folders and evicts any files that failed to generate valid JSON or hit token limit cutoffs mid-generation.
 * **`uniform_formatter.py`**: The core dataset compiler. It extracts the raw baseline, the `<NL_upgradation_prompt>`, and the `<SFC_upgraded>`, stitching them together into a unified `{"sfc_baseline": {}, "nl_prompt": "", "sfc_upgraded": {}}` triplet format required for standard SFT.
 
-### Phase 3: Mathematical Isolation (Data Splitting)
+### Phase 3: Data Splitting
 
 * **`train_test_split.py`**: Enforces a strict 90/10 split of the dataset. Critically, it splits the data based on the **original `ALLSEEDS` root file**, preventing "data leakage" (e.g., ensuring a Layer 2 file does not end up in the test set if its parent Layer 1 file is in the training set).
 
