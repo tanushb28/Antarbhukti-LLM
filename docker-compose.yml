@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  antarbhukti-app:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      # REQUIRED: Mount a reviewer-provided config.json containing LLM API keys.
+      # Copy src/antarbhukti/config_example.json to config.json, fill in your keys,
+      # then uncomment the line below before running docker-compose up.
+      # - ./src/antarbhukti/config.json:/app/src/antarbhukti/config.json:ro
+
+      # Output reports will be saved here and are accessible on the host after the run.
+      - ./outputs:/app/outputs

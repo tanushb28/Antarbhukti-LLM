@@ -1,0 +1,285 @@
+{
+  "id": "ACTUATOR_2P_sfc_iter_02_L2_iter_02",
+  "layer": 2,
+  "sfc_baseline": {
+    "steps": [
+      {
+        "name": "InitCycle",
+        "function": "timer(trun := MUL_T_AI(SELF_ACT_PULSE,2 * SELF_ACT_CYCLES), toff := SELF_ACT_TIME, Test := TEST, ARE := ARE, arx := ARX); ARX := timer.ARX; ARO := timer.ARO; CYCLE_ELAPSED_TIME := CYCLE_ELAPSED_TIME + SCAN_TIME;"
+      },
+      {
+        "name": "SafetyCheckInput",
+        "function": "INPUT_VALID := (IN >= BYTE#0) AND (IN <= BYTE#255) AND (SENS > BYTE#0) AND (SENS <= BYTE#255); TIMEOUT_EXCEEDED := CYCLE_ELAPSED_TIME > MAX_SAFE_CYCLE_TIME;"
+      },
+      {
+        "name": "SafetyError",
+        "function": "OUT := FALSE; SAFETY_ERROR_FLAG := TRUE; ARO := FALSE;"
+      },
+      {
+        "name": "TimeoutSafeStop",
+        "function": "OUT := FALSE; TIMEOUT_ERROR_FLAG := TRUE; ARO := FALSE;"
+      },
+      {
+        "name": "Branch_0",
+        "function": "pwgen(PTL := SELF_ACT_PULSE, PTH := SELF_ACT_PULSE); out := pwgen.Q;"
+      },
+      {
+        "name": "Branch_1",
+        "function": "out := FALSE;"
+      },
+      {
+        "name": "Branch_2",
+        "function": "out := TRUE;"
+      },
+      {
+        "name": "Step_255",
+        "function": "pwgen.PTH := (CYCLE_TIME * BYTE_TO_TIME(BAND_B(IN,SENS)) ) / BYTE_TO_TIME(BYTE#255); pwgen.PTL := CYCLE_TIME - pwgen.PTH; pwgen(); out := pwgen.Q;"
+      },
+      {
+        "name": "ApplyOutput",
+        "function": "CYCLE_ELAPSED_TIME := TIME#0s;"
+      }
+    ],
+    "transitions": [
+      {
+        "src": "InitCycle",
+        "tgt": "SafetyCheckInput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "SafetyError",
+        "guard": "INPUT_VALID == FALSE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "TimeoutSafeStop",
+        "guard": "INPUT_VALID == TRUE AND TIMEOUT_EXCEEDED == TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_0",
+        "guard": "INPUT_VALID == TRUE AND TIMEOUT_EXCEEDED == FALSE AND aro == TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_1",
+        "guard": "INPUT_VALID == TRUE AND TIMEOUT_EXCEEDED == FALSE AND aro == FALSE AND in<sens"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_2",
+        "guard": "INPUT_VALID == TRUE AND TIMEOUT_EXCEEDED == FALSE AND aro == FALSE AND NOT (in<sens) AND BYTE_TO_USINT(in)>USINT#255-BYTE_TO_USINT(sens)"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Step_255",
+        "guard": "INPUT_VALID == TRUE AND TIMEOUT_EXCEEDED == FALSE AND aro == FALSE AND NOT (in<sens) AND NOT (BYTE_TO_USINT(in)>USINT#255-BYTE_TO_USINT(sens))"
+      },
+      {
+        "src": "Branch_0",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Branch_1",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Branch_2",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Step_255",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "ApplyOutput",
+        "tgt": "InitCycle",
+        "guard": "TRUE"
+      }
+    ],
+    "variables": [
+      "IN",
+      "TEST",
+      "ARE",
+      "CYCLE_TIME",
+      "SENS",
+      "SELF_ACT_TIME",
+      "SELF_ACT_PULSE",
+      "SELF_ACT_CYCLES",
+      "OUT",
+      "ARO",
+      "ARX",
+      "timer",
+      "pwgen",
+      "INPUT_VALID",
+      "TIMEOUT_EXCEEDED",
+      "CYCLE_ELAPSED_TIME",
+      "MAX_SAFE_CYCLE_TIME",
+      "SCAN_TIME",
+      "SAFETY_ERROR_FLAG",
+      "TIMEOUT_ERROR_FLAG"
+    ],
+    "initial_step": "InitCycle"
+  },
+  "nl_prompt": "When: The safety-critical input `SENS` is zero, which would cause a division by zero in Step_255.\nAction: Add a new parallel branch from SafetyCheckInput to a new step `DivZeroSafeStop` that sets the output to a safe state and logs the error.\nWhen: The variable `CYCLE_TIME` is zero or negative, which would cause invalid pulse width calculations.\nAction: Add a new parallel branch from SafetyCheckInput to a new step `InvalidCycleTimeStop` that sets the output to a safe state and logs the error.",
+  "sfc_upgraded": {
+    "steps": [
+      {
+        "name": "InitCycle",
+        "function": "timer(trun := MUL_T_AI(SELF_ACT_PULSE,2 * SELF_ACT_CYCLES), toff := SELF_ACT_TIME, Test := TEST, ARE := ARE, arx := ARX); ARX := timer.ARX; ARO := timer.ARO; CYCLE_ELAPSED_TIME := CYCLE_ELAPSED_TIME + SCAN_TIME;"
+      },
+      {
+        "name": "SafetyCheckInput",
+        "function": "INPUT_VALID := (IN >= BYTE#0) AND (IN <= BYTE#255) AND (SENS > BYTE#0) AND (SENS <= BYTE#255); TIMEOUT_EXCEEDED := CYCLE_ELAPSED_TIME > MAX_SAFE_CYCLE_TIME;"
+      },
+      {
+        "name": "SafetyError",
+        "function": "OUT := FALSE; SAFETY_ERROR_FLAG := TRUE; ARO := FALSE;"
+      },
+      {
+        "name": "TimeoutSafeStop",
+        "function": "OUT := FALSE; TIMEOUT_ERROR_FLAG := TRUE; ARO := FALSE;"
+      },
+      {
+        "name": "Branch_0",
+        "function": "pwgen(PTL := SELF_ACT_PULSE, PTH := SELF_ACT_PULSE); out := pwgen.Q;"
+      },
+      {
+        "name": "Branch_1",
+        "function": "out := FALSE;"
+      },
+      {
+        "name": "Branch_2",
+        "function": "out := TRUE;"
+      },
+      {
+        "name": "Step_255",
+        "function": "pwgen.PTH := (CYCLE_TIME * BYTE_TO_TIME(BAND_B(IN,SENS)) ) / BYTE_TO_TIME(BYTE#255); pwgen.PTL := CYCLE_TIME - pwgen.PTH; pwgen(); out := pwgen.Q;"
+      },
+      {
+        "name": "ApplyOutput",
+        "function": "CYCLE_ELAPSED_TIME := TIME#0s;"
+      },
+      {
+        "name": "DivZeroSafeStop",
+        "function": "OUT := FALSE; DIV_ZERO_ERROR_FLAG := TRUE; ARO := FALSE;"
+      },
+      {
+        "name": "InvalidCycleTimeStop",
+        "function": "OUT := FALSE; CYCLE_TIME_ERROR_FLAG := TRUE; ARO := FALSE;"
+      }
+    ],
+    "transitions": [
+      {
+        "src": "InitCycle",
+        "tgt": "SafetyCheckInput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "SafetyError",
+        "guard": "INPUT_VALID == FALSE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "TimeoutSafeStop",
+        "guard": "INPUT_VALID == TRUE AND TIMEOUT_EXCEEDED == TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_0",
+        "guard": "INPUT_VALID == TRUE AND TIMEOUT_EXCEEDED == FALSE AND aro == TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_1",
+        "guard": "INPUT_VALID == TRUE AND TIMEOUT_EXCEEDED == FALSE AND aro == FALSE AND in<sens"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_2",
+        "guard": "INPUT_VALID == TRUE AND TIMEOUT_EXCEEDED == FALSE AND aro == FALSE AND NOT (in<sens) AND BYTE_TO_USINT(in)>USINT#255-BYTE_TO_USINT(sens)"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Step_255",
+        "guard": "INPUT_VALID == TRUE AND TIMEOUT_EXCEEDED == FALSE AND aro == FALSE AND NOT (in<sens) AND NOT (BYTE_TO_USINT(in)>USINT#255-BYTE_TO_USINT(sens))"
+      },
+      {
+        "src": "Branch_0",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Branch_1",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Branch_2",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Step_255",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "ApplyOutput",
+        "tgt": "InitCycle",
+        "guard": "TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "DivZeroSafeStop",
+        "guard": "INPUT_VALID == TRUE AND TIMEOUT_EXCEEDED == FALSE AND aro == FALSE AND NOT (in<sens) AND NOT (BYTE_TO_USINT(in)>USINT#255-BYTE_TO_USINT(sens)) AND SENS == BYTE#0"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "InvalidCycleTimeStop",
+        "guard": "INPUT_VALID == TRUE AND TIMEOUT_EXCEEDED == FALSE AND aro == FALSE AND NOT (in<sens) AND NOT (BYTE_TO_USINT(in)>USINT#255-BYTE_TO_USINT(sens)) AND CYCLE_TIME <= TIME#0s"
+      },
+      {
+        "src": "DivZeroSafeStop",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "InvalidCycleTimeStop",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      }
+    ],
+    "variables": [
+      "IN",
+      "TEST",
+      "ARE",
+      "CYCLE_TIME",
+      "SENS",
+      "SELF_ACT_TIME",
+      "SELF_ACT_PULSE",
+      "SELF_ACT_CYCLES",
+      "OUT",
+      "ARO",
+      "ARX",
+      "timer",
+      "pwgen",
+      "INPUT_VALID",
+      "TIMEOUT_EXCEEDED",
+      "CYCLE_ELAPSED_TIME",
+      "MAX_SAFE_CYCLE_TIME",
+      "SCAN_TIME",
+      "SAFETY_ERROR_FLAG",
+      "TIMEOUT_ERROR_FLAG",
+      "DIV_ZERO_ERROR_FLAG",
+      "CYCLE_TIME_ERROR_FLAG"
+    ],
+    "initial_step": "InitCycle"
+  }
+}

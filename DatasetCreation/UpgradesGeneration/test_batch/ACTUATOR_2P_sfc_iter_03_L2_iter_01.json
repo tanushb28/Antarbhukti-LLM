@@ -1,0 +1,306 @@
+{
+  "id": "ACTUATOR_2P_sfc_iter_03_L2_iter_01",
+  "layer": 2,
+  "sfc_baseline": {
+    "steps": [
+      {
+        "name": "InitCycle",
+        "function": "timer(trun := MUL_T_AI(SELF_ACT_PULSE,2 * SELF_ACT_CYCLES), toff := SELF_ACT_TIME, Test := TEST, ARE := ARE, arx := ARX); ARX := timer.ARX; ARO := timer.ARO; SafetyCycleCounter := SafetyCycleCounter + 1;"
+      },
+      {
+        "name": "SafetyCheckInput",
+        "function": "InputValidFlag := (IN >= BYTE#0) AND (IN <= BYTE#255) AND (SENS > BYTE#0) AND (SENS <= BYTE#255); SafetyErrorFlag := NOT InputValidFlag;"
+      },
+      {
+        "name": "SafetyError",
+        "function": "out := FALSE; SafetyErrorActive := TRUE; ARO := FALSE;"
+      },
+      {
+        "name": "TimeoutSafeStop",
+        "function": "out := FALSE; TimeoutErrorFlag := TRUE; ARO := FALSE; SafetyCycleCounter := 0;"
+      },
+      {
+        "name": "Branch_0",
+        "function": "pwgen(PTL := SELF_ACT_PULSE, PTH := SELF_ACT_PULSE); out := pwgen.Q;"
+      },
+      {
+        "name": "Branch_1",
+        "function": "out := FALSE;"
+      },
+      {
+        "name": "Branch_2",
+        "function": "out := TRUE;"
+      },
+      {
+        "name": "Step_255",
+        "function": "pwgen.PTH := (CYCLE_TIME * BYTE_TO_TIME(BAND_B(IN,SENS)) ) / BYTE_TO_TIME(BYTE#255); pwgen.PTL := CYCLE_TIME - pwgen.PTH; pwgen(); out := pwgen.Q;"
+      },
+      {
+        "name": "ApplyOutput",
+        "function": ""
+      }
+    ],
+    "transitions": [
+      {
+        "src": "InitCycle",
+        "tgt": "SafetyCheckInput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "SafetyError",
+        "guard": "SafetyErrorFlag == TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "TimeoutSafeStop",
+        "guard": "SafetyErrorFlag == FALSE AND SafetyCycleCounter > (SELF_ACT_CYCLES * 3)"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_0",
+        "guard": "SafetyErrorFlag == FALSE AND SafetyCycleCounter <= (SELF_ACT_CYCLES * 3) AND aro == TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_1",
+        "guard": "SafetyErrorFlag == FALSE AND SafetyCycleCounter <= (SELF_ACT_CYCLES * 3) AND aro == FALSE AND in<sens"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_2",
+        "guard": "SafetyErrorFlag == FALSE AND SafetyCycleCounter <= (SELF_ACT_CYCLES * 3) AND aro == FALSE AND NOT (in<sens) AND BYTE_TO_USINT(in)>USINT#255-BYTE_TO_USINT(sens)"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Step_255",
+        "guard": "SafetyErrorFlag == FALSE AND SafetyCycleCounter <= (SELF_ACT_CYCLES * 3) AND aro == FALSE AND NOT (in<sens) AND NOT (BYTE_TO_USINT(in)>USINT#255-BYTE_TO_USINT(sens))"
+      },
+      {
+        "src": "Branch_0",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Branch_1",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Branch_2",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Step_255",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "ApplyOutput",
+        "tgt": "InitCycle",
+        "guard": "SafetyErrorActive == FALSE AND TimeoutErrorFlag == FALSE"
+      },
+      {
+        "src": "SafetyError",
+        "tgt": "InitCycle",
+        "guard": "SafetyResetCommand == TRUE"
+      },
+      {
+        "src": "TimeoutSafeStop",
+        "tgt": "InitCycle",
+        "guard": "TimeoutResetCommand == TRUE"
+      }
+    ],
+    "variables": [
+      "IN",
+      "TEST",
+      "ARE",
+      "CYCLE_TIME",
+      "SENS",
+      "SELF_ACT_TIME",
+      "SELF_ACT_PULSE",
+      "SELF_ACT_CYCLES",
+      "OUT",
+      "ARO",
+      "ARX",
+      "timer",
+      "pwgen",
+      "InputValidFlag",
+      "SafetyErrorFlag",
+      "SafetyErrorActive",
+      "TimeoutErrorFlag",
+      "SafetyCycleCounter",
+      "SafetyResetCommand",
+      "TimeoutResetCommand"
+    ],
+    "initial_step": "InitCycle"
+  },
+  "nl_prompt": "When: Safety-critical input (IN, SENS) becomes undefined or out of operational bounds during the main cycle.\nAction: Add a parallel monitoring branch from InitCycle to a new SafetyInputMonitor step that continuously validates inputs, with a fallback transition to the existing SafetyError state.\nWhen: After a safety-relevant actuation cycle completes.\nAction: Insert a new SafetyLog step between ApplyOutput and InitCycle to record the cycle counter and error flags before the next cycle begins.",
+  "sfc_upgraded": {
+    "steps": [
+      {
+        "name": "InitCycle",
+        "function": "timer(trun := MUL_T_AI(SELF_ACT_PULSE,2 * SELF_ACT_CYCLES), toff := SELF_ACT_TIME, Test := TEST, ARE := ARE, arx := ARX); ARX := timer.ARX; ARO := timer.ARO; SafetyCycleCounter := SafetyCycleCounter + 1;"
+      },
+      {
+        "name": "SafetyCheckInput",
+        "function": "InputValidFlag := (IN >= BYTE#0) AND (IN <= BYTE#255) AND (SENS > BYTE#0) AND (SENS <= BYTE#255); SafetyErrorFlag := NOT InputValidFlag;"
+      },
+      {
+        "name": "SafetyError",
+        "function": "out := FALSE; SafetyErrorActive := TRUE; ARO := FALSE;"
+      },
+      {
+        "name": "TimeoutSafeStop",
+        "function": "out := FALSE; TimeoutErrorFlag := TRUE; ARO := FALSE; SafetyCycleCounter := 0;"
+      },
+      {
+        "name": "Branch_0",
+        "function": "pwgen(PTL := SELF_ACT_PULSE, PTH := SELF_ACT_PULSE); out := pwgen.Q;"
+      },
+      {
+        "name": "Branch_1",
+        "function": "out := FALSE;"
+      },
+      {
+        "name": "Branch_2",
+        "function": "out := TRUE;"
+      },
+      {
+        "name": "Step_255",
+        "function": "pwgen.PTH := (CYCLE_TIME * BYTE_TO_TIME(BAND_B(IN,SENS)) ) / BYTE_TO_TIME(BYTE#255); pwgen.PTL := CYCLE_TIME - pwgen.PTH; pwgen(); out := pwgen.Q;"
+      },
+      {
+        "name": "ApplyOutput",
+        "function": ""
+      },
+      {
+        "name": "SafetyInputMonitor",
+        "function": "MonitorValidFlag := (IN >= BYTE#0) AND (IN <= BYTE#255) AND (SENS > BYTE#0) AND (SENS <= BYTE#255);"
+      },
+      {
+        "name": "SafetyLog",
+        "function": "LastCycleCounter := SafetyCycleCounter; LastErrorState := SafetyErrorActive OR TimeoutErrorFlag;"
+      }
+    ],
+    "transitions": [
+      {
+        "src": "InitCycle",
+        "tgt": "SafetyCheckInput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "InitCycle",
+        "tgt": "SafetyInputMonitor",
+        "guard": "TRUE"
+      },
+      {
+        "src": "SafetyInputMonitor",
+        "tgt": "SafetyError",
+        "guard": "MonitorValidFlag == FALSE"
+      },
+      {
+        "src": "SafetyInputMonitor",
+        "tgt": "SafetyInputMonitor",
+        "guard": "MonitorValidFlag == TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "SafetyError",
+        "guard": "SafetyErrorFlag == TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "TimeoutSafeStop",
+        "guard": "SafetyErrorFlag == FALSE AND SafetyCycleCounter > (SELF_ACT_CYCLES * 3)"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_0",
+        "guard": "SafetyErrorFlag == FALSE AND SafetyCycleCounter <= (SELF_ACT_CYCLES * 3) AND aro == TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_1",
+        "guard": "SafetyErrorFlag == FALSE AND SafetyCycleCounter <= (SELF_ACT_CYCLES * 3) AND aro == FALSE AND in<sens"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_2",
+        "guard": "SafetyErrorFlag == FALSE AND SafetyCycleCounter <= (SELF_ACT_CYCLES * 3) AND aro == FALSE AND NOT (in<sens) AND BYTE_TO_USINT(in)>USINT#255-BYTE_TO_USINT(sens)"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Step_255",
+        "guard": "SafetyErrorFlag == FALSE AND SafetyCycleCounter <= (SELF_ACT_CYCLES * 3) AND aro == FALSE AND NOT (in<sens) AND NOT (BYTE_TO_USINT(in)>USINT#255-BYTE_TO_USINT(sens))"
+      },
+      {
+        "src": "Branch_0",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Branch_1",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Branch_2",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Step_255",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "ApplyOutput",
+        "tgt": "SafetyLog",
+        "guard": "SafetyErrorActive == FALSE AND TimeoutErrorFlag == FALSE"
+      },
+      {
+        "src": "SafetyLog",
+        "tgt": "InitCycle",
+        "guard": "TRUE"
+      },
+      {
+        "src": "SafetyError",
+        "tgt": "InitCycle",
+        "guard": "SafetyResetCommand == TRUE"
+      },
+      {
+        "src": "TimeoutSafeStop",
+        "tgt": "InitCycle",
+        "guard": "TimeoutResetCommand == TRUE"
+      }
+    ],
+    "variables": [
+      "IN",
+      "TEST",
+      "ARE",
+      "CYCLE_TIME",
+      "SENS",
+      "SELF_ACT_TIME",
+      "SELF_ACT_PULSE",
+      "SELF_ACT_CYCLES",
+      "OUT",
+      "ARO",
+      "ARX",
+      "timer",
+      "pwgen",
+      "InputValidFlag",
+      "SafetyErrorFlag",
+      "SafetyErrorActive",
+      "TimeoutErrorFlag",
+      "SafetyCycleCounter",
+      "SafetyResetCommand",
+      "TimeoutResetCommand",
+      "MonitorValidFlag",
+      "LastCycleCounter",
+      "LastErrorState"
+    ],
+    "initial_step": "InitCycle"
+  }
+}

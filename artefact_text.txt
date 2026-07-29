@@ -1,0 +1,219 @@
+SEFM’26 Artefact Evaluation Guidelines
+The artefact evaluation (AE) differs according to the type of paper submitted:
+– Regular papers may submit an accompanying artefact for evaluation by the
+AE committee.
+– Tool or artefact papers must submit an artefact that at least satisfies the
+requirements for the functional badge (see 1 in tbl. 1). Papers not meeting
+this clause are rejected.
+Important dates.
+– Artefact submission deadline: 22 July 2026.
+– Artefact kick-the-tires - problem reports: 27 July 2026.
+– Artefact kick-the-tires - author response deadline: 31 July 2026.
+– Author notification: 7 September 2026.
+All deadlines expire at 23:59 AoE (Anywhere on Earth).
+The artefact and the accompanying evaluation instructions should be accessible from the URL already provided in the EasyChair submission form for the
+paper.
+
+1
+
+Badge claims
+
+Authors should indicate the EAPLS badges they intend to claim with justification why their artefact qualifies for the claimed badges. Tbl. 1 details the badges
+available. Papers may claim up to two badges.
+Example 1 (Claiming badges). We claim two badges (i) Artefacts Available
+and (ii) Artefacts (Functional and) Reusable. The reasons why our tool
+fulfils the requirements set out by the EAPLS scheme for are outlined below. ■
+
+2
+
+Submission format
+
+When packaging their artefact for submission, authors should provide specific
+scenarios describing how it can be concretely used. Authors can also consider
+variations on those scenarios to showcase the robustness or reusability of their
+artefact. Sec. 3 describes the template authors should follow when structuring
+their AE submissions.
+Every submitted artefact must include the following:
+– The URL from where the artefact can be downloaded.
+– A quick start guide explaining how the artefact environment is set up.
+
+2
+
+1 Available
+
+To claim the available badge, authors must provide a link to a publicly accessible
+repository that permanently hosts artefacts. If this is not possible at the time of
+submission, authors should indicate the repository on which they intend to host the
+artefact (e.g. Zenodo, Software Heritage). The hosting platform should not track the
+identities of downloaders: using non-compliant hosting platforms is valid grounds for
+outright artefact rejection.
+2.1 Functional
+
+2.2 (Functional and) Reusable
+
+To claim the functional badge, the
+submitted artefact should be reasonably documented and include evidence of proper validation. Authors
+should identify all the individual outcomes in the paper, which must be reproducible through the artefact. Each
+functional outcome should be numbered, F1 , . . . , Fn , and accompanied
+by a short explanation that links that
+outcome obtained via the artefact to
+the one in the paper.
+
+To claim the reusable badge, the submitted artefact should be of high
+quality that exceeds the requirements
+for the functional badge. Authors
+should outline individual reusablity
+claims, R1 , . . . , Rn , that demonstrate
+how the artefact may be used in scenarios beyond those covered in the
+paper. Each scenario should be presented as an example that AE reviewers can replicate.
+
+Example 2 (Functional outcomes).
+F1 Experiment 4 shows that our monitoring approach is efficient in terms of
+the memory consumed.(Outcome) The
+memory consumption printed on the
+terminal by this experiment corresponds to rows 1-4 listed in Tbl.
+3.(Link with paper)
+■
+
+OR
+
+Example 3 (Reusability claims).
+R1 Our first example shows how the
+monitoring software detects invalid
+handshake protocols besides the ones
+studied in Sec. 4 of the paper.(Claim)
+These instructions set-up the system
+and launch the monitors, which flag a
+protocol violation in step 4, after the
+first event. . . (Replicable scenario)
+■
+
+Tbl. 1: EAPLS badges that can be claimed by artefact authors
+
+SEFM’26 Artefact Evaluation Guidelines
+
+3
+
+The AE committee expects artefacts to be executable on major operating
+systems (macOS, Linux, Windows). Authors should include both
+– A Docker image or OVA/OVF virtual machine (VM) containing the artefact;
+and
+– A separate archive containing the artefact source files.
+The Docker image or VM enables reviewers to execute and evaluate the artefact
+without installing additional software on their machines. The source archive
+allows reviewers who are familiar with the underlying language or platform to
+run the artefact directly from source.
+
+3
+
+Evaluation instructions
+
+The AE instructions should be attached as a post-bibliography appendix in the
+original paper. It must detail the steps reviewers should follow to confirm the
+functionality or reusability claims of tbl. 1. This appendix is reserved for the AE
+procedure and will not be published with the camera-ready version of the paper.
+We recommend the appendix format outlined in secs. A.1 to A.4.
+A.1
+
+Badge claims
+
+Authors should state the EAPLS badges they intend to claim, motivating why
+the submitted artefact qualifies for each badge. Tool papers must claim the
+functional badge and meet its requirements. Refer to tbl. 1 for examples on how
+to specify the functional outcomes and reusability claims. Functional outcomes
+and reusability claims can be organised under these sub-headings.
+Functional outcomes The following functional outcomes are expected.
+F1 This outcome. . .
+Reusability claims The following reusability claims are covered.
+R1 This claim. . .
+
+A.2
+
+Quick start
+
+This phase confirms whether the artefact and its environment are fully operational prior to the main evaluation. The quick start guide should consist of a
+short sequence of sanity checks that reviewers execute. Ideally, authors provide
+a script that automates these checks. Authors are advised to give a high-level
+directory structure of their submitted artefact since this helps AE reviewers
+familiarise themselves with the artefact.
+
+4
+tool/
+monitoring/............................................Monitoring tool root
+doc/ ................................................. API documentation
+src/.............................................................Sources
+test/..........................................................Unit tests
+Makefile..................................Makefile for compiling the tool
+examples/.......................................Reusability claims examples
+Makefile ......................... Makefile for compiling the examples
+.
+.
+..............................................Other directories, ignore
+experiments/...............................Functionality outcomes examples
+cowboy/.................Cowboy third-party application case study
+token/........................Cowboy token server web application
+.
+.
+.................................Other web applications, ignore
+Makefile .............................. Makefile for testing Cowboy
+.
+.
+..............................................Other directories, ignore
+.
+.
+............................................Other directories and files, ignore
+
+Fig. 1: Tool directory structure example
+
+Example 4 (Directory structure). Fig. 1 describes the directory layout of our submitted artefact. The files used in secs. A.3 and A.4 are underlined. AE reviewers
+may safely ignore the other directories.
+■
+The quick start guide aims to facilitate the kick-the-tires phase of the AE. At
+this stage, AE reviewers may communicate with artefact authors to give early
+feedback or ask for further instructions in case of difficulties.
+
+A.3
+
+Functional evaluation
+
+This evaluation replicates the functional outcomes F1 , . . . , Fn listed in sec. A.1.
+Authors should structure this appendix section as a sequence of steps AE reviewers follow to verify all the functional outcomes. Reference to individual functional
+outcomes should be made by authors when arguing why or how each outcome
+is met. Justification should be given whenever the results obtained through the
+artefact differ from those in the paper.
+Example 5 (Justifying difference in results). The rendered plot produced by experiment 5 (functional outcome F5 ) reflects the same trends of Fig. 7 in the
+paper, albeit on a smaller scale. This difference between the artefact plot and
+Fig. 7 results from the lower load we use for our artefact set-up to keep the
+execution time reasonable, per the AE guidelines.
+■
+
+SEFM’26 Artefact Evaluation Guidelines
+
+A.4
+
+5
+
+Reusability evaluation
+
+This evaluation validates the reusability claims R1 , . . . , Rn identified in sec. A.1.
+Authors should structure this section of the appendix as a sequence of steps
+AE reviewers follow to explore the reusability of the submitted artefact. These
+steps can (i) direct AE reviewers to inspect content packaged with the artefact
+(e.g. documentation), (ii) give scenarios where the artefact may be reused (e.g.
+imported as a library into other software), or (iii) follow instructions which
+showcase how the artefact can be used out-of-the-box to tackle use cases besides
+those given in the paper (e.g. a short tutorial with examples).
+Example 6 (Reusing the artefact on other examples). Our main monitoring module accepts command line switches that enable the software to be used as a
+stand-alone tool (reusability claim R2 ). This tutorial shows how an arbitrary
+client-server system written in Erlang can be monitored by launching the monitoring module using the -standalone and -mfa switches as follows. . .
+■
+
+AE reviewers should be able to complete the evaluation in ≈ 4 hours. If
+the evaluation relies on long-running experiments (e.g. to gather empirical data), the evaluation harness should provide a push-button method
+for executing experiments with minimal intervention from AE reviewers
+(e.g. using a script). Artefacts packaged as Docker images or OVA/OVF
+virtual machines reduce the AE set-up overhead.
+
+Last updated: July 2, 2026
+
+

@@ -1,5 +1,7 @@
 # AntarBhukti-LLM (LLMA)
 
+**Note:**  if you are evaluating this for the Artefact Evaluation (AE) procedure, please refer to the ARTEFACT_EVALUATION.md file for instructions.
+
 AntarBhukti is a verification tool for evolving software, designed to verify changes between two versions of SFCs (Sequential Function Charts). It includes enhanced LLM prompts for superior SFC generation quality.
 
 ## Features

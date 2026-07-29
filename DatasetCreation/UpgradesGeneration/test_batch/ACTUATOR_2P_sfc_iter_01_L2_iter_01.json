@@ -1,0 +1,289 @@
+{
+  "id": "ACTUATOR_2P_sfc_iter_01_L2_iter_01",
+  "layer": 2,
+  "sfc_baseline": {
+    "steps": [
+      {
+        "name": "InitCycle",
+        "function": "timer(trun := MUL_T_AI(SELF_ACT_PULSE,2 * SELF_ACT_CYCLES), toff := SELF_ACT_TIME, Test := TEST, ARE := ARE, arx := ARX); ARX := timer.ARX; ARO := timer.ARO;"
+      },
+      {
+        "name": "SafetyCheckInput",
+        "function": "INPUT_VALID := (IN >= BYTE#0) AND (IN <= BYTE#255) AND (SENS > BYTE#0) AND (SENS <= BYTE#255); CUMULATIVE_CYCLE_TIME := CUMULATIVE_CYCLE_TIME + CYCLE_TIME;"
+      },
+      {
+        "name": "SafetyError",
+        "function": "out := FALSE; SAFETY_ERROR_FLAG := TRUE; SAFETY_ERROR_CODE := UINT#1001;"
+      },
+      {
+        "name": "Branch_0",
+        "function": "pwgen(PTL := SELF_ACT_PULSE, PTH := SELF_ACT_PULSE); out := pwgen.Q;"
+      },
+      {
+        "name": "Branch_1",
+        "function": "out := FALSE;"
+      },
+      {
+        "name": "Branch_2",
+        "function": "out := TRUE;"
+      },
+      {
+        "name": "Step_255",
+        "function": "pwgen.PTH := (CYCLE_TIME * BYTE_TO_TIME(BAND_B(IN,SENS)) ) / BYTE_TO_TIME(BYTE#255); pwgen.PTL := CYCLE_TIME - pwgen.PTH; pwgen(); out := pwgen.Q;"
+      },
+      {
+        "name": "ApplyOutput",
+        "function": "TIMEOUT_EXCEEDED := CUMULATIVE_CYCLE_TIME > MAX_SAFE_CYCLE_TIME;"
+      },
+      {
+        "name": "TimeoutSafeStop",
+        "function": "out := FALSE; TIMEOUT_ERROR_FLAG := TRUE; TIMEOUT_LOG_TIME := CUMULATIVE_CYCLE_TIME; CUMULATIVE_CYCLE_TIME := T#0s;"
+      }
+    ],
+    "transitions": [
+      {
+        "src": "InitCycle",
+        "tgt": "SafetyCheckInput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "SafetyError",
+        "guard": "INPUT_VALID == FALSE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_0",
+        "guard": "INPUT_VALID == TRUE AND aro == TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_1",
+        "guard": "INPUT_VALID == TRUE AND aro == FALSE AND in<sens"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_2",
+        "guard": "INPUT_VALID == TRUE AND aro == FALSE AND NOT (in<sens) AND BYTE_TO_USINT(in)>USINT#255-BYTE_TO_USINT(sens)"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Step_255",
+        "guard": "INPUT_VALID == TRUE AND aro == FALSE AND NOT (in<sens) AND NOT (BYTE_TO_USINT(in)>USINT#255-BYTE_TO_USINT(sens))"
+      },
+      {
+        "src": "Branch_0",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Branch_1",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Branch_2",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Step_255",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "ApplyOutput",
+        "tgt": "TimeoutSafeStop",
+        "guard": "TIMEOUT_EXCEEDED == TRUE"
+      },
+      {
+        "src": "ApplyOutput",
+        "tgt": "InitCycle",
+        "guard": "TIMEOUT_EXCEEDED == FALSE"
+      },
+      {
+        "src": "TimeoutSafeStop",
+        "tgt": "InitCycle",
+        "guard": "TRUE"
+      },
+      {
+        "src": "SafetyError",
+        "tgt": "SafetyError",
+        "guard": "TRUE"
+      }
+    ],
+    "variables": [
+      "IN",
+      "TEST",
+      "ARE",
+      "CYCLE_TIME",
+      "SENS",
+      "SELF_ACT_TIME",
+      "SELF_ACT_PULSE",
+      "SELF_ACT_CYCLES",
+      "OUT",
+      "ARO",
+      "ARX",
+      "timer",
+      "pwgen",
+      "INPUT_VALID",
+      "SAFETY_ERROR_FLAG",
+      "SAFETY_ERROR_CODE",
+      "CUMULATIVE_CYCLE_TIME",
+      "MAX_SAFE_CYCLE_TIME",
+      "TIMEOUT_EXCEEDED",
+      "TIMEOUT_ERROR_FLAG",
+      "TIMEOUT_LOG_TIME"
+    ],
+    "initial_step": "InitCycle"
+  },
+  "nl_prompt": "When: The system enters a safety error or timeout error state.\nAction: Insert a SafetyLog step after SafetyError and TimeoutSafeStop to record the error code and cumulative time before resetting to InitCycle.",
+  "sfc_upgraded": {
+    "steps": [
+      {
+        "name": "InitCycle",
+        "function": "timer(trun := MUL_T_AI(SELF_ACT_PULSE,2 * SELF_ACT_CYCLES), toff := SELF_ACT_TIME, Test := TEST, ARE := ARE, arx := ARX); ARX := timer.ARX; ARO := timer.ARO;"
+      },
+      {
+        "name": "SafetyCheckInput",
+        "function": "INPUT_VALID := (IN >= BYTE#0) AND (IN <= BYTE#255) AND (SENS > BYTE#0) AND (SENS <= BYTE#255); CUMULATIVE_CYCLE_TIME := CUMULATIVE_CYCLE_TIME + CYCLE_TIME;"
+      },
+      {
+        "name": "SafetyError",
+        "function": "out := FALSE; SAFETY_ERROR_FLAG := TRUE; SAFETY_ERROR_CODE := UINT#1001;"
+      },
+      {
+        "name": "Branch_0",
+        "function": "pwgen(PTL := SELF_ACT_PULSE, PTH := SELF_ACT_PULSE); out := pwgen.Q;"
+      },
+      {
+        "name": "Branch_1",
+        "function": "out := FALSE;"
+      },
+      {
+        "name": "Branch_2",
+        "function": "out := TRUE;"
+      },
+      {
+        "name": "Step_255",
+        "function": "pwgen.PTH := (CYCLE_TIME * BYTE_TO_TIME(BAND_B(IN,SENS)) ) / BYTE_TO_TIME(BYTE#255); pwgen.PTL := CYCLE_TIME - pwgen.PTH; pwgen(); out := pwgen.Q;"
+      },
+      {
+        "name": "ApplyOutput",
+        "function": "TIMEOUT_EXCEEDED := CUMULATIVE_CYCLE_TIME > MAX_SAFE_CYCLE_TIME;"
+      },
+      {
+        "name": "TimeoutSafeStop",
+        "function": "out := FALSE; TIMEOUT_ERROR_FLAG := TRUE; TIMEOUT_LOG_TIME := CUMULATIVE_CYCLE_TIME; CUMULATIVE_CYCLE_TIME := T#0s;"
+      },
+      {
+        "name": "SafetyLog",
+        "function": "SAFETY_LOG_CODE := SAFETY_ERROR_CODE; TIMEOUT_LOG_CODE := TIMEOUT_ERROR_FLAG; LOGGED_CYCLE_TIME := CUMULATIVE_CYCLE_TIME;"
+      }
+    ],
+    "transitions": [
+      {
+        "src": "InitCycle",
+        "tgt": "SafetyCheckInput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "SafetyError",
+        "guard": "INPUT_VALID == FALSE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_0",
+        "guard": "INPUT_VALID == TRUE AND aro == TRUE"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_1",
+        "guard": "INPUT_VALID == TRUE AND aro == FALSE AND in<sens"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Branch_2",
+        "guard": "INPUT_VALID == TRUE AND aro == FALSE AND NOT (in<sens) AND BYTE_TO_USINT(in)>USINT#255-BYTE_TO_USINT(sens)"
+      },
+      {
+        "src": "SafetyCheckInput",
+        "tgt": "Step_255",
+        "guard": "INPUT_VALID == TRUE AND aro == FALSE AND NOT (in<sens) AND NOT (BYTE_TO_USINT(in)>USINT#255-BYTE_TO_USINT(sens))"
+      },
+      {
+        "src": "Branch_0",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Branch_1",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Branch_2",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "Step_255",
+        "tgt": "ApplyOutput",
+        "guard": "TRUE"
+      },
+      {
+        "src": "ApplyOutput",
+        "tgt": "TimeoutSafeStop",
+        "guard": "TIMEOUT_EXCEEDED == TRUE"
+      },
+      {
+        "src": "ApplyOutput",
+        "tgt": "InitCycle",
+        "guard": "TIMEOUT_EXCEEDED == FALSE"
+      },
+      {
+        "src": "TimeoutSafeStop",
+        "tgt": "SafetyLog",
+        "guard": "TRUE"
+      },
+      {
+        "src": "SafetyError",
+        "tgt": "SafetyLog",
+        "guard": "TRUE"
+      },
+      {
+        "src": "SafetyLog",
+        "tgt": "InitCycle",
+        "guard": "TRUE"
+      }
+    ],
+    "variables": [
+      "IN",
+      "TEST",
+      "ARE",
+      "CYCLE_TIME",
+      "SENS",
+      "SELF_ACT_TIME",
+      "SELF_ACT_PULSE",
+      "SELF_ACT_CYCLES",
+      "OUT",
+      "ARO",
+      "ARX",
+      "timer",
+      "pwgen",
+      "INPUT_VALID",
+      "SAFETY_ERROR_FLAG",
+      "SAFETY_ERROR_CODE",
+      "CUMULATIVE_CYCLE_TIME",
+      "MAX_SAFE_CYCLE_TIME",
+      "TIMEOUT_EXCEEDED",
+      "TIMEOUT_ERROR_FLAG",
+      "TIMEOUT_LOG_TIME",
+      "SAFETY_LOG_CODE",
+      "TIMEOUT_LOG_CODE",
+      "LOGGED_CYCLE_TIME"
+    ],
+    "initial_step": "InitCycle"
+  }
+}

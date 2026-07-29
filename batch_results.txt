@@ -1,0 +1,417 @@
+=================================================================
+            SFC  ->  MATIEC  Compilation Batch Report            
+                 Generated : 2026-07-12  09:46:14                
+=================================================================
+
+-----------------------------------------------------------------
+  FILE #1 of 10
+-----------------------------------------------------------------
+  SFC File    :          ACTUATOR_2P_sfc_iter_01.json
+  ST File     :          ACTUATOR_2P_sfc_iter_01_upgraded.st
+  Steps       :          9
+  Transitions :          14
+  Variables   :          21
+  Compiler    :          MATIEC
+  Status      :          [ FAILED ]
+  Timestamp   :          2026-07-12 09:46:13
+
+  Message / Details:
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:25: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:26: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:44: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:44: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:44: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:44: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:44: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:44: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:44: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:44: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:44: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:44: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:44: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:53: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:53: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:53: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:53: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:53: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:62: error: ')' missing at the end of function invocation in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:62: error: ')' missing at the end of expression in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:62: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:62: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_upgraded.st:62: error: invalid statement in ST statement.
+    
+    23 error(s) found. Bailing out!
+
+-----------------------------------------------------------------
+  FILE #2 of 10
+-----------------------------------------------------------------
+  SFC File    :          ACTUATOR_2P_sfc_iter_01_L2_iter_01.json
+  ST File     :          ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st
+  Steps       :          10
+  Transitions :          15
+  Variables   :          24
+  Compiler    :          MATIEC
+  Status      :          [ FAILED ]
+  Timestamp   :          2026-07-12 09:46:13
+
+  Message / Details:
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:26: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:27: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:48: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:48: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:48: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:48: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:48: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:48: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:48: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:48: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:48: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:48: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:48: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:57: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:57: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:57: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:57: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:57: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:66: error: ')' missing at the end of function invocation in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:66: error: ')' missing at the end of expression in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:66: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:66: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_01_upgraded.st:66: error: invalid statement in ST statement.
+    
+    23 error(s) found. Bailing out!
+
+-----------------------------------------------------------------
+  FILE #3 of 10
+-----------------------------------------------------------------
+  SFC File    :          ACTUATOR_2P_sfc_iter_01_L2_iter_02.json
+  ST File     :          ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st
+  Steps       :          11
+  Transitions :          16
+  Variables   :          25
+  Compiler    :          MATIEC
+  Status      :          [ FAILED ]
+  Timestamp   :          2026-07-12 09:46:13
+
+  Message / Details:
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:27: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:28: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:50: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:50: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:50: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:50: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:50: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:50: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:50: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:50: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:50: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:50: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:50: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:62: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:62: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:62: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:62: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:62: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:71: error: ')' missing at the end of function invocation in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:71: error: ')' missing at the end of expression in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:71: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:71: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_02_upgraded.st:71: error: invalid statement in ST statement.
+    
+    23 error(s) found. Bailing out!
+
+-----------------------------------------------------------------
+  FILE #4 of 10
+-----------------------------------------------------------------
+  SFC File    :          ACTUATOR_2P_sfc_iter_01_L2_iter_03.json
+  ST File     :          ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st
+  Steps       :          11
+  Transitions :          16
+  Variables   :          26
+  Compiler    :          MATIEC
+  Status      :          [ FAILED ]
+  Timestamp   :          2026-07-12 09:46:13
+
+  Message / Details:
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:27: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:28: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:51: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:51: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:51: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:51: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:51: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:51: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:51: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:51: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:51: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:51: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:51: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:66: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:66: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:66: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:66: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:66: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:75: error: ')' missing at the end of function invocation in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:75: error: ')' missing at the end of expression in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:75: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:75: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_01_L2_iter_03_upgraded.st:75: error: invalid statement in ST statement.
+    
+    23 error(s) found. Bailing out!
+
+-----------------------------------------------------------------
+  FILE #5 of 10
+-----------------------------------------------------------------
+  SFC File    :          ACTUATOR_2P_sfc_iter_02.json
+  ST File     :          ACTUATOR_2P_sfc_iter_02_upgraded.st
+  Steps       :          9
+  Transitions :          12
+  Variables   :          20
+  Compiler    :          MATIEC
+  Status      :          [ FAILED ]
+  Timestamp   :          2026-07-12 09:46:13
+
+  Message / Details:
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:25: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:26: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:43: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:43: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:43: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:43: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:43: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:43: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:43: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:43: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:43: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:43: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:43: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:55: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:55: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:55: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:55: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:55: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:64: error: ')' missing at the end of function invocation in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:64: error: ')' missing at the end of expression in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:64: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:64: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_upgraded.st:64: error: invalid statement in ST statement.
+    
+    23 error(s) found. Bailing out!
+
+-----------------------------------------------------------------
+  FILE #6 of 10
+-----------------------------------------------------------------
+  SFC File    :          ACTUATOR_2P_sfc_iter_02_L2_iter_01.json
+  ST File     :          ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st
+  Steps       :          12
+  Transitions :          18
+  Variables   :          24
+  Compiler    :          MATIEC
+  Status      :          [ FAILED ]
+  Timestamp   :          2026-07-12 09:46:13
+
+  Message / Details:
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:28: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:29: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:50: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:50: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:50: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:50: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:50: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:50: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:50: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:50: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:50: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:50: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:50: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:62: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:62: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:62: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:62: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:62: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:71: error: no expression defined after '=' in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:77: error: ')' missing at the end of function invocation in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:77: error: ')' missing at the end of expression in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:77: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:77: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_01_upgraded.st:77: error: invalid statement in ST statement.
+    
+    24 error(s) found. Bailing out!
+
+-----------------------------------------------------------------
+  FILE #7 of 10
+-----------------------------------------------------------------
+  SFC File    :          ACTUATOR_2P_sfc_iter_02_L2_iter_02.json
+  ST File     :          ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st
+  Steps       :          11
+  Transitions :          16
+  Variables   :          22
+  Compiler    :          MATIEC
+  Status      :          [ FAILED ]
+  Timestamp   :          2026-07-12 09:46:13
+
+  Message / Details:
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:27: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:28: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:47: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:47: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:47: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:47: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:47: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:47: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:47: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:47: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:47: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:47: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:47: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:59: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:59: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:59: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:59: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:59: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:68: error: ')' missing at the end of function invocation in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:68: error: ')' missing at the end of expression in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:68: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:68: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_02_upgraded.st:68: error: invalid statement in ST statement.
+    
+    23 error(s) found. Bailing out!
+
+-----------------------------------------------------------------
+  FILE #8 of 10
+-----------------------------------------------------------------
+  SFC File    :          ACTUATOR_2P_sfc_iter_02_L2_iter_03.json
+  ST File     :          ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st
+  Steps       :          14
+  Transitions :          22
+  Variables   :          25
+  Compiler    :          MATIEC
+  Status      :          [ FAILED ]
+  Timestamp   :          2026-07-12 09:46:14
+
+  Message / Details:
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:30: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:31: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:53: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:53: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:53: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:53: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:53: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:53: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:53: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:53: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:53: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:53: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:53: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:71: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:71: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:71: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:71: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:71: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:86: error: ')' missing at the end of function invocation in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:86: error: ')' missing at the end of expression in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:86: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:86: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_02_L2_iter_03_upgraded.st:86: error: invalid statement in ST statement.
+    
+    23 error(s) found. Bailing out!
+
+-----------------------------------------------------------------
+  FILE #9 of 10
+-----------------------------------------------------------------
+  SFC File    :          ACTUATOR_2P_sfc_iter_03.json
+  ST File     :          ACTUATOR_2P_sfc_iter_03_upgraded.st
+  Steps       :          9
+  Transitions :          14
+  Variables   :          20
+  Compiler    :          MATIEC
+  Status      :          [ FAILED ]
+  Timestamp   :          2026-07-12 09:46:14
+
+  Message / Details:
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:25: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:26: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:43: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:43: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:43: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:43: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:43: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:43: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:43: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:43: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:43: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:43: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:43: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:55: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:55: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:55: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:55: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:55: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:64: error: ')' missing at the end of function invocation in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:64: error: ')' missing at the end of expression in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:64: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:64: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_upgraded.st:64: error: invalid statement in ST statement.
+    
+    23 error(s) found. Bailing out!
+
+-----------------------------------------------------------------
+  FILE #10 of 10
+-----------------------------------------------------------------
+  SFC File    :          ACTUATOR_2P_sfc_iter_03_L2_iter_01.json
+  ST File     :          ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st
+  Steps       :          11
+  Transitions :          18
+  Variables   :          23
+  Compiler    :          MATIEC
+  Status      :          [ FAILED ]
+  Timestamp   :          2026-07-12 09:46:14
+
+  Message / Details:
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:27: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:28: error: invalid specification in variable declaration.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:48: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:48: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:48: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:48: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:48: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:48: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:48: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:48: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:48: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:48: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:48: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:60: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:60: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:60: error: invalid variable before ':=' in ST assignment statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:60: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:60: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:69: error: ')' missing at the end of function invocation in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:69: error: ')' missing at the end of expression in ST expression.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:69: error: ';' missing at the end of statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:69: error: invalid statement in ST statement.
+    ./DatasetCreation/UpgradesGeneration/test_batch/ACTUATOR_2P_sfc_iter_03_L2_iter_01_upgraded.st:69: error: invalid statement in ST statement.
+    
+    23 error(s) found. Bailing out!
+
+=================================================================
+                          BATCH  SUMMARY                         
+=================================================================
+  Total Files :          10
+  Succeeded   :          0
+  Failed      :          10
+
+-----------------------------------------------------------------
+  #     File                                Compiler        Status
+-----------------------------------------------------------------
+  1     ACTUATOR_2P_sfc_iter_01.json        MATIEC          [FAIL]
+  2     ACTUATOR_2P_sfc_iter_01_L2_iter_01  MATIEC          [FAIL]
+  3     ACTUATOR_2P_sfc_iter_01_L2_iter_02  MATIEC          [FAIL]
+  4     ACTUATOR_2P_sfc_iter_01_L2_iter_03  MATIEC          [FAIL]
+  5     ACTUATOR_2P_sfc_iter_02.json        MATIEC          [FAIL]
+  6     ACTUATOR_2P_sfc_iter_02_L2_iter_01  MATIEC          [FAIL]
+  7     ACTUATOR_2P_sfc_iter_02_L2_iter_02  MATIEC          [FAIL]
+  8     ACTUATOR_2P_sfc_iter_02_L2_iter_03  MATIEC          [FAIL]
+  9     ACTUATOR_2P_sfc_iter_03.json        MATIEC          [FAIL]
+  10    ACTUATOR_2P_sfc_iter_03_L2_iter_01  MATIEC          [FAIL]
+=================================================================

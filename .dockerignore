@@ -1,0 +1,54 @@
+# =============================================================
+# .dockerignore — Files excluded from the Docker build context
+# =============================================================
+
+# SECURITY: Never bake real API keys into the image.
+# Reviewers supply credentials via -e flags at `docker run` time.
+src/antarbhukti/config.json
+
+# Git and IDE metadata
+.git/
+.gitignore
+.history/
+.vscode/
+.devcontainer/
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+*.egg
+.eggs/
+dist/
+build/
+
+# Runtime output directories (should not be pre-populated in image)
+outputs/
+uploads/
+output/
+
+# Submission/packaging artefacts
+*.zip
+*.tar
+artefact-submission-guidelines.pdf
+artefact_text.txt
+
+# Secrets and local env files
+.env
+.env.template
+
+# Large temporary/lock files
+.~lock.*#
+
+# DatasetCreation is only used for LLM fine-tuning dataset generation research.
+# It is not required to run the Streamlit verification tool.
+DatasetCreation/
+
+# Root-level dev/scratch directories — not needed to run the app
+orig/
+mod/
+bench_backup/
+test_benchmarkBatch/
+data/
+*.jsonl

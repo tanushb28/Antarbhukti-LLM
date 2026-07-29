@@ -48,7 +48,7 @@ class GPT4o(LLM_Mgr):
 
     def _do_improve(self, prompt: str):
         messages = [
-            SystemMessage(content="You are a helpful assistant for improving Sequential Function Chart (SFC) code."),
+            SystemMessage(content="You are a helpful assistant for improving Sequential Function Chart (SFC) code. Output ONLY the raw Python assignment statements (steps2 = [...] and transitions2 = [...]). Do NOT wrap your output in markdown code fences (``` or ```python). Do NOT include any explanation or prose."),
             HumanMessage(content=prompt)
         ]
         return self._get_response_with_callbacks(messages)
@@ -113,7 +113,7 @@ class Claude(LLM_Mgr):
         return self._get_response_and_tokens(system_message, f"{prompt}\n{src_code}")
 
     def _do_improve(self, prompt: str):
-        system_message = "You are a helpful assistant for improving Sequential Function Chart (SFC) code."
+        system_message = "You are a helpful assistant for improving Sequential Function Chart (SFC) code. Output ONLY the raw Python assignment statements (steps2 = [...] and transitions2 = [...]). Do NOT wrap your output in markdown code fences (``` or ```python). Do NOT include any explanation or prose."
         return self._get_response_and_tokens(system_message, prompt)
 
 class LLaMA(LLM_Mgr):
@@ -143,7 +143,7 @@ class LLaMA(LLM_Mgr):
         return self._get_response_and_tokens(system_message, f"{prompt}\n{src_code}")
 
     def _do_improve(self, prompt: str):
-        system_message = "You are a helpful assistant for improving Sequential Function Chart (SFC) code."
+        system_message = "You are a helpful assistant for improving Sequential Function Chart (SFC) code. Output ONLY the raw Python assignment statements (steps2 = [...] and transitions2 = [...]). Do NOT wrap your output in markdown code fences (``` or ```python). Do NOT include any explanation or prose."
         return self._get_response_and_tokens(system_message, prompt)
 
 # --- PERPLEXITY CLASS (Corrected to use OpenAI SDK) ---
@@ -177,7 +177,7 @@ class Perplexity(LLM_Mgr):
         return self._get_response_and_tokens(system_message, f"{prompt}\n{src_code}")
 
     def _do_improve(self, prompt: str):
-        system_message = "You are a helpful assistant for improving Sequential Function Chart (SFC) code."
+        system_message = "You are a helpful assistant for improving Sequential Function Chart (SFC) code. Do NOT wrap your output in markdown code fences (``` or ```python). Do NOT include any explanation or prose."
         return self._get_response_and_tokens(system_message, prompt)
 
 def instantiate_llms(llm_names: list[str], llms_config: list):

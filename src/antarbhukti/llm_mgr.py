@@ -80,14 +80,9 @@ class LLM_Mgr(ABC):
         # Send the prompt to the LLM and get the response
         llm_response, token_usage = self._do_improve(prompt)
 
-        # Save the raw output for debugging
-        if self.name.lower() == "claude":
-            with open("claude_raw_output.txt", "w", encoding="utf-8") as f:
-                f.write(llm_response)
-
-        if self.name.lower() == "gemini":
-            with open("gemini_raw_output.txt", "w", encoding="utf-8") as f:
-                f.write(llm_response)
+        # Save the raw output for debugging (all models)
+        with open(f"{self.name.lower()}_raw_output.txt", "w", encoding="utf-8") as f:
+            f.write(llm_response)
         
         # Check for API error in the response
         lower = llm_response.lower()
@@ -127,6 +122,41 @@ class LLM_Mgr(ABC):
                 raise ValueError("steps2 or transitions2 not found in code block.")
         except Exception as e:
             error_msg = f"Error parsing LLM output: {e}"
+            print(error_msg)
+            return {
+                "improved": False,
+                "error": error_msg,
+                "token_usage": token_usage,
+                "llm_time": 0
+            }
+
+        # --- Structural validation ---
+        # Ensure transitions2 contains only flat dicts (no nested lists from malformed LLM output)
+        flat_transitions = []
+        for item in transitions2:
+            if isinstance(item, dict):
+                flat_transitions.append(item)
+            elif isinstance(item, list):
+                # LLaMA sometimes nests lists inside transitions2; flatten one level
+                for sub in item:
+                    if isinstance(sub, dict):
+                        flat_transitions.append(sub)
+        transitions2 = flat_transitions
+
+        # Ensure all step names referenced in transitions2 exist in steps2
+        step_names = {s["name"] for s in steps2 if isinstance(s, dict) and "name" in s}
+        missing_steps = set()
+        for t in transitions2:
+            for key in ("src", "tgt"):
+                ref = t.get(key)
+                if ref and ref not in step_names:
+                    missing_steps.add(ref)
+
+        if missing_steps:
+            error_msg = (
+                f"LLM output references steps not defined in steps2: {sorted(missing_steps)}. "
+                f"Defined steps: {sorted(step_names)}"
+            )
             print(error_msg)
             return {
                 "improved": False,

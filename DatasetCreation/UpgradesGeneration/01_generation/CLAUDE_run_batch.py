@@ -7,7 +7,8 @@ from anthropic import Anthropic
 # ==========================================
 # CONFIGURATION
 # ==========================================
-API_KEY = "sk-XXX"  # Replace with your actual Anthropic API key
+# Paste your Anthropic API key here
+API_KEY = "sk-XXX" 
 
 INPUT_FILE = Path("claude_batch_requests.jsonl")
 OUTPUT_FILE = Path("claude_batch_results.jsonl")
