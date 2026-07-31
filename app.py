@@ -73,7 +73,7 @@ def ensure_config_exists():
             },
             {
                 "llm_name": "llama",
-                "model_name": "meta-llama/llama-4-scout-17b-16e-instruct",
+                "model_name": "meta-llama/llama-3.1-8b-instant",
                 "api_key": secrets.get("llama_key", ""),
                 "max_tokens": 4096,
                 "max_retries": 5,
